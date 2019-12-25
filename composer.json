@@ -1,0 +1,20 @@
+{
+    "name": "aecodes/admin-panel",
+    "description": "A simplistic admin panel",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Amine",
+            "email": "kurosoul.ae@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aecodes\\AdminPanel\\": "src/"
+        }
+    }
+}
