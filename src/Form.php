@@ -114,7 +114,7 @@ class Form
      * @param mixed $source
      * @return string
      */
-    public function build($source): string
+    public function build($source, Panel $page): string
     {
         $real_method = null;
         $inputs      = $this->inputs;

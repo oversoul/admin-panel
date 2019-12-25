@@ -85,14 +85,23 @@ class TD
         }
 
         $data = \call_user_func($this->renderer, $row);
-        
+
         if (\is_string($data)) {
             return $data;
         }
 
-        return $data->build($row);
+        if (!\is_array($data)) {
+            return $data->build($row);
+        }
+
+        $result = [];
+        foreach ($data as $element) {
+            $result[] = $element->build();
+        }
+        
+        return \implode("", $result);
     }
-    
+
     /**
      * Render TD
      *

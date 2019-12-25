@@ -31,7 +31,7 @@ class Button extends Action
      */
     public function type(string $type): self
     {
-        if ( ! in_array($type, ['submit', 'reset']) ) {
+        if (!in_array($type, ['submit', 'reset'])) {
             throw new Exception("Button type Should be either 'submit' or 'reset'");
         }
         $this->type = $type;
@@ -46,7 +46,7 @@ class Button extends Action
     public function build(): string
     {
         return sprintf(
-            '<button type="%s" %s>%s</button>', 
+            '<button type="%s" %s>%s</button>',
             $this->type,
             $this->attributes(),
             $this->value,

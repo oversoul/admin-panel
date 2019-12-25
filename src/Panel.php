@@ -88,7 +88,7 @@ abstract class Panel
      *
      * @return array
      */
-    final protected function getBar(): array
+    final public function getBar(): array
     {
         $widgets = [];
         foreach ($this->bar() as $widget) {
@@ -115,12 +115,11 @@ abstract class Panel
      */
     final protected function renderLayout(array $query): string
     {
-        $top_bar = $this->getBar();
         $layout  = $this->isAuth === true ? 'auth' : 'main';
 
         $parts = [];
         foreach ($this->render() as $part) {
-            $parts[] = $part->build($query);
+            $parts[] = $part->build($query, $this);
         }
 
         $content = \implode("\n", $parts);

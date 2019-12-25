@@ -65,7 +65,7 @@ class Table {
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, Panel $page): string
     {
         $columns = $this->columns;
         $rows    = array_get($data, $this->target, []);
