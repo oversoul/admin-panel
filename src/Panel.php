@@ -10,6 +10,14 @@ abstract class Panel
 {
 
     /**
+     * If it's an auth section
+     * use a different layout.
+     *
+     * @var boolean
+     */
+    public $isAuth = false;
+
+    /**
      * Panel Name
      *
      * @var string
@@ -108,6 +116,7 @@ abstract class Panel
     final protected function renderLayout(array $query): string
     {
         $top_bar = $this->getBar();
+        $layout  = $this->isAuth === true ? 'auth' : 'main';
 
         $parts = [];
         foreach ($this->render() as $part) {
@@ -121,7 +130,7 @@ abstract class Panel
         $menus = Config::menu();
         
         ob_start();
-        require dirname(__FILE__) . "/presenters/layout.php";
+        require dirname(__FILE__) . "/presenters/layouts/{$layout}.php";
         return ob_get_clean();
     }
 }
