@@ -41,11 +41,7 @@
         <h1 class="bd-title"><?=$this->name?></h1>
         <p class="lead"><?=$this->description?></p>
 
-        <?php if ($flashMessage): ?>
-            <div class="alert alert-<?=$flashMessage['type']?>">
-                <?=$flashMessage['message']?>
-            </div>
-        <?php endif;?>
+        <?php require __DIR__ . "/../partials/flash.php"; ?>
 
         <div>
             <?php foreach ($top_bar as $item): ?>
@@ -54,13 +50,7 @@
         </div>
         &nbsp;
 
-        <?php if ($formErrors): ?>
-            <div class="alert alert-danger">
-            <?php foreach ($formErrors as $error): ?>
-                <div><?=$error?></div>
-            <?php endforeach;?>
-            </div>
-        <?php endif;?>
+        <?php require __DIR__ . "/../partials/form-errors.php"; ?>
 
         <?=$content?>
     </main>
