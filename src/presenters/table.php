@@ -1,6 +1,6 @@
 <div class="container">
-    <table class="table table-striped table-bordered">
-        <thead>
+    <table class="table align-items-center table-flush">
+        <thead class="thead-light">
             <?php foreach($columns as $column): ?>
                 <?= $column->renderTitle() ?>
             <?php endforeach; ?>
