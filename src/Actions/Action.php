@@ -6,6 +6,13 @@ class Action
 {
 
     /**
+     * Is action a delete?
+     * 
+     * @var boolean
+     */
+    protected $delete = false;
+
+    /**
      * Action value
      *
      * @var string
@@ -56,6 +63,17 @@ class Action
     }
 
     /**
+     * Set action as delete
+     *
+     * @return self
+     */
+    protected function setDelete(): self
+    {
+        $this->delete = true;
+        return $this;
+    }
+
+    /**
      * Magic method to set attributes.
      *
      * @param string
@@ -97,9 +115,20 @@ class Action
      */
     public static function __callStatic(string $method, array $params = [])
     {
-        if (\in_array($method, ['button', 'link'])) {
+        $isDelete = false;
+        if (\in_array($method, ['button', 'link', 'delete'])) {
+            if ( $method === 'delete' ) {
+                $isDelete = true;
+                $method = 'link';
+            }
             $method = 'Aecodes\AdminPanel\Actions\\' . ucfirst($method);
-            return \call_user_func_array([$method, 'make'], $params);
+            $object = \call_user_func_array([$method, 'make'], $params);
+
+            if ( $isDelete === true ) {
+                return $object->setDelete();
+            }
+
+            return $object;
         }
     }
 }

@@ -31,6 +31,11 @@ class Link extends Action
      */
     public function build(): string
     {
+        if ( $this->delete === true ) {
+            $this->attributes['onclick'] = 'triggerDestroyForm(event, \'' . $this->href . '\')';
+            $this->href = 'javascript:{}';
+        }
+
         return \sprintf(
             '<a href="%s" %s>%s</a>',
             $this->href,

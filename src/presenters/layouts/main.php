@@ -7,10 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/argon-dashboard/assets/css/argon-dashboard.min.css?v=1.1.1">
-    <style>.table td, .table th { vertical-align: middle; }</style>
+    <script>
+        function triggerDestroyForm(event, action) {
+            const answer = confirm("This action cannot be reversed. are you sure?");
+            if ( ! answer ) {
+                event.preventDefault();
+                return;
+            }
+            
+            const form = document.querySelector('#destroy_form');
+            form.action = action;
+            form.submit();
+        }
+    </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+    <div class="header bg-gradient-primary pb-4 pt-4 pt-md-4">
+      <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Admin Panel</a>
             <button
@@ -35,29 +50,25 @@
                 </ul>
             </div>
         </div>
-    </nav>
+      </div>
+    </div>
 
 
     <main class="container py-5">
-        <h1 class="bd-title"><?=$this->name?></h1>
-        <p class="lead"><?=$this->description?></p>
-
+        <form method="POST" id="destroy_form">
+            <input type="hidden" name="_method" value="DELETE">
+        </form>
+        
         <?php require __DIR__ . "/../partials/flash.php";?>
-
-        <div>
-            <?php foreach ($top_bar as $item): ?>
-                <?=$item?>
-            <?php endforeach;?>
-        </div>
-        &nbsp;
 
         <?php require __DIR__ . "/../partials/form-errors.php";?>
 
         <div class="row">
-            <?=$content?>
+            <?= $content ?>
         </div>
     </main>
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
+    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script>
 </body>
 </html>
