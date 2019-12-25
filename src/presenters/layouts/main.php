@@ -12,8 +12,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Admin Panel</a>
-            <button 
-                type="button" 
+            <button
+                type="button"
                 aria-expanded="false"
                 class="navbar-toggler"
                 data-toggle="collapse"
@@ -23,14 +23,14 @@
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <?php foreach($menus as $menu): ?>
+                    <?php foreach ($menus as $menu): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $menu['url'] ?>"><?= $menu['name'] ?></a>
+                        <a class="nav-link" href="<?=$menu['url']?>"><?=$menu['name']?></a>
                     </li>
-                    <?php endforeach ?>
+                    <?php endforeach?>
                 </ul>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <h1 class="bd-title"><?=$this->name?></h1>
         <p class="lead"><?=$this->description?></p>
 
-        <?php require __DIR__ . "/../partials/flash.php"; ?>
+        <?php require __DIR__ . "/../partials/flash.php";?>
 
         <div>
             <?php foreach ($top_bar as $item): ?>
@@ -50,9 +50,11 @@
         </div>
         &nbsp;
 
-        <?php require __DIR__ . "/../partials/form-errors.php"; ?>
+        <?php require __DIR__ . "/../partials/form-errors.php";?>
 
-        <?=$content?>
+        <div class="row">
+            <?=$content?>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
