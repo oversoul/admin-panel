@@ -11,16 +11,16 @@
 <body class="bg-default">
 
     <main class="container py-5">
-        
+
         <div class="w-50 mx-auto mb-5">
             <?=$content?>
         </div>
-        
+
         <div class="d-flex justify-content-center">
             <div class="w-50">
                 <div class="col">
-                    <?php require __DIR__ . "/../partials/flash.php"; ?>
-                    <?php require __DIR__ . "/../partials/form-errors.php"; ?>
+                    <?php require $viewPath . "/partials/flash.php" ?>
+                    <?php require $viewPath . "/partials/form-errors.php" ?>
                 </div>
             </div>
         </div>

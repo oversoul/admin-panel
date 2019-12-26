@@ -10,7 +10,7 @@
                     <h3 class="mb-0"><?=$page->description?></h3>
                 </div>
                 <div class="col text-right">
-                    <?php require __DIR__ . '/partials/top-bar.php';?>
+                    <?php require $viewPath . "/partials/top-bar.php" ?>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                     <?php foreach ($rows as $source): ?>
                         <tr>
                             <?php foreach ($columns as $column): ?>
-                                <?=$column->renderValue($source, $page)?>
+                                <?=$column->renderValue($source)?>
                             <?php endforeach;?>
                         </tr>
                     <?php endforeach;?>

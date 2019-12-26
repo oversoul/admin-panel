@@ -11,7 +11,8 @@ class Config
     protected static $flashCallback = null;
     protected static $errorsCallback = null;
     protected static $oldDataCallback = null;
-
+    protected static $path = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
+    
     /**
      * set old data callback
      *
@@ -111,5 +112,10 @@ class Config
     public static function menu(): array
     {
         return static::$menus;
+    }
+
+    public function viewPath(): string
+    {
+        return static::$path;
     }
 }

@@ -62,9 +62,9 @@
             <input type="hidden" name="_method" value="DELETE">
         </form>
         
-        <?php require __DIR__ . "/../partials/flash.php" ?>
+        <?php require $viewPath . "/partials/flash.php" ?>
 
-        <?php require __DIR__ . "/../partials/form-errors.php" ?>
+        <?php require $viewPath . "/partials/form-errors.php" ?>
 
         <div class="row">
             <?= $content ?>

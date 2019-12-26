@@ -4,7 +4,7 @@ namespace Aecodes\AdminPanel;
 
 use Error;
 use Exception;
-use Aecodes\AdminPanel\Config;
+
 
 abstract class Panel
 {
@@ -126,10 +126,11 @@ abstract class Panel
 
         $flashMessage = $this->getFlashMessage();
         $formErrors = Config::errors();
+        $viewPath = Config::viewPath();
         $menus = Config::menu();
         
         ob_start();
-        require dirname(__FILE__) . "/presenters/layouts/{$layout}.php";
+        require $viewPath . "/layouts/{$layout}.php";
         return ob_get_clean();
     }
 }
