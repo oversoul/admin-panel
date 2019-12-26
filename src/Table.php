@@ -67,9 +67,9 @@ class Table {
      */
     public function build(array $data, Panel $page): string
     {
-        $columns = $this->columns;
-        $rows    = array_get($data, $this->target, []);
-        $viewPath    = Config::viewPath();
+        $columns  = $this->columns;
+        $rows     = array_get($data, $this->target, []);
+        $viewPath = Config::viewPath();
 
         ob_start();
         require $viewPath . "/table.php";
