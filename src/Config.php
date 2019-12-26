@@ -7,10 +7,39 @@ use Error;
 class Config
 {
 
+    /**
+     * Admin menu items
+     *
+     * @var array
+     */
     protected static $menus = [];
+
+    /**
+     * Flash messages callback
+     *
+     * @var callable
+     */
     protected static $flashCallback = null;
+
+    /**
+     * Form errors callback
+     *
+     * @var callable
+     */
     protected static $errorsCallback = null;
+
+    /**
+     * Get field's old data callback
+     *
+     * @var callable
+     */
     protected static $oldDataCallback = null;
+
+    /**
+     * Views path
+     *
+     * @var string
+     */
     protected static $path = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
     
     /**
@@ -114,8 +143,24 @@ class Config
         return static::$menus;
     }
 
-    public function viewPath(): string
+    /**
+     * Get views path
+     *
+     * @return string
+     */
+    public static function viewPath(): string
     {
         return static::$path;
+    }
+
+    /**
+     * set views path
+     *
+     * @param string $path
+     * @return void
+     */
+    public function setViewPath(string $path): void
+    {
+        static::$path = $path;
     }
 }
