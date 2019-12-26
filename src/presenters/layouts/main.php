@@ -41,12 +41,15 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav ml-lg-auto">
                     <?php foreach ($menus as $menu): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?=$menu['url']?>"><?=$menu['name']?></a>
                     </li>
                     <?php endforeach?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:{}" onclick="triggerDestroyForm(event, '/auth/logout')">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -59,9 +62,9 @@
             <input type="hidden" name="_method" value="DELETE">
         </form>
         
-        <?php require __DIR__ . "/../partials/flash.php";?>
+        <?php require __DIR__ . "/../partials/flash.php" ?>
 
-        <?php require __DIR__ . "/../partials/form-errors.php";?>
+        <?php require __DIR__ . "/../partials/form-errors.php" ?>
 
         <div class="row">
             <?= $content ?>

@@ -59,7 +59,7 @@ class Select extends Field
 
         return \sprintf(
             '<div class="form-group">
-                <label for="%s">%s</label>
+                <label class="form-control-label" for="%s">%s</label>
                 <select name="%s" %s>
                     %s
                 </select>

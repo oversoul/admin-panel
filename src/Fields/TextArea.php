@@ -25,7 +25,7 @@ class TextArea extends Field
     {
         return \sprintf(
             '<div class="form-group">
-                <label for="textarea">%s</label>
+                <label class="form-control-label" for="textarea">%s</label>
                 <textarea name="%s" %s>%s</textarea>
             </div>',
             $this->title,

@@ -34,7 +34,7 @@ class Input extends Field
     {
         return \sprintf(
             '<div class="form-group">
-                <label for="%s">%s</label>
+                <label class="form-control-label" for="%s">%s</label>
                 <input type="%s" id="%s" value="%s" name="%s" %s>
                 <span class="help-block">%s</span>
             </div>',

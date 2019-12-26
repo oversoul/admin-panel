@@ -4,6 +4,7 @@
     </div>
 
     <div class="card shadow">
+        <?php if ( $page->description != ''): ?>
         <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col">
@@ -14,6 +15,7 @@
                 </div>
             </div>
         </div>
+        <?php endif ?>
     
         <div class="card-body">
             <div class="<?= $size ?> m-auto">

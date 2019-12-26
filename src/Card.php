@@ -27,6 +27,13 @@ class Card
     protected $content;
 
     /**
+     * Content of the card
+     *
+     * @var string
+     */
+    protected $icon = '';
+
+    /**
      * Allowed sizes
      *
      * @var array
@@ -43,6 +50,18 @@ class Card
     {
         $this->title = $title;
         $this->content = $content;
+    }
+
+    /**
+     * Set icon for card
+     *
+     * @param string $icon
+     * @return self
+     */
+    public function icon(string $icon): self
+    {
+        $this->icon = $icon;
+        return $this;
     }
 
     /**
@@ -95,6 +114,7 @@ class Card
      */
     public function build($source): string
     {
+        $icon = $this->icon;
         $title = $this->title;
         $content = $this->content;
         $size = $this->getColumnSize();
