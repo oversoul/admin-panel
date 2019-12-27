@@ -4,7 +4,8 @@ namespace Aecodes\AdminPanel;
 
 use Exception;
 
-class Table {
+class Table
+{
 
     /**
      * Data target (key)
@@ -26,7 +27,8 @@ class Table {
      * @param array $columns
      * @param string|null $target
      */
-    public function __construct(array $columns, ?string $target = null) {
+    public function __construct(array $columns, ?string $target = null)
+    {
         if (empty($columns)) {
             throw new Exception("No columns defined for the table.");
         }
@@ -67,13 +69,13 @@ class Table {
      */
     public function build(array $data, Panel $page): string
     {
-        $columns  = $this->columns;
-        $rows     = array_get($data, $this->target, []);
+        $columns = $this->columns;
+        $rows = array_get($data, $this->target, []);
         $viewPath = Config::viewPath();
 
         ob_start();
         require $viewPath . "/table.php";
         return ob_get_clean();
     }
-    
+
 }
