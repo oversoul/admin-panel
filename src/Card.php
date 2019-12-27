@@ -6,11 +6,11 @@ class Card
 {
 
     /**
-     * Form width
+     * Card classes
      *
-     * @var integer
+     * @var string
      */
-    protected $size = 100;
+    protected $class = '';
 
     /**
      * Title of the card
@@ -77,33 +77,15 @@ class Card
     }
 
     /**
-     * Set form size
+     * Set card classes
      *
-     * @param integer $percent
+     * @param string $className
      * @return self
      */
-    public function size(int $percent): self
+    public function class(string $className): self
     {
-        if (!in_array($percent, $this->allowedSizes)) {
-            $percent = 100;
-        }
-
-        $this->size = $percent;
+        $this->class = $className;
         return $this;
-    }
-
-    protected function getColumnSize(): string
-    {
-        switch ($this->size) {
-            case 25:
-                return 'col-3';
-            case 50:
-                return 'col-6';
-            case 75:
-                return 'col-9';
-            default:
-                return 'col-12';
-        }
     }
 
     /**
@@ -116,11 +98,12 @@ class Card
     {
         $icon = $this->icon;
         $title = $this->title;
+        $class = $this->class;
         $content = $this->content;
-        $size = $this->getColumnSize();
+        $viewPath = Config::viewPath();
 
         ob_start();
-        require dirname(__FILE__) . "/presenters/card.php";
+        require $viewPath . "/card.php";
         return ob_get_clean();
     }
 }

@@ -1,4 +1,4 @@
-<div class="<?= $size ?>">
+<div class="<?= $class ?> pb-5">
     <div class="card shadow">
         <div class="card-body">
             <div class="row">
