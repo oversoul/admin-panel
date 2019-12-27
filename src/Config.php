@@ -8,6 +8,13 @@ class Config
 {
 
     /**
+     * Make sure setup is called
+     * 
+     * @var boolean
+     */
+    protected static $isInitiated = false;
+
+    /**
      * Admin menu items
      *
      * @var array
@@ -36,12 +43,32 @@ class Config
     protected static $oldDataCallback = null;
 
     /**
+     * Fields template
+     *
+     * @var array
+     */
+    protected static $fieldsTemplate = [];
+
+    /**
      * Views path
      *
      * @var string
      */
     protected static $path = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
-    
+
+    public static function setup()
+    {
+        $content = file_get_contents(static::$path . 'fields.ini');
+        preg_match_all("/[-]{3} ([a-z]+) [-]{3}(.*)[-]{3}/simU", $content, $parts);
+
+        [, $fields, $templates] = $parts;
+
+        foreach($fields as $index => $field) {
+            static::$fieldsTemplate[$field] = $templates[$index];
+        }
+    }
+
+
     /**
      * set old data callback
      *
@@ -94,9 +121,11 @@ class Config
         }
 
         $data = \call_user_func(static::$flashCallback);
-        if ( empty($data) ) return null;
+        if (empty($data)) {
+            return null;
+        }
 
-        if ( ! isset($data['message']) ) {
+        if (!isset($data['message'])) {
             throw new Error("Message not defined for Flash");
         }
 
@@ -128,7 +157,9 @@ class Config
         }
 
         $data = \call_user_func(static::$errorsCallback);
-        if ( empty($data) ) return [];
+        if (empty($data)) {
+            return [];
+        }
 
         return $data;
     }
@@ -162,5 +193,13 @@ class Config
     public function setViewPath(string $path): void
     {
         static::$path = $path;
+    }
+
+    public static function templates(string $key): string
+    {
+        if ( ! isset(static::$fieldsTemplate[$key])) {
+            throw new Exception("Key {$key} is not defined in fields template.");
+        }
+        return static::$fieldsTemplate[$key];
     }
 }
