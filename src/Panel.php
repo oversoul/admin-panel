@@ -10,12 +10,11 @@ abstract class Panel
 {
 
     /**
-     * If it's an auth section
-     * use a different layout.
+     * name of the default layout
      *
-     * @var boolean
+     * @var string
      */
-    public $isAuth = false;
+    public $layout = 'default';
 
     /**
      * Panel Name
@@ -98,24 +97,21 @@ abstract class Panel
     }
 
     /**
-     * Get flash message content
-     *
-     * @return array|null
-     */
-    protected function getFlashMessage(): ?array
-    {
-        return Config::flash();
-    }
-
-    /**
      * Render layout with header and footer.
      *
-     * @param string
+     * @param array query
      * @return string
+     * @throws Exception layout not found
      */
     final protected function renderLayout(array $query): string
     {
-        $layout  = $this->isAuth === true ? 'auth' : 'main';
+        $layout  = $this->layout;
+        $viewPath = Config::viewPath();
+
+        $view = $viewPath . "layouts/{$layout}.php";
+        if ( ! file_exists($view)) {
+            throw new Exception("Layout {$view} was not found.");
+        }
 
         $parts = [];
         foreach ($this->render() as $part) {
@@ -124,12 +120,11 @@ abstract class Panel
 
         $content = \implode("\n", $parts);
 
-        $flashMessage = $this->getFlashMessage();
-        $viewPath = Config::viewPath();
+        $flashMessage = Config::flash();
         $menus = Config::menu();
-        
+
         ob_start();
-        require $viewPath . "/layouts/{$layout}.php";
+        require $view;
         return ob_get_clean();
     }
 }
