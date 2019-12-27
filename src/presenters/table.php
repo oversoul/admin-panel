@@ -22,14 +22,21 @@
                     <?php endforeach;?>
                 </thead>
                 <tbody>
-
-                    <?php foreach ($rows as $source): ?>
-                        <tr>
-                            <?php foreach ($columns as $column): ?>
-                                <?=$column->renderValue($source)?>
-                            <?php endforeach;?>
-                        </tr>
-                    <?php endforeach;?>
+                    <?php if ( count($rows) === 0 ): ?>
+                    <tr class="text-center text-muted">
+                        <td colspan="<?= count($columns) ?>">
+                            No rows found
+                        </td>
+                    </tr>
+                    <?php else: ?>
+                        <?php foreach ($rows as $source): ?>
+                            <tr>
+                                <?php foreach ($columns as $column): ?>
+                                    <?=$column->renderValue($source)?>
+                                <?php endforeach;?>
+                            </tr>
+                        <?php endforeach;?>
+                    <?php endif ?>
                 </tbody>
             </table>
         </div>
