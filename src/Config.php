@@ -59,7 +59,7 @@ class Config
 
     public static function setup()
     {
-        $file = static::$path . 'fields.html';
+        $file = static::$path . 'fields.php';
         if (!file_exists($file)) {
             throw new Exception("Fields layout file not found {$file}");
         }
