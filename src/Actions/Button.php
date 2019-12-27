@@ -19,9 +19,7 @@ class Button extends Action
      *
      * @var array
      */
-    protected $attributes = [
-        'class' => 'btn btn-primary',
-    ];
+    protected $attributes = [];
 
     /**
      * Set button type
@@ -45,7 +43,7 @@ class Button extends Action
      */
     public function build(): string
     {
-        return sprintf(
+        return \sprintf(
             '<button type="%s" %s>%s</button>',
             $this->type,
             $this->attributes(),
