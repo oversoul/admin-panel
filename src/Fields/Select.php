@@ -7,7 +7,6 @@ class Select extends Field
 
     protected $options = [];
     protected $attributes = [
-        'class' => 'form-control',
         'autocomplete' => 'off',
     ];
 
@@ -38,7 +37,7 @@ class Select extends Field
             $options[] = \sprintf(
                 '<option value="%s" %s>%s</option>',
                 $key,
-                ($key == $selected) ? ' selected' : '',
+                ($key === $selected) ? ' selected' : '',
                 $value,
             );
         }
@@ -54,14 +53,13 @@ class Select extends Field
      */
     public function build(array $data): string
     {
-
         $options = $this->buildOptions($data);
 
         return $this->render('select', [
+            ':options' => $options,
             ':name' => $this->name,
             ':title' => $this->title,
             ':attributes' => $this->attributes(),
-            ':options' => $options,
         ]);
     }
 }

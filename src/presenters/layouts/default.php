@@ -14,7 +14,7 @@
                 event.preventDefault();
                 return;
             }
-            
+
             const form = document.querySelector('#destroy_form');
             form.action = action;
             form.submit();
@@ -25,35 +25,35 @@
 
 
     <div class="header bg-gradient-primary pb-4 pt-4 pt-md-4">
-      <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Admin Panel</a>
-            <button
-                type="button"
-                aria-expanded="false"
-                class="navbar-toggler"
-                data-toggle="collapse"
-                aria-label="Toggle navigation"
-                data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Admin Panel</a>
+                <button
+                    type="button"
+                    aria-expanded="false"
+                    class="navbar-toggler"
+                    data-toggle="collapse"
+                    aria-label="Toggle navigation"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-lg-auto">
-                    <?php foreach ($menus as $menu): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?=$menu['url']?>"><?=$menu['name']?></a>
-                    </li>
-                    <?php endforeach?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:{}" onclick="triggerDestroyForm(event, '/auth/logout')">Logout</a>
-                    </li>
-                </ul>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-lg-auto">
+                        <?php foreach ($menus as $menu): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=$menu['url']?>"><?=$menu['name']?></a>
+                        </li>
+                        <?php endforeach?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:{}" onclick="triggerDestroyForm(event, '/auth/logout')">Logout</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-      </div>
+        </nav>
     </div>
 
 
@@ -61,11 +61,11 @@
         <form method="POST" id="destroy_form">
             <input type="hidden" name="_method" value="DELETE">
         </form>
-        
-        <?php require $viewPath . "/partials/flash.php" ?>
+
+        <?php require $viewPath . "/partials/flash.php"?>
 
         <div class="row">
-            <?= $content ?>
+            <?=$content?>
         </div>
     </main>
     <script src="https://code.jquery.com/jquery.min.js"></script>
