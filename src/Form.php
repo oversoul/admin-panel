@@ -122,6 +122,7 @@ class Form
         $method      = $this->method;
         $size        = 'w-' . $this->size;
         $viewPath    = Config::viewPath();
+        $formErrors  = Config::errors();
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
             $real_method = $method;
@@ -129,7 +130,7 @@ class Form
         }
 
         ob_start();
-        require Config::viewPath() . "/form.php";
+        require $viewPath . "/form.php";
         return ob_get_clean();
     }
 

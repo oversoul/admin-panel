@@ -194,7 +194,7 @@ class Field
         return '';
     }
 
-    public function render(string $templateName, array $data = []): string
+    final public function render(string $templateName, array $data = []): string
     {
         $template = Config::templates($templateName);
         return \str_replace(array_keys($data), array_values($data), $template);

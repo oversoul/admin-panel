@@ -13,7 +13,6 @@ class Checkbox extends Field
      */
     public function build(array $data): string
     {
-
         return $this->render('checkbox', [
             ':name' => $this->name,
             ':title' => $this->title,

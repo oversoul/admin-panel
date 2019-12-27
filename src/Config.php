@@ -3,13 +3,14 @@
 namespace Aecodes\AdminPanel;
 
 use Error;
+use Exception;
 
 class Config
 {
 
     /**
      * Make sure setup is called
-     * 
+     *
      * @var boolean
      */
     protected static $isInitiated = false;
@@ -58,16 +59,23 @@ class Config
 
     public static function setup()
     {
-        $content = file_get_contents(static::$path . 'fields.ini');
+        $file = static::$path . 'fields.html';
+        if (!file_exists($file)) {
+            throw new Exception("Fields layout file not found {$file}");
+        }
+
+        $content = file_get_contents($file);
         preg_match_all("/[-]{3} ([a-z]+) [-]{3}(.*)[-]{3}/simU", $content, $parts);
+        if ( count($parts) < 3 ) {
+            throw new Exception("Something went wrong trying to parse the fields template.");
+        }
 
         [, $fields, $templates] = $parts;
 
-        foreach($fields as $index => $field) {
+        foreach ($fields as $index => $field) {
             static::$fieldsTemplate[$field] = $templates[$index];
         }
     }
-
 
     /**
      * set old data callback
@@ -197,7 +205,7 @@ class Config
 
     public static function templates(string $key): string
     {
-        if ( ! isset(static::$fieldsTemplate[$key])) {
+        if (!isset(static::$fieldsTemplate[$key])) {
             throw new Exception("Key {$key} is not defined in fields template.");
         }
         return static::$fieldsTemplate[$key];

@@ -20,7 +20,6 @@
             <div class="w-50">
                 <div class="col">
                     <?php require $viewPath . "/partials/flash.php" ?>
-                    <?php require $viewPath . "/partials/form-errors.php" ?>
                 </div>
             </div>
         </div>

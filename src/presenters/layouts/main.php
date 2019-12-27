@@ -64,8 +64,6 @@
         
         <?php require $viewPath . "/partials/flash.php" ?>
 
-        <?php require $viewPath . "/partials/form-errors.php" ?>
-
         <div class="row">
             <?= $content ?>
         </div>

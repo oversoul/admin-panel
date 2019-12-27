@@ -16,6 +16,8 @@
             </div>
         </div>
         <?php endif ?>
+
+        <?php require $viewPath . "/partials/form-errors.php" ?>
     
         <div class="card-body">
             <div class="<?= $size ?> m-auto">

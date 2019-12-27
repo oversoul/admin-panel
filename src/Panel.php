@@ -125,7 +125,6 @@ abstract class Panel
         $content = \implode("\n", $parts);
 
         $flashMessage = $this->getFlashMessage();
-        $formErrors = Config::errors();
         $viewPath = Config::viewPath();
         $menus = Config::menu();
         
