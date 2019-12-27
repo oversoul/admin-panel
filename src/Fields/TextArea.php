@@ -11,8 +11,7 @@ class TextArea extends Field
      * @var array
      */
     protected $attributes = [
-        'class' =>  'form-control',
-        'rows'  =>  '3'
+        'rows' => '3',
     ];
 
     /**
@@ -23,15 +22,11 @@ class TextArea extends Field
      */
     public function build(array $data): string
     {
-        return \sprintf(
-            '<div class="form-group">
-                <label class="form-control-label" for="textarea">%s</label>
-                <textarea name="%s" %s>%s</textarea>
-            </div>',
-            $this->title,
-            $this->name,
-            $this->attributes(), 
-            $this->value($data),
-        );
+        return $this->render('textarea', [
+            ':name' => $this->name,
+            ':title' => $this->title,
+            ':value' => $this->value($data),
+            ':attributes' => $this->attributes(),
+        ]);
     }
 }

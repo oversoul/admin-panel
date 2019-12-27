@@ -47,9 +47,7 @@ class Field
      *
      * @var array
      */
-    protected $attributes = [
-        'class' => 'form-control',
-    ];
+    protected $attributes = [];
 
     /**
      * Create new field
@@ -194,5 +192,11 @@ class Field
     public function build(array $data): string
     {
         return '';
+    }
+
+    public function render(string $templateName, array $data = []): string
+    {
+        $template = Config::templates($templateName);
+        return \str_replace(array_keys($data), array_values($data), $template);
     }
 }

@@ -57,18 +57,11 @@ class Select extends Field
 
         $options = $this->buildOptions($data);
 
-        return \sprintf(
-            '<div class="form-group">
-                <label class="form-control-label" for="%s">%s</label>
-                <select name="%s" %s>
-                    %s
-                </select>
-            </div>',
-            $this->target,
-            $this->title,
-            $this->name,
-            $this->attributes(),
-            $options,
-        );
+        return $this->render('select', [
+            ':name' => $this->name,
+            ':title' => $this->title,
+            ':attributes' => $this->attributes(),
+            ':options' => $options,
+        ]);
     }
 }
