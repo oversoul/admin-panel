@@ -42,14 +42,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-lg-auto">
-                        <?php foreach ($menus as $menu): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=$menu['url']?>"><?=$menu['name']?></a>
-                        </li>
-                        <?php endforeach?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:{}" onclick="triggerDestroyForm(event, '/auth/logout')">Logout</a>
-                        </li>
+                        <?php require $viewPath . '/partials/menu.php';?>
                     </ul>
                 </div>
             </div>
