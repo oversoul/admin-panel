@@ -36,12 +36,13 @@ class View
     /**
      * Create form instance statically
      *
-     * @param array $inputs
+     * @param string $path
+     * @param array $data
      * @return self
      */
     public static function make(string $path, array $data = []): self
     {
-        return new static($inputs, $data);
+        return new static($path, $data);
     }
 
     /**

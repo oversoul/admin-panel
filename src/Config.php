@@ -172,9 +172,9 @@ class Config
         return $data;
     }
 
-    public static function addMenu(string $name, string $url): void
+    public static function addMenu(string $name, string $url, array $children = []): void
     {
-        static::$menus[] = \compact('name', 'url');
+        static::$menus[] = \compact('name', 'url', 'children');
     }
 
     public static function menu(): array
