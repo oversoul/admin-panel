@@ -69,6 +69,7 @@
         </div>
     </main>
     <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
     <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script>
 </body>

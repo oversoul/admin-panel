@@ -21,7 +21,7 @@
     
         <div class="card-body">
             <div class="<?= $size ?> m-auto">
-                <form method="<?= $method ?>" action="<?= $action ?>">
+                <form method="<?= $method ?>" action="<?= $action ?>" enctype="multipart/form-data">
                     <?php if($real_method): ?>
                     <input type="hidden" name="_method" value="<?= $real_method ?>">
                     <?php endif; ?>
