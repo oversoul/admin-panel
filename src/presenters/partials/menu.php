@@ -4,6 +4,7 @@
 
     <?php if (!empty($menu['children'])): ?>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <a href="<?=$menu['url']?>" class="dropdown-item"><?=$menu['name']?></a>
     <?php foreach ($menu['children'] as $sub): ?>
         <a class="dropdown-item" href="<?=$sub['url']?>"><?=$sub['name']?></a>
     <?php endforeach;?>

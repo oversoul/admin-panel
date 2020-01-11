@@ -5,7 +5,6 @@ namespace Aecodes\AdminPanel;
 use Error;
 use Exception;
 
-
 abstract class Panel
 {
 
@@ -105,26 +104,19 @@ abstract class Panel
      */
     final protected function renderLayout(array $query): string
     {
-        $layout  = $this->layout;
-        $viewPath = Config::viewPath();
-
-        $view = $viewPath . "layouts/{$layout}.php";
-        if ( ! file_exists($view)) {
-            throw new Exception("Layout {$view} was not found.");
-        }
-
         $parts = [];
         foreach ($this->render() as $part) {
             $parts[] = $part->build($query, $this);
         }
 
         $content = \implode("\n", $parts);
-
+     
         $flashMessage = Config::flash();
         $menus = Config::menu();
 
-        ob_start();
-        require $view;
-        return ob_get_clean();
+        return View::make(
+            "layouts/{$this->layout}",
+            \compact('content', 'flashMessage', 'menus')
+        )->build($query, $this);
     }
 }
