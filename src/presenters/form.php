@@ -11,16 +11,16 @@
                     <h3 class="mb-0"><?=$page->description?></h3>
                 </div>
                 <div class="col text-right">
-                    <?php require $viewPath . "/partials/top-bar.php" ?>
+                    <?= Aecodes\AdminPanel\View::make('partials/top-bar', compact('page')) ?>
                 </div>
             </div>
         </div>
         <?php endif ?>
 
-        <?php require $viewPath . "/partials/form-errors.php" ?>
+        <?= Aecodes\AdminPanel\View::make('partials/form-errors', compact('formErrors')) ?>
     
         <div class="card-body">
-            <div class="<?= $size ?> m-auto">
+            <div class="<?= $class ?>">
                 <form method="<?= $method ?>" action="<?= $action ?>" enctype="multipart/form-data">
                     <?php if($real_method): ?>
                     <input type="hidden" name="_method" value="<?= $real_method ?>">

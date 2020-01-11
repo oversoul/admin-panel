@@ -71,11 +71,11 @@ class Table
     {
         $columns = $this->columns;
         $rows = array_get($data, $this->target, []);
-        $viewPath = Config::viewPath();
 
-        ob_start();
-        require $viewPath . "/table.php";
-        return ob_get_clean();
+        return View::make(
+            'table', 
+            \compact('columns', 'rows')
+        )->build($data, $page);
     }
 
 }

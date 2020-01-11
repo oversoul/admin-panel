@@ -82,7 +82,7 @@ class Card
      * @param string $className
      * @return self
      */
-    public function class(string $className): self
+    function class (string $className): self
     {
         $this->class = $className;
         return $this;
@@ -94,16 +94,16 @@ class Card
      * @param mixed $source
      * @return string
      */
-    public function build($source): string
+    public function build($source, Panel $page): string
     {
         $icon = $this->icon;
         $title = $this->title;
         $class = $this->class;
         $content = $this->content;
-        $viewPath = Config::viewPath();
 
-        ob_start();
-        require $viewPath . "/card.php";
-        return ob_get_clean();
+        return View::make(
+            'card', 
+            \compact('icon', 'title', 'class', 'content')
+        )->build($source, $page);
     }
 }

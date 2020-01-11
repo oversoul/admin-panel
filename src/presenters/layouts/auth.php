@@ -19,7 +19,7 @@
         <div class="d-flex justify-content-center">
             <div class="w-50">
                 <div class="col">
-                    <?php require $viewPath . "/partials/flash.php" ?>
+                    <?= Aecodes\AdminPanel\View::make('partials/flash', compact('flashMessage')) ?>
                 </div>
             </div>
         </div>

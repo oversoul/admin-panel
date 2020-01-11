@@ -42,7 +42,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-lg-auto">
-                        <?php require $viewPath . '/partials/menu.php';?>
+                        <?= Aecodes\AdminPanel\View::make('partials/menu', compact('menus')) ?>
                     </ul>
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <input type="hidden" name="_method" value="DELETE">
         </form>
 
-        <?php require $viewPath . "/partials/flash.php"?>
+        <?= Aecodes\AdminPanel\View::make('partials/flash', compact('flashMessage')) ?>
 
         <div class="row">
             <?=$content?>

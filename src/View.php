@@ -48,12 +48,11 @@ class View
     /**
      * Build view
      *
-     * @param mixed $source
-     * @param Panel $page
+     * @param array $source
+     * @param Panel|null $page
      * @return string
-     * @throws Exception if the view not found
      */
-    public function build($source, Panel $page): string
+    public function build(array $source = [], ?Panel $page = null): string
     {
         $data = $this->data;
         $viewPath = Config::viewPath();
@@ -67,6 +66,11 @@ class View
         ob_start();
         require $view_file_path;
         return ob_get_clean();
+    }
+
+    public function __toString()
+    {
+        return $this->build();
     }
 
 }

@@ -29,18 +29,11 @@ class Form
     protected $method = 'POST';
 
     /**
-     * Form width
+     * Classes
      *
-     * @var integer
+     * @var string
      */
-    protected $size   = 100;
-
-    /**
-     * Allowed sizes
-     * 
-     * @var array
-     */
-    protected $allowedSizes = [25, 50, 75, 100];
+    protected $class = '';
 
     /**
      * Undocumented function
@@ -98,13 +91,9 @@ class Form
      * @param integer $percent
      * @return self
      */
-    public function size(int $percent): self
+    public function class(string $percent): self
     {
-        if ( ! in_array($percent, $this->allowedSizes)) {
-            $percent = 100;
-        }
-
-        $this->size = $percent;
+        $this->class = $class;
         return $this;
     }
 
@@ -120,8 +109,7 @@ class Form
         $inputs      = $this->inputs;
         $action      = $this->action;
         $method      = $this->method;
-        $size        = 'w-' . $this->size;
-        $viewPath    = Config::viewPath();
+        $class       = $this->class;
         $formErrors  = Config::errors();
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
@@ -129,9 +117,8 @@ class Form
             $method = 'POST';
         }
 
-        ob_start();
-        require $viewPath . "/form.php";
-        return ob_get_clean();
+        $data = \compact('real_method', 'inputs', 'action', 'method', 'class', 'formErrors');
+        return View::make('form', $data)->build($source, $page);
     }
 
     /**

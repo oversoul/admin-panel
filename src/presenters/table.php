@@ -10,7 +10,7 @@
                     <h3 class="mb-0"><?=$page->description?></h3>
                 </div>
                 <div class="col text-right">
-                    <?php require $viewPath . "/partials/top-bar.php" ?>
+                    <?= Aecodes\AdminPanel\View::make('partials/top-bar', compact('page')) ?>
                 </div>
             </div>
         </div>
