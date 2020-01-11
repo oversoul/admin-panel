@@ -56,10 +56,10 @@ class Select extends Field
         $options = $this->buildOptions($data);
 
         return $this->render('select', [
-            ':options' => $options,
-            ':name' => $this->name,
-            ':title' => $this->title,
-            ':attributes' => $this->attributes(),
+            '[name]' => $this->name,
+            '[title]' => $this->title,
+            '[options]' => $options,
+            '[attributes]' => $this->attributes(),
         ]);
     }
 }

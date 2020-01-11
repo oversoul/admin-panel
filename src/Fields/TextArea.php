@@ -23,10 +23,10 @@ class TextArea extends Field
     public function build(array $data): string
     {
         return $this->render('textarea', [
-            ':name' => $this->name,
-            ':title' => $this->title,
-            ':value' => $this->value($data),
-            ':attributes' => $this->attributes(),
+            '[name]' => $this->name,
+            '[title]' => $this->title,
+            '[value]' => $this->value($data),
+            '[attributes]' => $this->attributes(),
         ]);
     }
 }

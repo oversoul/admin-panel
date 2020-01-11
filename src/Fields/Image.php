@@ -17,12 +17,12 @@ class Image extends Field
     public function build(array $data): string
     {
         return $this->render('image', [
-            ':name' => $this->name,
-            ':help' => $this->help,
-            ':title' => $this->title,
-            ':value' => $this->value($data),
-            ':attributes' => $this->attributes(),
-            ':multiple' => $this->multiple ? 'multiple' : '',
+            '[name]' => $this->name,
+            '[help]' => $this->help,
+            '[title]' => $this->title,
+            '[value]' => $this->value($data),
+            '[attributes]' => $this->attributes(),
+            '[multiple]' => $this->multiple ? 'multiple' : '',
         ]);
     }
 }
