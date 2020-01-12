@@ -45,6 +45,23 @@ class View
         return new static($path, $data);
     }
 
+
+    /**
+     * Print out the error.
+     *
+     * @param Error
+     * @return string
+     */
+    public static function renderError($e): string
+    {
+        return \sprintf(
+            "<h3>%s</h3>
+            <pre>%s</pre>",
+            $e->getMessage(),
+            $e->getTraceAsString()
+        );
+    }
+
     /**
      * Build view
      *
@@ -55,8 +72,8 @@ class View
     public function build(array $source = [], ?Panel $page = null): string
     {
         $data = $this->data;
-        $viewPath = Config::viewPath();
-        $view_file_path = $viewPath . "/{$this->path}.php";
+        $template = Config::instance()->templatePath();
+        $view_file_path = $template . "/{$this->path}.php";
 
         if (!file_exists($view_file_path)) {
             throw new Exception("View provided not found: {$view_file_path}");
@@ -70,7 +87,11 @@ class View
 
     public function __toString()
     {
-        return $this->build();
+        try {
+            return $this->build();
+        } catch (Exception $e) {
+            return self::renderError($e);
+        }
     }
 
 }

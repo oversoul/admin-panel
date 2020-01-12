@@ -83,7 +83,7 @@ class Field
             return '';
         }
 
-        return Config::getOldValue(
+        return Config::instance()->getOldValue(
             $this->target,
             array_get($data, $this->target, '')
         );
@@ -196,7 +196,7 @@ class Field
 
     final public function render(string $templateName, array $data = []): string
     {
-        $template = Config::templates($templateName);
+        $template = Config::instance()->templates($templateName);
         return \str_replace(array_keys($data), array_values($data), $template);
     }
 }

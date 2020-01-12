@@ -49,22 +49,6 @@ abstract class Panel
     abstract public function render(): array;
 
     /**
-     * Print out the error.
-     *
-     * @param Error
-     * @return string
-     */
-    final protected function renderError($e): string
-    {
-        return \sprintf(
-            "<h3>%s</h3>
-            <pre>%s</pre>",
-            $e->getMessage(),
-            $e->getTraceAsString()
-        );
-    }
-
-    /**
      * Magic method to render the content
      *
      * @return string
@@ -75,9 +59,9 @@ abstract class Panel
         try {
             return $this->renderLayout($query);
         } catch (Error $e) {
-            return $this->renderError($e);
+            return View::renderError($e);
         } catch (Exception $e) {
-            return $this->renderError($e);
+            return View::renderError($e);
         }
     }
 
@@ -105,14 +89,20 @@ abstract class Panel
     final protected function renderLayout(array $query): string
     {
         $parts = [];
+        $config = Config::instance();
+
+        if (! $config->isRegistered() ) {
+            throw new Exception("The AdminPanel is not registered properly");
+        }
+
         foreach ($this->render() as $part) {
-            $parts[] = $part->build($query, $this);
+            $parts[] = is_string($part) ? $part : $part->build($query, $this);
         }
 
         $content = \implode("\n", $parts);
      
-        $flashMessage = Config::flash();
-        $menus = Config::menu();
+        $flashMessage = $config->flash();
+        $menus = $config->menu();
 
         return View::make(
             "layouts/{$this->layout}",

@@ -96,7 +96,7 @@ class TD
 
         $result = [];
         foreach ($data as $element) {
-            $result[] = $element->build();
+            $result[] = is_string($element) ? $element : $element->build();
         }
         
         return \implode("", $result);

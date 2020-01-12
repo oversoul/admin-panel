@@ -110,7 +110,7 @@ class Form
         $action      = $this->action;
         $method      = $this->method;
         $class       = $this->class;
-        $formErrors  = Config::errors();
+        $formErrors  = Config::instance()->errors();
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
             $real_method = $method;

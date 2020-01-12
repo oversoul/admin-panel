@@ -9,72 +9,133 @@ class Config
 {
 
     /**
-     * Make sure setup is called
+     * Singleton of Config object
+     *
+     * @var self|null
+     */
+    protected static $instance = null;
+
+    /**
+     * Make sure register is called
      *
      * @var boolean
      */
-    protected static $isInitiated = false;
+    protected $isRegistered = false;
 
     /**
      * Admin menu items
      *
      * @var array
      */
-    protected static $menus = [];
+    protected $menus = [];
 
     /**
      * Flash messages callback
      *
      * @var callable
      */
-    protected static $flashCallback = null;
+    protected $flashCallback = null;
 
     /**
      * Form errors callback
      *
      * @var callable
      */
-    protected static $errorsCallback = null;
+    protected $errorsCallback = null;
 
     /**
      * Get field's old data callback
      *
      * @var callable
      */
-    protected static $oldDataCallback = null;
+    protected $oldDataCallback = null;
 
     /**
      * Fields template
      *
      * @var array
      */
-    protected static $fieldsTemplate = [];
+    protected $fieldsTemplate = [];
 
     /**
      * Views path
      *
      * @var string
      */
-    protected static $path = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
+    protected $path = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
 
-    public static function setup()
+    /**
+     * Force calling instance
+     */
+    protected function __construct()
+    {}
+
+    /**
+     * Get instance from Config
+     *
+     * @return self
+     */
+    public static function instance(): self
     {
-        $file = static::$path . 'fields.php';
+        if (!self::$instance) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Split fields templates
+     *
+     * @return array
+     * @throws ParsingError
+     */
+    protected function splitFieldsTemplate(): array
+    {
+        $file = $this->path . 'fields.php';
         if (!file_exists($file)) {
             throw new Exception("Fields layout file not found {$file}");
         }
 
         $content = file_get_contents($file);
         preg_match_all("/[-]{3} ([a-z]+) [-]{3}(.*)[-]{3}/simU", $content, $parts);
-        if ( count($parts) < 3 ) {
+        if (count($parts) < 3) {
             throw new Exception("Something went wrong trying to parse the fields template.");
         }
 
-        [, $fields, $templates] = $parts;
+        // remove first element from array
+        array_shift($parts);
+        return $parts;
+    }
+
+    public function register(array $config)
+    {
+        if ($this->isRegistered === true) {
+            throw new Exception("AdminPanel already registered");
+        }
+
+        if (isset($config['template_path'])) {
+            $this->path = $config['template_path'];
+        }
+
+        if (isset($config['old_callback'])) {
+            $this->setOldCallback($config['old_callback']);
+        }
+
+        if (isset($config['flash_callback'])) {
+            $this->setFlashCallback($config['flash_callback']);
+        }
+        if (isset($config['form_errors'])) {
+            $this->setFormErrors($config['form_errors']);
+        }
+
+        [$fields, $templates] = $this->splitFieldsTemplate();
 
         foreach ($fields as $index => $field) {
-            static::$fieldsTemplate[$field] = $templates[$index];
+            $this->fieldsTemplate[$field] = $templates[$index];
         }
+
+        $this->isRegistered = true;
     }
 
     /**
@@ -83,9 +144,9 @@ class Config
      * @param callback $callback
      * @return void
      */
-    public static function setOldCallback(callable $callback): void
+    public function setOldCallback(callable $callback): void
     {
-        static::$oldDataCallback = $callback;
+        $this->oldDataCallback = $callback;
     }
 
     /**
@@ -95,12 +156,12 @@ class Config
      * @param string $default
      * @return string
      */
-    public static function getOldValue(string $name, string $default): string
+    public function getOldValue(string $name, string $default): string
     {
-        if (!is_callable(static::$oldDataCallback)) {
+        if (!is_callable($this->oldDataCallback)) {
             return $default;
         }
-        return \call_user_func_array(static::$oldDataCallback, [
+        return \call_user_func_array($this->oldDataCallback, [
             $name,
             $default,
         ]);
@@ -112,9 +173,9 @@ class Config
      * @param callback $callback
      * @return void
      */
-    public static function setFlashCallback(callable $callback): void
+    public function setFlashCallback(callable $callback): void
     {
-        static::$flashCallback = $callback;
+        $this->flashCallback = $callback;
     }
 
     /**
@@ -122,13 +183,13 @@ class Config
      *
      * @return array|null
      */
-    public static function flash(): ?array
+    public function flash(): ?array
     {
-        if (!is_callable(static::$flashCallback)) {
+        if (!is_callable($this->flashCallback)) {
             return null;
         }
 
-        $data = \call_user_func(static::$flashCallback);
+        $data = \call_user_func($this->flashCallback);
         if (empty($data)) {
             return null;
         }
@@ -148,9 +209,9 @@ class Config
      * @param callable $callback
      * @return void
      */
-    public static function setFormErrors(callable $callback): void
+    public function setFormErrors(callable $callback): void
     {
-        static::$errorsCallback = $callback;
+        $this->errorsCallback = $callback;
     }
 
     /**
@@ -158,13 +219,13 @@ class Config
      *
      * @return array
      */
-    public static function errors(): array
+    public function errors(): array
     {
-        if (!is_callable(static::$errorsCallback)) {
+        if (!is_callable($this->errorsCallback)) {
             return [];
         }
 
-        $data = \call_user_func(static::$errorsCallback);
+        $data = \call_user_func($this->errorsCallback);
         if (empty($data)) {
             return [];
         }
@@ -172,14 +233,14 @@ class Config
         return $data;
     }
 
-    public static function addMenu(string $name, string $url, array $children = []): void
+    public function addMenu(string $name, string $url, array $children = []): void
     {
-        static::$menus[] = \compact('name', 'url', 'children');
+        $this->menus[] = \compact('name', 'url', 'children');
     }
 
-    public static function menu(): array
+    public function menu(): array
     {
-        return static::$menus;
+        return $this->menus;
     }
 
     /**
@@ -187,27 +248,21 @@ class Config
      *
      * @return string
      */
-    public static function viewPath(): string
+    public function templatePath(): string
     {
-        return static::$path;
+        return $this->path;
     }
 
-    /**
-     * set views path
-     *
-     * @param string $path
-     * @return void
-     */
-    public function setViewPath(string $path): void
+    public function templates(string $key): string
     {
-        static::$path = $path;
-    }
-
-    public static function templates(string $key): string
-    {
-        if (!isset(static::$fieldsTemplate[$key])) {
+        if (!isset($this->fieldsTemplate[$key])) {
             throw new Exception("Key {$key} is not defined in fields template.");
         }
-        return static::$fieldsTemplate[$key];
+        return $this->fieldsTemplate[$key];
+    }
+
+    public function isRegistered(): bool
+    {
+        return $this->isRegistered;
     }
 }
