@@ -34,13 +34,6 @@ class Card
     protected $icon = '';
 
     /**
-     * Allowed sizes
-     *
-     * @var array
-     */
-    protected $allowedSizes = [25, 50, 75, 100];
-
-    /**
      * Undocumented function
      *
      * @param string $title
@@ -96,14 +89,11 @@ class Card
      */
     public function build($source, Panel $page): string
     {
-        $icon = $this->icon;
-        $title = $this->title;
-        $class = $this->class;
-        $content = $this->content;
-
-        return View::make(
-            'card', 
-            \compact('icon', 'title', 'class', 'content')
-        )->build($source, $page);
+        return View::make('card', [
+            'icon' => $this->icon,
+            'title' => $this->title,
+            'class' => $this->class,
+            'content' => $this->content,
+        ])->build($source, $page);
     }
 }

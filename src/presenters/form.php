@@ -25,9 +25,7 @@
                     <?php if($real_method): ?>
                     <input type="hidden" name="_method" value="<?= $real_method ?>">
                     <?php endif; ?>
-                    <?php foreach($inputs as $item): ?>
-                        <?= $item->build($source); ?>
-                    <?php endforeach; ?>
+                    <?= $inputs ?>
                 </form>
             </div>
         </div>

@@ -117,6 +117,13 @@ class Form
             $method = 'POST';
         }
 
+        $fields = [];
+        foreach($inputs as $item) {
+            $fields[] = is_string($item) ? $item : $item->build($source);
+        }
+        
+        $inputs = \implode("\n", $fields);
+
         $data = \compact('real_method', 'inputs', 'action', 'method', 'class', 'formErrors');
         return View::make('form', $data)->build($source, $page);
     }

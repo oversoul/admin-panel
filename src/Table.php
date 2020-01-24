@@ -70,7 +70,7 @@ class Table
     public function build(array $data, Panel $page): string
     {
         $columns = $this->columns;
-        $rows = array_get($data, $this->target, []);
+        $rows = Config::arrget($data, $this->target, []);
 
         return View::make(
             'table', 

@@ -14,6 +14,9 @@ class View
      */
     protected $path;
 
+
+    protected $templatePath;
+
     /**
      * Data to push to the view
      *
@@ -54,12 +57,19 @@ class View
      */
     public static function renderError($e): string
     {
+        ob_get_clean();
         return \sprintf(
             "<h3>%s</h3>
             <pre>%s</pre>",
             $e->getMessage(),
             $e->getTraceAsString()
         );
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->templatePath = $path;
+        return $this;
     }
 
     /**
@@ -72,7 +82,13 @@ class View
     public function build(array $source = [], ?Panel $page = null): string
     {
         $data = $this->data;
-        $template = Config::instance()->templatePath();
+
+        if ( $this->templatePath ) {
+            $template = $this->templatePath;
+        } else {
+            $template = Config::instance()->templatePath();
+        }
+
         $view_file_path = $template . "/{$this->path}.php";
 
         if (!file_exists($view_file_path)) {

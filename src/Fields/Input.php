@@ -33,12 +33,12 @@ class Input extends Field
     public function build(array $data): string
     {
         return $this->render('input', [
-            '[type]' => $this->type,
-            '[help]' => $this->help,
-            '[name]' => $this->name,
-            '[title]' => $this->title,
-            '[value]' => $this->value($data),
-            '[attributes]' => $this->attributes(),
+            'type' => $this->type,
+            'help' => $this->help,
+            'name' => $this->name,
+            'title' => $this->title,
+            'value' => $this->value($data),
+            'attributes' => $this->attributes(),
         ]);
     }
 }

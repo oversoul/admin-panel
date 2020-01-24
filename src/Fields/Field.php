@@ -2,6 +2,7 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Config;
 
 class Field
@@ -57,7 +58,7 @@ class Field
     public function __construct(string $target)
     {
         $this->target = $target;
-        $this->name = parse_dot($target);
+        $this->name = Config::parse_dot($target);
     }
 
     /**
@@ -75,9 +76,9 @@ class Field
      * Get value of field using data
      *
      * @param array $data
-     * @return string
+     * @return mixed
      */
-    protected function value(array $data = []): string
+    protected function value(array $data = [])
     {
         if ($this->noFill) {
             return '';
@@ -85,7 +86,7 @@ class Field
 
         return Config::instance()->getOldValue(
             $this->target,
-            array_get($data, $this->target, '')
+            Config::arrget($data, $this->target, '')
         );
     }
 
@@ -194,9 +195,14 @@ class Field
         return '';
     }
 
+    public function getViewPath(): string
+    {
+        return Config::instance()->templatePath();
+    }
+
     final public function render(string $templateName, array $data = []): string
     {
-        $template = Config::instance()->templates($templateName);
-        return \str_replace(array_keys($data), array_values($data), $template);
+        $path = $this->getViewPath();
+        return View::make('fields/' . $templateName, $data)->setPath($path);
     }
 }

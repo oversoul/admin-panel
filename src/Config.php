@@ -67,7 +67,7 @@ class Config
     /**
      * Force calling instance
      */
-    protected function __construct()
+    public function __construct()
     {}
 
     /**
@@ -84,34 +84,11 @@ class Config
         return self::$instance;
     }
 
-    /**
-     * Split fields templates
-     *
-     * @return array
-     * @throws ParsingError
-     */
-    protected function splitFieldsTemplate(): array
-    {
-        $file = $this->path . 'fields.php';
-        if (!file_exists($file)) {
-            throw new Exception("Fields layout file not found {$file}");
-        }
-
-        $content = file_get_contents($file);
-        preg_match_all("/[-]{3} ([a-z]+) [-]{3}(.*)[-]{3}/simU", $content, $parts);
-        if (count($parts) < 3) {
-            throw new Exception("Something went wrong trying to parse the fields template.");
-        }
-
-        // remove first element from array
-        array_shift($parts);
-        return $parts;
-    }
 
     public function register(array $config)
     {
         if ($this->isRegistered === true) {
-            throw new Exception("AdminPanel already registered");
+            return;
         }
 
         if (isset($config['template_path'])) {
@@ -127,12 +104,6 @@ class Config
         }
         if (isset($config['form_errors'])) {
             $this->setFormErrors($config['form_errors']);
-        }
-
-        [$fields, $templates] = $this->splitFieldsTemplate();
-
-        foreach ($fields as $index => $field) {
-            $this->fieldsTemplate[$field] = $templates[$index];
         }
 
         $this->isRegistered = true;
@@ -153,10 +124,10 @@ class Config
      * get old value
      *
      * @param string $name
-     * @param string $default
-     * @return string
+     * @param mixed $default
+     * @return mixed
      */
-    public function getOldValue(string $name, string $default): string
+    public function getOldValue(string $name, $default)
     {
         if (!is_callable($this->oldDataCallback)) {
             return $default;
@@ -233,9 +204,11 @@ class Config
         return $data;
     }
 
-    public function addMenu(string $name, string $url, array $children = []): void
+    public function addMenu(string $name, string $url, array $children = []): self
     {
         $this->menus[] = \compact('name', 'url', 'children');
+
+        return $this;
     }
 
     public function menu(): array
@@ -264,5 +237,45 @@ class Config
     public function isRegistered(): bool
     {
         return $this->isRegistered;
+    }
+
+    public static function arrget($array, $key, $default = null)
+    {
+        if (is_null($key)) {
+            return $array;
+        }
+        
+        if (isset($array[$key])) {
+            return $array[$key];
+        }
+        
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($array) && !($array instanceof \ArrayAccess)) {
+                return $default;
+            }
+            
+            if (!isset($array[$segment])) {
+                return $default;
+            }
+            
+            $array = $array[$segment];
+        }
+
+        return $array;
+    }
+
+    public static function parse_dot($name)
+    {
+        $names = explode('.', $name);
+        if (count($names) == 1) {
+            return $name;
+        }
+
+        $attrs = array_shift($names);
+        foreach ($names as $name) {
+            $attrs .= '[' . $name . ']';
+        }
+
+        return $attrs;
     }
 }
