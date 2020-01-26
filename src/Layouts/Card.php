@@ -1,6 +1,9 @@
 <?php
 
-namespace Aecodes\AdminPanel;
+namespace Aecodes\AdminPanel\Layouts;
+
+use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Card
 {

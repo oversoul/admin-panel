@@ -1,8 +1,11 @@
 <?php
 
-namespace Aecodes\AdminPanel;
+namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
+use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Config;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Table
 {

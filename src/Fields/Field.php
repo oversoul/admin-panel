@@ -2,8 +2,9 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
-use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Config;
+use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Field
 {
@@ -84,7 +85,7 @@ class Field
             return '';
         }
 
-        return Config::instance()->getOldValue(
+        return Dashboard::config()->oldValue(
             $this->target,
             Config::arrget($data, $this->target, '')
         );
@@ -195,14 +196,8 @@ class Field
         return '';
     }
 
-    public function getViewPath(): string
-    {
-        return Config::instance()->templatePath();
-    }
-
     final public function render(string $templateName, array $data = []): string
     {
-        $path = $this->getViewPath();
-        return View::make('fields/' . $templateName, $data)->setPath($path);
+        return View::make('fields/' . $templateName, $data);
     }
 }

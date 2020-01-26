@@ -1,8 +1,10 @@
 <?php
 
-namespace Aecodes\AdminPanel;
+namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
+use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Dashboard;
 
 class View
 {
@@ -14,8 +16,12 @@ class View
      */
     protected $path;
 
-
-    protected $templatePath;
+    /**
+     * Views path
+     *
+     * @var string
+     */
+    protected $defaultViewsPath = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
 
     /**
      * Data to push to the view
@@ -48,7 +54,6 @@ class View
         return new static($path, $data);
     }
 
-
     /**
      * Print out the error.
      *
@@ -57,6 +62,12 @@ class View
      */
     public static function renderError($e): string
     {
+        $without = Dashboard::config()->withoutExceptionHandling();
+
+        if ( $without === true ) {
+            throw $e;
+        }
+
         ob_get_clean();
         return \sprintf(
             "<h3>%s</h3>
@@ -72,6 +83,20 @@ class View
         return $this;
     }
 
+    protected function getRenderableViewFile(): string
+    {
+        $view = "/{$this->path}.php";
+        $template = Dashboard::config()->viewsPath();
+
+        $view_file_path = $template . $view;
+        
+        if (!file_exists($view_file_path)) {
+            return $this->defaultViewsPath . $view;
+        }
+        
+        return $view_file_path;
+    }
+
     /**
      * Build view
      *
@@ -83,17 +108,7 @@ class View
     {
         $data = $this->data;
 
-        if ( $this->templatePath ) {
-            $template = $this->templatePath;
-        } else {
-            $template = Config::instance()->templatePath();
-        }
-
-        $view_file_path = $template . "/{$this->path}.php";
-
-        if (!file_exists($view_file_path)) {
-            throw new Exception("View provided not found: {$view_file_path}");
-        }
+        $view_file_path = $this->getRenderableViewFile();
 
         extract($data);
         ob_start();

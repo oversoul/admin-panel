@@ -10,7 +10,7 @@
                     <h3 class="mb-0"><?=$page->description?></h3>
                 </div>
                 <div class="col text-right">
-                    <?= Aecodes\AdminPanel\View::make('partials/top-bar', compact('page')) ?>
+                    <?= Aecodes\AdminPanel\Layouts\View::make('partials/top-bar', compact('page')) ?>
                 </div>
             </div>
         </div>

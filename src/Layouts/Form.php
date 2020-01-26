@@ -1,8 +1,11 @@
 <?php
 
-namespace Aecodes\AdminPanel;
+namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
+use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Form
 {
@@ -110,7 +113,8 @@ class Form
         $action      = $this->action;
         $method      = $this->method;
         $class       = $this->class;
-        $formErrors  = Config::instance()->errors();
+        $formErrors  = Dashboard::config()->errors();
+        $globalFormFields = $page->getGlobalFormFields();
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
             $real_method = $method;
@@ -124,7 +128,7 @@ class Form
         
         $inputs = \implode("\n", $fields);
 
-        $data = \compact('real_method', 'inputs', 'action', 'method', 'class', 'formErrors');
+        $data = \compact('real_method', 'inputs', 'action', 'method', 'class', 'globalFormFields', 'formErrors');
         return View::make('form', $data)->build($source, $page);
     }
 

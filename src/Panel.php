@@ -4,6 +4,7 @@ namespace Aecodes\AdminPanel;
 
 use Error;
 use Exception;
+use Aecodes\AdminPanel\Layouts\View;
 
 abstract class Panel
 {
@@ -58,9 +59,7 @@ abstract class Panel
         $query = $this->query();
         try {
             return $this->renderLayout($query);
-        } catch (Error $e) {
-            return View::renderError($e);
-        } catch (Exception $e) {
+        } catch (Error|Exception $e) {
             return View::renderError($e);
         }
     }
@@ -79,6 +78,12 @@ abstract class Panel
         return $widgets;
     }
 
+    public function getGlobalFormFields(): string
+    {
+        $fields = Dashboard::config()->globalFormFields();
+        return implode("\n", $fields);
+    }
+
     /**
      * Render layout with header and footer.
      *
@@ -89,11 +94,7 @@ abstract class Panel
     final protected function renderLayout(array $query): string
     {
         $parts = [];
-        $config = Config::instance();
-
-        if (! $config->isRegistered() ) {
-            throw new Exception("The AdminPanel is not registered properly");
-        }
+        $config = Dashboard::config();
 
         foreach ($this->render() as $part) {
             $parts[] = is_string($part) ? $part : $part->build($query, $this);
@@ -101,12 +102,14 @@ abstract class Panel
 
         $content = \implode("\n", $parts);
      
+        $globalFormFields = $this->getGlobalFormFields();
         $flashMessage = $config->flash();
         $menus = $config->menu();
+        
 
         return View::make(
             "layouts/{$this->layout}",
-            \compact('content', 'flashMessage', 'menus')
+            \compact('content', 'flashMessage', 'menus', 'globalFormFields')
         )->build($query, $this);
     }
 }

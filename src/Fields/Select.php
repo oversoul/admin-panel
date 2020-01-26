@@ -6,6 +6,7 @@ class Select extends Field
 {
 
     protected $options = [];
+    protected $multiple = false;
     protected $attributes = [
         'autocomplete' => 'off',
     ];
@@ -22,6 +23,12 @@ class Select extends Field
         return $this;
     }
 
+    public function multiple()
+    {
+        $this->multiple = true;
+        return $this;
+    }
+
     /**
      * Convert options array to html options.
      *
@@ -34,10 +41,12 @@ class Select extends Field
         $selected = $this->value($data);
 
         foreach ($this->options as $key => $value) {
+            $isSelected = \is_array($selected) ? in_array($key, $selected) : $key === $selected;
+
             $options[] = \sprintf(
                 '<option value="%s" %s>%s</option>',
                 $key,
-                ($key === $selected) ? ' selected' : '',
+                ($isSelected) ? ' selected' : '',
                 $value,
             );
         }
@@ -54,6 +63,11 @@ class Select extends Field
     public function build(array $data): string
     {
         $options = $this->buildOptions($data);
+
+        if ($this->multiple === true) {
+            $this->name .= '[]';
+            $this->attributes['multiple'] = '';
+        }
 
         return $this->render('select', [
             'name' => $this->name,

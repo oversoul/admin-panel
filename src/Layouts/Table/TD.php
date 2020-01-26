@@ -1,6 +1,6 @@
 <?php
 
-namespace Aecodes\AdminPanel\Table;
+namespace Aecodes\AdminPanel\Layouts\Table;
 
 class TD
 {

@@ -19,7 +19,7 @@
         <div class="d-flex justify-content-center">
             <div class="w-50">
                 <div class="col">
-                    <?= Aecodes\AdminPanel\View::make('partials/flash', compact('flashMessage')) ?>
+                    <?= Aecodes\AdminPanel\Layouts\View::make('partials/flash', compact('flashMessage')) ?>
                 </div>
             </div>
         </div>

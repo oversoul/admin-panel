@@ -10,5 +10,7 @@
       <?= $attributes ?>
     >
 
-    <span class="help-block"><?= $help ?></span>
+    <small class="form-text text-muted">
+      <?= $help ?>
+    </small>
 </div>

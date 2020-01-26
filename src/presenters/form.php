@@ -11,17 +11,18 @@
                     <h3 class="mb-0"><?=$page->description?></h3>
                 </div>
                 <div class="col text-right">
-                    <?= Aecodes\AdminPanel\View::make('partials/top-bar', compact('page')) ?>
+                    <?= Aecodes\AdminPanel\Layouts\View::make('partials/top-bar', compact('page')) ?>
                 </div>
             </div>
         </div>
         <?php endif ?>
 
-        <?= Aecodes\AdminPanel\View::make('partials/form-errors', compact('formErrors')) ?>
+        <?= Aecodes\AdminPanel\Layouts\View::make('partials/form-errors', compact('formErrors')) ?>
     
         <div class="card-body">
             <div class="<?= $class ?>">
                 <form method="<?= $method ?>" action="<?= $action ?>" enctype="multipart/form-data">
+                    <?= $globalFormFields ?>
                     <?php if($real_method): ?>
                     <input type="hidden" name="_method" value="<?= $real_method ?>">
                     <?php endif; ?>
