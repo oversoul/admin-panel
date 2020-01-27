@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://demos.creative-tim.com/argon-dashboard/assets/css/argon-dashboard.min.css?v=1.1.1">
     <style>
-        .select2-container .select2-selection--single { height: auto; padding: .625rem .75rem; } .select2-container--default .select2-selection--single .select2-selection__rendered { padding: 0; color: #8898aa; line-height: 24px; font-size: .875rem; } .select2-container--default .select2-selection--single { border: 1px solid #cbe5f4; } .select2-dropdown { color: #8898aa; border-color: #cbe5f4; } .select2-container--default .select2-selection--single .select2-selection__arrow { height: 48px; } .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple { border-color: #cbe5f4; } .select2-container--default .select2-selection--multiple .select2-selection__rendered { display: block; padding: 0 10px; } .select2-container--default .select2-selection--multiple .select2-selection__rendered li { margin: 10px 2px; } .select2-container .select2-search--inline .select2-search__field { margin-top: 0; }
+        .select2-container .select2-selection--single { height: auto; padding: .625rem .75rem; } .select2-container--default .select2-selection--single .select2-selection__rendered { padding: 0; color: #8898aa; line-height: 24px; font-size: .875rem; } .select2-container--default .select2-selection--single { border: 1px solid #cad1d7; } .select2-dropdown { color: #8898aa; border-color: #cad1d7; } .select2-container--default .select2-selection--single .select2-selection__arrow { height: 48px; } .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple { border-color: #cad1d7; } .select2-container--default .select2-selection--multiple .select2-selection__rendered { display: block; padding: 0 10px; } .select2-container--default .select2-selection--multiple .select2-selection__rendered li { margin: 10px 2px; } .select2-container .select2-search--inline .select2-search__field { margin-top: 0; }
     </style>
     <script>
         function triggerDestroyForm(event, action) {
@@ -69,7 +69,7 @@
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
-    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script>
+    <!-- <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     <script>
     $(document).ready(function() {

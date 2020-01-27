@@ -3,17 +3,29 @@
 namespace Aecodes\AdminPanel\Layouts;
 
 use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Helper;
 
 class Div
 {
 
+    /**
+     * Children of div
+     *
+     * @var array
+     */
     protected $items = [];
+
+    /**
+     * Div attributes
+     *
+     * @var array
+     */
     protected $attributes = [];
 
     /**
      * Create a new Div
      *
-     * @param string $title
+     * @param array $items
      */
     public function __construct(array $items)
     {
@@ -45,21 +57,6 @@ class Div
     }
 
     /**
-     * Turns the attributes to string.
-     *
-     * @return string
-     */
-    protected function attributes(): string
-    {
-        $attrs = [];
-        foreach ($this->attributes as $key => $value) {
-            $attrs[] = "{$key}=\"{$value}\"";
-        }
-
-        return \implode(' ', $attrs);
-    }
-
-    /**
      * Render TD
      *
      * @param mixed
@@ -74,7 +71,8 @@ class Div
         }
 
         $content = \implode("\n", $parts);
+        $attributes = Helper::attributes($this->attributes);
 
-        return \sprintf("<div %s>%s</div>", $this->attributes(), $content);
+        return \sprintf("<div %s>%s</div>", $attributes, $content);
     }
 }

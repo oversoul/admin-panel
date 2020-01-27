@@ -2,6 +2,8 @@
 
 namespace Aecodes\AdminPanel\Actions;
 
+use Aecodes\AdminPanel\Helper;
+
 class Link extends Action
 {
 
@@ -25,6 +27,17 @@ class Link extends Action
     }
 
     /**
+     * Set href for link
+     *
+     * @param string $link
+     * @return self
+     */
+    public function url(string $link): self
+    {
+        return $this->href($link);
+    }
+
+    /**
      * Build link
      *
      * @return string
@@ -36,10 +49,12 @@ class Link extends Action
             $this->href = 'javascript:{}';
         }
 
+        $attributes = Helper::attributes($this->attributes);
+
         return \sprintf(
             '<a href="%s" %s>%s</a>',
             $this->href,
-            $this->attributes(),
+            $attributes,
             $this->value,
         );
     }

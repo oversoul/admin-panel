@@ -2,6 +2,8 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\Helper;
+
 class Select extends Field
 {
 
@@ -69,11 +71,13 @@ class Select extends Field
             $this->attributes['multiple'] = '';
         }
 
+        $attributes = Helper::attributes($this->attributes);
+
         return $this->render('select', [
             'name' => $this->name,
             'title' => $this->title,
             'options' => $options,
-            'attributes' => $this->attributes(),
+            'attributes' => $attributes,
         ]);
     }
 }

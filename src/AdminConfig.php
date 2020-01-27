@@ -28,7 +28,7 @@ abstract class AdminConfig
      * Return flash message
      *
      * @return array|null
-     * default expected return:
+     * @example
      * ['message' => 'flash message', 'type' => 'success']
      */
     public function flash(): array
@@ -41,7 +41,7 @@ abstract class AdminConfig
      *
      * @return array
      *
-     * default expected return:
+     * @example
      * ['Field is required', 'Field is not a number', ...]
      */
     public function errors(): array
@@ -59,6 +59,13 @@ abstract class AdminConfig
         return $this->defaultPath;
     }
 
+    /**
+     * Register global form fields shared by every form.
+     * These fields will show up everywhere
+     * including the default delete form.
+     *
+     * @return array
+     */
     public function globalFormFields(): array
     {
         return [];
@@ -70,11 +77,11 @@ abstract class AdminConfig
      *
      * @return array
      *
-     * default expected return:
+     * @example
      * [
-     *    [ 
-     *        'name' => 'Dashboard', 
-     *        'url' => '/', 
+     *    [
+     *        'name' => 'Dashboard',
+     *        'url' => '/',
      *        'children' => [
      *            ['name' => 'Subitem', 'url' => '/sub'].
      *            ...
@@ -88,6 +95,11 @@ abstract class AdminConfig
         return [];
     }
 
+    /**
+     * Disable default exception handling
+     *
+     * @return boolean
+     */
     public function withoutExceptionHandling(): bool
     {
         return false;

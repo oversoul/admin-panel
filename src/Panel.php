@@ -53,6 +53,7 @@ abstract class Panel
      * Magic method to render the content
      *
      * @return string
+     * @throws Error|Exception
      */
     public function __toString(): string
     {
@@ -78,6 +79,11 @@ abstract class Panel
         return $widgets;
     }
 
+    /**
+     * Stringify global fields
+     *
+     * @return string
+     */
     public function getGlobalFormFields(): string
     {
         $fields = Dashboard::config()->globalFormFields();
@@ -89,7 +95,6 @@ abstract class Panel
      *
      * @param array query
      * @return string
-     * @throws Exception layout not found
      */
     final protected function renderLayout(array $query): string
     {

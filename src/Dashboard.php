@@ -5,13 +5,18 @@ class Dashboard
 {
 
     /**
+     * config class instance
+     *
+     * @var AdminConfig
+     */
+    protected static $config;
+
+    /**
      * Singleton of Config object
      *
      * @var self|null
      */
     protected static $instance = null;
-
-    protected static $config;
 
     /**
      * Force calling instance
@@ -35,6 +40,11 @@ class Dashboard
         return self::$instance;
     }
 
+    /**
+     * Config instance
+     *
+     * @return AdminConfig
+     */
     public static function config(): AdminConfig
     {
         return self::$config;

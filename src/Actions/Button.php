@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Actions;
 
 use Exception;
+use Aecodes\AdminPanel\Helper;
 
 class Button extends Action
 {
@@ -43,10 +44,12 @@ class Button extends Action
      */
     public function build(): string
     {
+        $attributes = Helper::attributes($this->attributes);
+
         return \sprintf(
             '<button type="%s" %s>%s</button>',
             $this->type,
-            $this->attributes(),
+            $attributes,
             $this->value,
         );
     }

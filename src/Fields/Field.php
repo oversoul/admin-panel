@@ -2,7 +2,7 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
-use Aecodes\AdminPanel\Config;
+use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Layouts\View;
 
@@ -59,7 +59,7 @@ class Field
     public function __construct(string $target)
     {
         $this->target = $target;
-        $this->name = Config::parse_dot($target);
+        $this->name = Helper::parse_dot($target);
     }
 
     /**
@@ -87,7 +87,7 @@ class Field
 
         return Dashboard::config()->oldValue(
             $this->target,
-            Config::arrget($data, $this->target, '')
+            Helper::arr_get($data, $this->target, '')
         );
     }
 
@@ -101,25 +101,6 @@ class Field
     {
         $this->help = $help;
         return $this;
-    }
-
-    /**
-     * Get list of attributes as html string
-     *
-     * @return string
-     */
-    protected function attributes(): string
-    {
-        if (empty($this->attributes)) {
-            return '';
-        }
-
-        $attrs = [];
-        foreach ($this->attributes as $key => $value) {
-            $attrs[] = "{$key}=\"{$value}\"";
-        }
-
-        return \implode(' ', $attrs);
     }
 
     /**

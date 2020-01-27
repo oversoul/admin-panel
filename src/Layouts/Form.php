@@ -109,10 +109,10 @@ class Form
     public function build($source, Panel $page): string
     {
         $real_method = null;
+        $class       = $this->class;
         $inputs      = $this->inputs;
         $action      = $this->action;
         $method      = $this->method;
-        $class       = $this->class;
         $formErrors  = Dashboard::config()->errors();
         $globalFormFields = $page->getGlobalFormFields();
 

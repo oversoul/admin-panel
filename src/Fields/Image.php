@@ -2,6 +2,8 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\Helper;
+
 class Image extends Field
 {
 
@@ -23,13 +25,15 @@ class Image extends Field
 
     public function build(array $data): string
     {
+        $attributes = Helper::attributes($this->attributes);
+        
         return $this->render('image', [
             'name' => $this->name,
             'help' => $this->help,
             'path' => $this->path,
             'title' => $this->title,
             'value' => $this->value($data),
-            'attributes' => $this->attributes(),
+            'attributes' => $attributes,
             'multiple' => $this->multiple ? 'multiple' : '',
         ]);
     }

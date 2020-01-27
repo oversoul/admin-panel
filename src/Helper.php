@@ -2,13 +2,12 @@
 
 namespace Aecodes\AdminPanel;
 
-use Error;
-use Exception;
+use ArrayAccess;
 
-class Config
+class Helper
 {
 
-    public static function arrget($array, $key, $default = null)
+    public static function arr_get($array, $key, $default = null)
     {
         if (is_null($key)) {
             return $array;
@@ -19,7 +18,7 @@ class Config
         }
         
         foreach (explode('.', $key) as $segment) {
-            if (!is_array($array) && !($array instanceof \ArrayAccess)) {
+            if (!is_array($array) && !($array instanceof ArrayAccess)) {
                 return $default;
             }
             
@@ -51,5 +50,19 @@ class Config
         }
 
         return $attrs;
+    }
+
+    public static function attributes(array $attributes = []): string
+    {
+        if (empty($attributes)) {
+            return '';
+        }
+
+        $attrs = [];
+        foreach ($attributes as $key => $value) {
+            $attrs[] = "{$key}=\"{$value}\"";
+        }
+
+        return \implode(' ', $attrs);
     }
 }

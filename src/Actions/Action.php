@@ -48,21 +48,6 @@ class Action
     }
 
     /**
-     * Turns the attributes to string.
-     *
-     * @return string
-     */
-    final protected function attributes(): string
-    {
-        $attrs = [];
-        foreach ($this->attributes as $key => $value) {
-            $attrs[] = "{$key}=\"{$value}\"";
-        }
-
-        return \implode(' ', $attrs);
-    }
-
-    /**
      * Set action as delete
      *
      * @return self

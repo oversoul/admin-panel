@@ -4,8 +4,7 @@ namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
 use Aecodes\AdminPanel\Panel;
-use Aecodes\AdminPanel\Config;
-use Aecodes\AdminPanel\Layouts\View;
+use Aecodes\AdminPanel\Helper;
 
 class Table
 {
@@ -73,7 +72,7 @@ class Table
     public function build(array $data, Panel $page): string
     {
         $columns = $this->columns;
-        $rows = Config::arrget($data, $this->target, []);
+        $rows = Helper::arr_get($data, $this->target, []);
 
         return View::make(
             'table', 
