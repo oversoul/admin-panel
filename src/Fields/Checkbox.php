@@ -13,10 +13,11 @@ class Checkbox extends Field
      */
     public function build(array $data): string
     {
+        // dump($this->value($data));
         return $this->render('checkbox', [
             'name' => $this->name,
             'title' => $this->title,
-            'value' => $this->value($data) === '1' ? ' checked' : '',
+            'value' => $this->value($data) ? ' checked' : '',
             // $this->attributes(),
         ]);
     }
