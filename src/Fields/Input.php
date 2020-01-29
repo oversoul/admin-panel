@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Input extends Field
 {
@@ -26,17 +27,23 @@ class Input extends Field
         return $this;
     }
 
+    public static function __callStatic($method, array $params = [])
+    {
+        $target = $params[0];
+        return self::make($target)->type($method);
+    }
+
     /**
      * Build input field
      *
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
         $attributes = Helper::attributes($this->attributes);
         
-        return $this->render('input', [
+        return $view->partial('fields/input', [
             'type' => $this->type,
             'help' => $this->help,
             'name' => $this->name,

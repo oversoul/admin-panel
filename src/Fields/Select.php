@@ -3,11 +3,13 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Select extends Field
 {
 
     protected $options = [];
+    protected $empty = null;
     protected $multiple = false;
     protected $attributes = [
         'autocomplete' => 'off',
@@ -31,6 +33,12 @@ class Select extends Field
         return $this;
     }
 
+    public function empty(string $value)
+    {
+        $this->empty = $value;
+        return $this;
+    }
+
     /**
      * Convert options array to html options.
      *
@@ -41,6 +49,13 @@ class Select extends Field
     {
         $options = [];
         $selected = $this->value($data);
+
+        if ( $this->empty ) {
+            $options[] = \sprintf(
+                '<option value="-1" hidden>%s</option>',
+                $this->empty
+            );
+        }
 
         foreach ($this->options as $key => $value) {
             $isSelected = \is_array($selected) ? in_array($key, $selected) : $key === $selected;
@@ -62,7 +77,7 @@ class Select extends Field
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
         $options = $this->buildOptions($data);
 
@@ -73,7 +88,7 @@ class Select extends Field
 
         $attributes = Helper::attributes($this->attributes);
 
-        return $this->render('select', [
+        return $view->partial('fields/select', [
             'name' => $this->name,
             'title' => $this->title,
             'options' => $options,

@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Image extends Field
 {
@@ -23,11 +24,11 @@ class Image extends Field
         return $this;
     }
 
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
         $attributes = Helper::attributes($this->attributes);
         
-        return $this->render('image', [
+        return $view->partial('fields/image', [
             'name' => $this->name,
             'help' => $this->help,
             'path' => $this->path,

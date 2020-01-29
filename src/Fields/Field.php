@@ -172,13 +172,8 @@ class Field
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
         return '';
-    }
-
-    final public function render(string $templateName, array $data = []): string
-    {
-        return View::make('fields/' . $templateName, $data);
     }
 }

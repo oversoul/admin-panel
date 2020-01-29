@@ -2,6 +2,8 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\Layouts\View;
+
 class Checkbox extends Field
 {
 
@@ -11,14 +13,12 @@ class Checkbox extends Field
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
-        // dump($this->value($data));
-        return $this->render('checkbox', [
+        return $view->partial('fields/checkbox', [
             'name' => $this->name,
             'title' => $this->title,
             'value' => $this->value($data) ? ' checked' : '',
-            // $this->attributes(),
         ]);
     }
 }

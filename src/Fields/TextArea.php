@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\View;
 
 class TextArea extends Field
 {
@@ -22,11 +23,11 @@ class TextArea extends Field
      * @param array $data
      * @return string
      */
-    public function build(array $data): string
+    public function build(array $data, View $view): string
     {
         $attributes = Helper::attributes($this->attributes);
 
-        return $this->render('textarea', [
+        return $view->partial('fields/textarea', [
             'name' => $this->name,
             'title' => $this->title,
             'value' => $this->value($data),
