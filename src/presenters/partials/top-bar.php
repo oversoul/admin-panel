@@ -1,5 +1,5 @@
 <div>
-    <?php foreach ($page->getBar() as $item): ?>
+    <?php foreach ($view->topBar as $item): ?>
         <?= $item ?>
     <?php endforeach;?>
 </div>

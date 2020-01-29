@@ -5,7 +5,6 @@
     <title>Admin Panel</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://demos.creative-tim.com/argon-dashboard/assets/css/argon-dashboard.min.css?v=1.1.1">
     <style>
@@ -46,7 +45,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-lg-auto">
-                        <?=Aecodes\AdminPanel\Layouts\View::make('partials/menu', compact('menus'))?>
+                        <?= $view->partial('partials/menu') ?>
                     </ul>
                 </div>
             </div>
@@ -56,20 +55,20 @@
 
     <main class="container py-5">
         <form method="POST" id="destroy_form">
-            <?= $globalFormFields ?>
+            <?= $view->globalFormFields ?>
             <input type="hidden" name="_method" value="DELETE">
         </form>
 
-        <?=Aecodes\AdminPanel\Layouts\View::make('partials/flash', compact('flashMessage'))?>
+        <?= $view->partial('partials/flash') ?>
 
         <div class="row">
-            <?= $content ?>
+            <?= $view->content ?>
         </div>
     </main>
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
-    <!-- <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script> -->
+    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     <script>
     $(document).ready(function() {

@@ -1,5 +1,5 @@
-<?php if ($flashMessage): ?>
-    <div class="alert alert-<?=$flashMessage['type']?>">
-        <?=$flashMessage['message']?>
+<?php if ($view->flashMessage): ?>
+    <div class="alert alert-<?=$view->flashMessage['type']?>">
+        <?=$view->flashMessage['message']?>
     </div>
 <?php endif;?>
