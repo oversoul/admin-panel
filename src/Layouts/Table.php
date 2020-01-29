@@ -5,6 +5,7 @@ namespace Aecodes\AdminPanel\Layouts;
 use Exception;
 use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Accessor;
 
 class Table
 {
@@ -69,15 +70,14 @@ class Table
      * @param array $data
      * @return string
      */
-    public function build(array $data, Panel $page): string
+    public function build(array $data, View $view): string
     {
         $columns = $this->columns;
         $rows = Helper::arr_get($data, $this->target, []);
 
-        return View::make(
-            'table', 
-            \compact('columns', 'rows')
-        )->build($data, $page);
+        return $view->partial('table', [
+            'table' =>  new Accessor(compact('columns', 'rows'))
+        ]);
     }
 
 }

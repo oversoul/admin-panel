@@ -4,6 +4,7 @@ namespace Aecodes\AdminPanel\Layouts;
 
 use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\View;
 
 class Div
 {
@@ -62,12 +63,12 @@ class Div
      * @param mixed
      * @return string
      */
-    public function build($source, ?Panel $panel = null): string
+    public function build($source, View $view): string
     {
         $parts = [];
 
         foreach ($this->items as $item) {
-            $parts[] = is_string($item) ? $item : $item->build($source, $panel);
+            $parts[] = is_string($item) ? $item : $item->build($source, $view);
         }
 
         $content = \implode("\n", $parts);

@@ -4,6 +4,8 @@ namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
 use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Dashboard;
 
 class View
@@ -15,13 +17,6 @@ class View
      * @var string
      */
     protected $path;
-
-    /**
-     * Views path
-     *
-     * @var string
-     */
-    protected $defaultViewsPath = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
 
     /**
      * Data to push to the view
@@ -36,11 +31,11 @@ class View
      * @param string $path
      * @param array $data
      */
-    public function __construct(string $path, array $data = [])
-    {
-        $this->path = $path;
-        $this->data = $data;
-    }
+    // public function __construct(string $path, array $data = [])
+    // {
+    //     $this->path = $path;
+    //     $this->data = $data;
+    // }
 
     /**
      * Create form instance statically
@@ -52,6 +47,19 @@ class View
     public static function make(string $path, array $data = []): self
     {
         return new static($path, $data);
+    }
+
+    public function partial(string $name, array $data = []): string
+    {
+        $view = $this;
+        $page = $this->page;
+        $view_file_path = $this->getRenderableViewFile($name);
+        // dd($view_file_path);
+        
+        \extract($data);
+        ob_start();
+        require $view_file_path;
+        return ob_get_clean();
     }
 
     /**
@@ -83,15 +91,15 @@ class View
         return $this;
     }
 
-    protected function getRenderableViewFile(): string
+    protected function getRenderableViewFile($view): string
     {
-        $view = "/{$this->path}.php";
+        $view = "/{$view}.php";
         $template = Dashboard::config()->viewsPath();
 
         $view_file_path = $template . $view;
         
         if (!file_exists($view_file_path)) {
-            return $this->defaultViewsPath . $view;
+            return Helper::defaultViewsPath() . $view;
         }
         
         return $view_file_path;
@@ -104,12 +112,16 @@ class View
      * @param Panel|null $page
      * @return string
      */
-    public function build(array $source = [], ?Panel $page = null): string
+    public function render(string $path, array $data = []): string
     {
-        $data = $this->data;
-
-        $view_file_path = $this->getRenderableViewFile();
-
+        $view = $this;
+        $data = array_merge(
+            $this->data,
+            $data,
+        );
+        
+        $view_file_path = $this->getRenderableViewFile($path);
+        
         extract($data);
         ob_start();
         require $view_file_path;

@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Layouts;
 
 use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Layouts\View;
 
 class Card
@@ -29,12 +30,7 @@ class Card
      */
     protected $content;
 
-    /**
-     * Content of the card
-     *
-     * @var string
-     */
-    protected $icon = '';
+    protected $attributes = [];
 
     /**
      * Undocumented function
@@ -46,18 +42,6 @@ class Card
     {
         $this->title = $title;
         $this->content = $content;
-    }
-
-    /**
-     * Set icon for card
-     *
-     * @param string $icon
-     * @return self
-     */
-    public function icon(string $icon): self
-    {
-        $this->icon = $icon;
-        return $this;
     }
 
     /**
@@ -85,18 +69,35 @@ class Card
     }
 
     /**
+     * Magic method to set attributes
+     *
+     * @param string $key
+     * @param array $params
+     * @return self
+     */
+    public function __call(string $key, array $params = []): self
+    {
+        if (!in_array($key, ['class', 'title', 'content'])) {
+            $this->attributes[$key] = $params[0];
+        }
+
+        return $this;
+    }
+
+    /**
      * Build form
      *
      * @param mixed $source
      * @return string
      */
-    public function build($source, Panel $page): string
+    public function build($source, View $view)
     {
-        return View::make('card', [
-            'icon' => $this->icon,
+        $data = array_merge([
             'title' => $this->title,
             'class' => $this->class,
             'content' => $this->content,
-        ])->build($source, $page);
+        ], $this->attributes);
+
+        return $view->partial('card', ['card' => new Accessor($data)]);
     }
 }

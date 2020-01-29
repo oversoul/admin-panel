@@ -4,6 +4,7 @@ namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
 use Aecodes\AdminPanel\Panel;
+use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Layouts\View;
 
@@ -106,15 +107,13 @@ class Form
      * @param mixed $source
      * @return string
      */
-    public function build($source, Panel $page): string
+    public function build($source, View $view): string
     {
         $real_method = null;
         $class       = $this->class;
         $inputs      = $this->inputs;
         $action      = $this->action;
         $method      = $this->method;
-        $formErrors  = Dashboard::config()->errors();
-        $globalFormFields = $page->getGlobalFormFields();
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
             $real_method = $method;
@@ -123,13 +122,16 @@ class Form
 
         $fields = [];
         foreach($inputs as $item) {
-            $fields[] = is_string($item) ? $item : $item->build($source);
+            $fields[] = is_string($item) ? $item : $item->build($source, $view);
         }
         
         $inputs = \implode("\n", $fields);
 
-        $data = \compact('real_method', 'inputs', 'action', 'method', 'class', 'globalFormFields', 'formErrors');
-        return View::make('form', $data)->build($source, $page);
+        $form = new Accessor(
+            compact('class', 'method', 'inputs', 'action', 'real_method')
+        );
+
+        return $view->partial('form', compact('form'));
     }
 
     /**
