@@ -7,6 +7,11 @@ use ArrayAccess;
 class Helper
 {
 
+    public static function defaultViewsPath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
+    }
+
     public static function arr_get($array, $key, $default = null)
     {
         if (is_null($key)) {
