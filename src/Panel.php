@@ -2,9 +2,10 @@
 
 namespace Aecodes\AdminPanel;
 
+use Aecodes\AdminPanel\Accessor;
+use Aecodes\AdminPanel\Layouts\View;
 use Error;
 use Exception;
-use Aecodes\AdminPanel\Layouts\View;
 
 abstract class Panel
 {
@@ -60,7 +61,7 @@ abstract class Panel
         $query = $this->query();
         try {
             return $this->renderLayout($query);
-        } catch (Error|Exception $e) {
+        } catch (Error | Exception $e) {
             return View::renderError($e);
         }
     }
@@ -98,23 +99,33 @@ abstract class Panel
      */
     final protected function renderLayout(array $query): string
     {
-        $parts = [];
+        $view = new View;
         $config = Dashboard::config();
+        $view->globalFormFields = $this->getGlobalFormFields();
+        $view->flashMessage = $config->flash();
+        $view->errors = $config->errors();
+
+        $view->menu = $config->menu();
+        $view->topBar = $this->getBar();
+
+        $view->page = new Accessor([
+            'name' => $this->name,
+            'description' => $this->description,
+        ]);
+
+        $parts = [];
 
         foreach ($this->render() as $part) {
-            $parts[] = is_string($part) ? $part : $part->build($query, $this);
+            $parts[] = is_string($part) ? $part : $part->build($query, $view);
         }
 
-        $content = \implode("\n", $parts);
-     
-        $globalFormFields = $this->getGlobalFormFields();
-        $flashMessage = $config->flash();
-        $menus = $config->menu();
-        
+        $view->content = \implode("\n", $parts);
 
-        return View::make(
-            "layouts/{$this->layout}",
-            \compact('content', 'flashMessage', 'menus', 'globalFormFields')
-        )->build($query, $this);
+        return $view->render("layouts/{$this->layout}");
+
+        // return View::make(
+        //     "layouts/{$this->layout}",
+        //     \compact('content', 'flashMessage', 'menus', 'globalFormFields', 'page', 'view')
+        // )->build($query, $this);
     }
 }
