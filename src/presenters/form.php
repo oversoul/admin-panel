@@ -4,18 +4,18 @@
     </div>
 
     <div class="card shadow">
-        <?php if ( $page->description != ''): ?>
         <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="mb-0"><?= $page->description ?></h3>
+                    <?php if ($page->description != ''): ?>
+                        <h3 class="mb-0"><?= $page->description ?></h3>
+                    <?php endif ?>
                 </div>
                 <div class="col text-right">
                     <?= $view->partial('partials/top-bar') ?>
                 </div>
             </div>
         </div>
-        <?php endif ?>
 
         <?= $view->partial('partials/form-errors') ?>
     

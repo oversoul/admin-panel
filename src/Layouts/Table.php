@@ -25,6 +25,13 @@ class Table
     protected $columns = [];
 
     /**
+     * Table footer
+     *
+     * @var array
+     */
+    protected $footer = [];
+
+    /**
      * Create new Table
      *
      * @param array $columns
@@ -52,6 +59,12 @@ class Table
         return $this;
     }
 
+    public function footer(array $elements)
+    {
+        $this->footer = $elements;
+        return $this;
+    }
+
     /**
      * Create table staticly
      *
@@ -64,6 +77,21 @@ class Table
         return new static($columns, $target);
     }
 
+    public function renderFooter(View $view): string
+    {
+
+        if ( count($this->footer) === 0 ) {
+            return '';
+        }
+
+        $items = [];
+        foreach ($this->footer as $element) {
+            $items[] = is_string($element) ? $element : $element->build($view);
+        }
+
+        return \implode("\n", $items);
+    }
+
     /**
      * Render table
      *
@@ -73,10 +101,11 @@ class Table
     public function build(array $data, View $view): string
     {
         $columns = $this->columns;
+        $footer = $this->renderFooter($view);
         $rows = Helper::arr_get($data, $this->target, []);
 
         return $view->partial('table', [
-            'table' =>  new Accessor(compact('columns', 'rows'))
+            'table' =>  new Accessor(compact('columns', 'rows', 'footer'))
         ]);
     }
 

@@ -29,13 +29,13 @@ class Image extends Field
         $attributes = Helper::attributes($this->attributes);
         
         return $view->partial('fields/image', [
-            'name' => $this->name,
-            'help' => $this->help,
-            'path' => $this->path,
-            'title' => $this->title,
-            'value' => $this->value($data),
+            'name'       => $this->name,
+            'help'       => $this->help,
+            'path'       => $this->path,
+            'title'      => $this->title,
             'attributes' => $attributes,
-            'multiple' => $this->multiple ? 'multiple' : '',
+            'value'      => $this->value($data),
+            'multiple'   => ($this->multiple === true) ? 'multiple' : '',
         ]);
     }
 }

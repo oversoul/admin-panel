@@ -42,6 +42,7 @@
             </table>
         </div>
         <div class="card-footer py-4">
+            <?= $table->footer ?>
         </div>
     </div>
 </div>

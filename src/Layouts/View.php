@@ -73,7 +73,7 @@ class View
         $without = Dashboard::config()->withoutExceptionHandling();
 
         if ( $without === true ) {
-            throw $e;
+            // throw $e;
         }
 
         ob_get_clean();
@@ -115,11 +115,7 @@ class View
     public function render(string $path, array $data = []): string
     {
         $view = $this;
-        $data = array_merge(
-            $this->data,
-            $data,
-        );
-        
+        $data = array_merge($this->data, $data);
         $view_file_path = $this->getRenderableViewFile($path);
         
         extract($data);

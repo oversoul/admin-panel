@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="https://demos.creative-tim.com/argon-dashboard/assets/css/argon-dashboard.min.css?v=1.1.1">
     <style>
-        .select2-container .select2-selection--single { height: auto; padding: .625rem .75rem; } .select2-container--default .select2-selection--single .select2-selection__rendered { padding: 0; color: #8898aa; line-height: 24px; font-size: .875rem; } .select2-container--default .select2-selection--single { border: 1px solid #cad1d7; } .select2-dropdown { color: #8898aa; border-color: #cad1d7; } .select2-container--default .select2-selection--single .select2-selection__arrow { height: 48px; } .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple { border-color: #cad1d7; } .select2-container--default .select2-selection--multiple .select2-selection__rendered { display: block; padding: 0 10px; } .select2-container--default .select2-selection--multiple .select2-selection__rendered li { margin: 10px 2px; } .select2-container .select2-search--inline .select2-search__field { margin-top: 0; }
+        .btn:hover { transform: none; }
+        .choices__inner, .choices__input { background-color: transparent; }
+        .choices__input { margin-bottom: 0; }
+        .choices__inner { min-height: 46px; }
+        .drop-area { display: flex; min-height: 160px; padding: 10px; position: relative; border-radius: 3px; text-align: center; align-items: center; justify-content: center; border: 2px dashed #ccc; }
+        .drop-area strong { display: block; font-weight: 500; font-size: 1.2rem; }
+        .drop-area input[type=file] { display: none; }
+        .image { width: 300px; position: relative; }
+        .image .btn-close { position: absolute; top: 10px; right: 10px; }
+        .form-control { transition: none; }
     </style>
     <script>
         function triggerDestroyForm(event, action) {
             const answer = confirm("This action cannot be reversed. are you sure?");
-            if ( ! answer ) {
+            if (!answer) {
                 event.preventDefault();
                 return;
             }
@@ -24,14 +34,13 @@
         }
     </script>
 </head>
+
 <body>
-
-
     <div class="header bg-gradient-primary pb-4 pt-4 pt-md-4">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <a class="navbar-brand" href="#">Admin Panel</a>
-                <button
+                <button 
                     type="button"
                     aria-expanded="false"
                     class="navbar-toggler"
@@ -65,21 +74,31 @@
             <?= $view->content ?>
         </div>
     </main>
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"></script>
-    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon-dashboard.min.js?v=1.1.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.7/dist/alpine.js" defer></script>
     <script>
-    $(document).ready(function() {
-        $('.single-select').select2();
+    document.querySelectorAll('.single-select').forEach(el => {
+        new Choices(el)
+    })
 
-        $(".single-select[multiple]").select2({
-            tags: true,
-            placeholder: "Select Your options",
-            tokenSeparators: [',']
-        });
-    });
+    const fields = {
+        imageUpload: {
+            image: null,
+            hideImage() {
+                this.image = ''
+                this.$refs.file.value = null
+            },
+            setupImage(field) {
+                const file = field.files[0]
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = () => {
+                    this.image = reader.result
+                }
+            }
+        },
+    }
     </script>
 </body>
+
 </html>

@@ -1,9 +1,13 @@
-<div class="form-group">
-  <?php if ($value): ?>
-    <div>
-      <img class="img-thumbnail w-25 mb-3" src="<?= $path . $value ?>" alt="<?= $value ?>">
+<div class="form-group" x-data="{...fields.imageUpload, image: '<?= $value ?>' }">
+    <div x-show="image" class="image">
+        <img :src="image" class="img-thumbnail w-100" />
+        <button class="btn btn-danger btn-sm btn-close" @click.prevent="hideImage()">x</button>
     </div>
-  <?php endif; ?>
-  <input type="hidden" name="<?= $name ?>" value="<?= $value ?>">
-  <input type="file" <?= $multiple ?> name="<?= $name ?>" label="<?= $title ?>" help="<?= $help ?>" is="drop-files" />
+
+    <div x-show="!image" class="drop-area" @click="$refs.file.click()" @dragover.prevent
+        x-on:drop.prevent="setupImage(event.dataTransfer)">
+        <input name="<?= $name ?>" type="file" x-ref="file" @change="setupImage(event.target)" />
+
+        <strong>Drop files here or click to upload</strong>
+    </div>
 </div>

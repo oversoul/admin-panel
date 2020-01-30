@@ -101,9 +101,9 @@ abstract class Panel
     {
         $view = new View;
         $config = Dashboard::config();
-        $view->globalFormFields = $this->getGlobalFormFields();
-        $view->flashMessage = $config->flash();
         $view->errors = $config->errors();
+        $view->flashMessage = $config->flash();
+        $view->globalFormFields = $this->getGlobalFormFields();
 
         $view->menu = $config->menu();
         $view->topBar = $this->getBar();
@@ -122,10 +122,5 @@ abstract class Panel
         $view->content = \implode("\n", $parts);
 
         return $view->render("layouts/{$this->layout}");
-
-        // return View::make(
-        //     "layouts/{$this->layout}",
-        //     \compact('content', 'flashMessage', 'menus', 'globalFormFields', 'page', 'view')
-        // )->build($query, $this);
     }
 }
