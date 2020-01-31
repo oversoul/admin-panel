@@ -90,8 +90,8 @@
             },
             setupImage(field) {
                 const file = field.files[0]
-                let reader = new FileReader();
-                reader.readAsDataURL(file);
+                let reader = new FileReader()
+                reader.readAsDataURL(file)
                 reader.onloadend = () => {
                     this.image = reader.result
                 }
