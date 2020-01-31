@@ -2,14 +2,19 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Exception;
-use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Layouts\View;
+use Exception;
 
 class Form
 {
+    /**
+     * Data target (key)
+     *
+     * @var string
+     */
+    protected $target;
 
     /**
      * Form Inputs
@@ -90,12 +95,24 @@ class Form
     }
 
     /**
+     * Set form target - data key
+     *
+     * @param string $target
+     * @return self
+     */
+    public function target(string $target): self
+    {
+        $this->target = $target;
+        return $this;
+    }
+
+    /**
      * Set form size
      *
      * @param integer $percent
      * @return self
      */
-    public function class(string $percent): self
+    function class (string $percent): self
     {
         $this->class = $class;
         return $this;
@@ -110,10 +127,10 @@ class Form
     public function build($source, View $view): string
     {
         $real_method = null;
-        $class       = $this->class;
-        $inputs      = $this->inputs;
-        $action      = $this->action;
-        $method      = $this->method;
+        $class = $this->class;
+        $inputs = $this->inputs;
+        $action = $this->action;
+        $method = $this->method;
 
         if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
             $real_method = $method;
@@ -121,10 +138,12 @@ class Form
         }
 
         $fields = [];
-        foreach($inputs as $item) {
-            $fields[] = is_string($item) ? $item : $item->build($source, $view);
+        $data   = Helper::arr_get($source, $this->target, []);
+
+        foreach ($inputs as $item) {
+            $fields[] = is_string($item) ? $item : $item->build($data, $view);
         }
-        
+
         $inputs = \implode("\n", $fields);
 
         $form = new Accessor(
