@@ -50,6 +50,8 @@ class Select extends Field
         $options = [];
         $selected = $this->value($data);
 
+        // dd($selected);
+
         if ( $this->empty ) {
             $options[] = \sprintf(
                 '<option value="-1" hidden>%s</option>',

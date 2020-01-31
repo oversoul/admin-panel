@@ -2,11 +2,11 @@
     <label class="form-control-label" for="<?= $name ?>"><?= $title ?></label>
 
     <input 
-      id="<?= $name ?>" 
-      type="<?= $type ?>" 
+      id="<?= $name ?>"
+      type="<?= $type ?>"
       name="<?= $name ?>"
-      class="form-control" 
-      value="<?= $value ?>" 
+      class="form-control"
+      value="<?= $value ?>"
       <?= $attributes ?>
     >
 
