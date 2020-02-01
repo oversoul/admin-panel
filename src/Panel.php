@@ -81,17 +81,6 @@ abstract class Panel
     }
 
     /**
-     * Stringify global fields
-     *
-     * @return string
-     */
-    public function getGlobalFormFields(): string
-    {
-        $fields = Dashboard::config()->globalFormFields();
-        return implode("\n", $fields);
-    }
-
-    /**
      * Render layout with header and footer.
      *
      * @param array query
@@ -101,15 +90,16 @@ abstract class Panel
     {
         $view = new View;
         $config = Dashboard::config();
+        
+        $view->menu = $config->menu();
         $view->errors = $config->errors();
         $view->flashMessage = $config->flash();
-        $view->globalFormFields = $this->getGlobalFormFields();
+        $view->globalFormFields = implode("\n", $config->globalFormFields());
 
-        $view->menu = $config->menu();
         $view->topBar = $this->getBar();
 
         $view->page = new Accessor([
-            'name'        => $this->name,
+            'name' => $this->name,
             'description' => $this->description,
         ]);
 
