@@ -21,7 +21,7 @@ class Dashboard
     /**
      * Force calling instance
      */
-    public function __construct(AdminConfig $config)
+    protected function __construct(AdminConfig $config)
     {
         self::$config = $config;
     }

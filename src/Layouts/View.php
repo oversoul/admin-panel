@@ -73,7 +73,7 @@ class View
         $without = Dashboard::config()->withoutExceptionHandling();
 
         if ( $without === true ) {
-            // throw $e;
+            throw $e;
         }
 
         ob_get_clean();
