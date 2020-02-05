@@ -73,6 +73,21 @@ class TD
     }
 
     /**
+     * If Renderer is defined use it.
+     *
+     * @param mixed $row
+     * @return mixed
+     */
+    protected function getRendererOutput($row)
+    {
+        if ($this->renderer == null) {
+            return $row;
+        }
+
+        return \call_user_func($this->renderer, $row);
+    }
+
+    /**
      * Get value
      *
      * @param $row
@@ -80,18 +95,14 @@ class TD
      */
     protected function getValue($row)
     {
-        if ($this->renderer == null) {
-            return $row->{$this->name};
-        }
-
-        $data = \call_user_func($this->renderer, $row);
+        $data = $this->getRendererOutput($row);
 
         if (\is_string($data)) {
             return $data;
         }
 
-        if (!\is_array($data)) {
-            return $data->build($row);
+        if (\is_object($data)) {
+            return $data->{$this->name};
         }
 
         $result = [];
