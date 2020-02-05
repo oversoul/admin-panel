@@ -25,17 +25,17 @@ class View
      */
     protected $data = [];
 
-    /**
-     * Create a new view
-     *
-     * @param string $path
-     * @param array $data
-     */
-    protected function __construct(string $path, array $data = [])
-    {
-        $this->path = $path;
-        $this->data = $data;
-    }
+    // /**
+    //  * Create a new view
+    //  *
+    //  * @param string $path
+    //  * @param array $data
+    //  */
+    // protected function __construct(string $path, array $data = [])
+    // {
+    //     $this->path = $path;
+    //     $this->data = $data;
+    // }
 
     /**
      * Create form instance statically
