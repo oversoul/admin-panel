@@ -26,22 +26,17 @@ ps: you still need to setup your routes, the authentification etc...
 
 ### How to setup
 
-1- install with composer
-
-2- extends `AdminConfig` class, and override the configuration you want to change.
-
-3- create new (singleton) instance of `Dashboard` class, make sure to pass a new instance of your configuration class.
+1. install with composer
+2. extends `AdminConfig` class, and override the configuration you want to change.
+3. create new (singleton) instance of `Dashboard` class, make sure to pass a new instance of your configuration class.
 
 
 ### How to create an admin page
 
-1- create a class that extends the `Panel` class
-
-2- for convenience set the properties for both `$name` & `$description` of the panel (visible on the page)
-
-3- create a `query` method that returns the array of data.
-
-4- create a `render` method that returns an array.
+1. create a class that extends the `Panel` class
+2. for convenience set the properties for both `$name` & `$description` of the panel (visible on the page)
+3. create a `query` method that returns the array of data.
+4. create a `render` method that returns an array.
 
 ```php
 function query(): array {
@@ -51,7 +46,7 @@ function query(): array {
 }
 ```
 
-5- to create a table
+5. to create a table
 
 ```php
 function query(): array {
@@ -65,7 +60,7 @@ function query(): array {
 }
 ```
 
-6- to create a form
+6. to create a form
 
 ```php
 function query(): array {
@@ -82,7 +77,7 @@ function query(): array {
 }
 ```
 
-7- to finish up, in the callback of your route, just return a new instance of the class you created. it must be returned as a `string`.
+7. to finish up, in the callback of your route, just return a new instance of the class you created. it must be returned as a `string`.
 
 ps: in many frameworks (laravel as an example), returning an instance from the callback calls the `__toString`. with that you will only need to return the new instance.
 
@@ -109,44 +104,44 @@ It's possible to change the look of your admin panel. by default the views exist
 
 Extending the config class. allows you to customize globally the admin panel:
 
-1- Used as a fallback for getting inputs value after refreshing the page, In case of validation error etc...
+1. Used as a fallback for getting inputs value after refreshing the page, In case of validation error etc...
 
 ```php
 public function oldValue(string $name, $default)
 ```
 
-2- Used for return Session flash messages (notification)
+2. Used for return Session flash messages (notification)
 
 ```php
 public function flash(): array
 ```
 
-3- Used for return validation errors.
+3. Used for return validation errors.
 
 ```php
 public function errors(): array
 ```
 
-4- Specify the views (presenters) path. if the return is invalid, the system will fallback to default views.
+4. Specify the views (presenters) path. if the return is invalid, the system will fallback to default views.
 
 ```php
 public function viewsPath(): string
 ```  
 
-5- This is used for fields that exists in all forms, mostly: `csrf` token
+5. This is used for fields that exists in all forms, mostly: `csrf` token
 
 ```php
 public function globalFormFields(): array
 ```  
 
-6- the list of menu items for the admin panel, (array of arrays)
+6. the list of menu items for the admin panel, (array of arrays)
 
 ```php
 // [[ 'name' => 'Dashboard', 'url' => '/' ]]
 public function menu(): array
 ```
 
-7- This is used to disable the admin panel internal exception handling
+7. This is used to disable the admin panel internal exception handling
 
 ```php
 public function withoutExceptionHandling(): bool
