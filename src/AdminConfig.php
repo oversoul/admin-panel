@@ -2,15 +2,10 @@
 
 namespace Aecodes\AdminPanel;
 
+use Aecodes\AdminPanel\Helper;
+
 abstract class AdminConfig
 {
-
-    /**
-     * Views default path
-     *
-     * @var string
-     */
-    private $defaultPath = __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
 
     /**
      * get old value
@@ -56,7 +51,7 @@ abstract class AdminConfig
      */
     public function viewsPath(): string
     {
-        return $this->defaultPath;
+        return Helper::defaultViewsPath();
     }
 
     /**
