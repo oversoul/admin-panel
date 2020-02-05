@@ -31,11 +31,11 @@ class View
      * @param string $path
      * @param array $data
      */
-    // public function __construct(string $path, array $data = [])
-    // {
-    //     $this->path = $path;
-    //     $this->data = $data;
-    // }
+    protected function __construct(string $path, array $data = [])
+    {
+        $this->path = $path;
+        $this->data = $data;
+    }
 
     /**
      * Create form instance statically
@@ -108,8 +108,8 @@ class View
     /**
      * Build view
      *
+     * @param string $path
      * @param array $source
-     * @param Panel|null $page
      * @return string
      */
     public function render(string $path, array $data = []): string
