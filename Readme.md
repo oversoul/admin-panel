@@ -49,7 +49,7 @@ function query(): array {
 5. to create a table
 
 ```php
-function query(): array {
+function render(): array {
     return [
         Table::make([
             // (field name, field label)
@@ -63,7 +63,7 @@ function query(): array {
 6. to create a form
 
 ```php
-function query(): array {
+function render(): array {
     return [
         Form::make([
             Input::make('title')->title('Title'),
