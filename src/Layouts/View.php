@@ -2,7 +2,6 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Exception;
 use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Accessor;
@@ -122,15 +121,6 @@ class View
         ob_start();
         require $view_file_path;
         return ob_get_clean();
-    }
-
-    public function __toString()
-    {
-        try {
-            return $this->build();
-        } catch (Exception $e) {
-            return self::renderError($e);
-        }
     }
 
 }
