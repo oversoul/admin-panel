@@ -3,12 +3,11 @@
 namespace Aecodes\AdminPanel;
 
 use Countable;
-use ArrayAccess;
 
 /**
  * Accessor
  */
-class Accessor implements ArrayAccess, Countable {
+class Accessor implements Countable {
 	
 	/**
 	 * data array
@@ -102,41 +101,6 @@ class Accessor implements ArrayAccess, Countable {
 	public function __get($key)
 	{
 		return $this->get($key);
-	}
-
-	/**
-	 * Check if offset exists
-	 * @param  string $key
-	 * @return boolean
-	 */
-	public function offsetExists($key) {
-		return $this->has($key);
-	}
-
-	/**
-	 * Unset offset using key
-	 * @param  string $key
-	 */
-	public function offsetUnset($key) {
-		
-	}
-
-	/**
-	 * Get offset using key
-	 * @param  string $key
-	 * @return mixed
-	 */
-	public function offsetGet($key) {
-		return $this->get($key);
-	}
-
-	/**
-	 * Set an offset
-	 * @param  string $key
-	 * @param  mixed $value
-	 */
-	public function offsetSet($key, $value) {
-
 	}
 
 	public function count()
