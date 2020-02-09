@@ -109,12 +109,12 @@ class Form
     /**
      * Set form size
      *
-     * @param integer $percent
+     * @param string $className
      * @return self
      */
-    function class (string $percent): self
+    function class (string $className): self
     {
-        $this->class = $class;
+        $this->class = $className;
         return $this;
     }
 

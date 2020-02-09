@@ -2,9 +2,8 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\Panel;
+use Error;
 use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Dashboard;
 
 class View
@@ -48,6 +47,13 @@ class View
         return new static($path, $data);
     }
 
+    /**
+     * Renders a partial
+     *
+     * @param string $name
+     * @param array $data
+     * @return string
+     */
     public function partial(string $name, array $data = []): string
     {
         $view = $this;
@@ -64,7 +70,7 @@ class View
     /**
      * Print out the error.
      *
-     * @param Error
+     * @param Error $e
      * @return string
      */
     public static function renderError($e): string
@@ -82,12 +88,6 @@ class View
             $e->getMessage(),
             $e->getTraceAsString()
         );
-    }
-
-    public function setPath(string $path): self
-    {
-        $this->templatePath = $path;
-        return $this;
     }
 
     protected function getRenderableViewFile($view): string
@@ -108,7 +108,7 @@ class View
      * Build view
      *
      * @param string $path
-     * @param array $source
+     * @param array $data
      * @return string
      */
     public function render(string $path, array $data = []): string

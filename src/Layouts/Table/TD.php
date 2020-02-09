@@ -53,7 +53,7 @@ class TD
     /**
      * Set custom renderer.
      *
-     * @param callback
+     * @param callable $callback
      * @return self
      */
     public function render(callable $callback): self
@@ -116,7 +116,7 @@ class TD
     /**
      * Render TD
      *
-     * @param mixed
+     * @param mixed $row
      * @return string
      */
     public function renderValue($row): string

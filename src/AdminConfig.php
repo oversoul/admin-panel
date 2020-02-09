@@ -22,7 +22,7 @@ abstract class AdminConfig
     /**
      * Return flash message
      *
-     * @return array|null
+     * @return array
      * @example
      * ['message' => 'flash message', 'type' => 'success']
      */

@@ -2,7 +2,6 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Layouts\View;
 
@@ -47,8 +46,8 @@ class Div
     /**
      * Magic method to set attributes.
      *
-     * @param string
-     * @param array
+     * @param string $key
+     * @param array $params
      * @return self
      */
     final public function __call(string $key, array $params = []): self
@@ -60,7 +59,8 @@ class Div
     /**
      * Render TD
      *
-     * @param mixed
+     * @param mixed $source
+     * @param View $view
      * @return string
      */
     public function build($source, View $view): string

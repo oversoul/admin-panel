@@ -2,7 +2,6 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Layouts\View;
 
@@ -47,8 +46,8 @@ class Card
     /**
      * Create form instance statically
      *
-     * @param sting $title
-     * @param sting $content
+     * @param string $title
+     * @param string $content
      * @return self
      */
     public static function make(string $title, string $content): self

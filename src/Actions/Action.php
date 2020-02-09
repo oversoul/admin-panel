@@ -22,7 +22,7 @@ class Action
     /**
      * Html attributes
      *
-     * @param array
+     * @var array
      */
     protected $attributes = [];
 
@@ -61,8 +61,8 @@ class Action
     /**
      * Magic method to set attributes.
      *
-     * @param string
-     * @param array
+     * @param string $key
+     * @param array $params
      * @return self
      */
     final public function __call(string $key, array $params = []): self
@@ -96,7 +96,7 @@ class Action
      *
      * @param string $method
      * @param array $params
-     * @return Button|Link
+     * @return Button|Link|void
      */
     public static function __callStatic(string $method, array $params = [])
     {

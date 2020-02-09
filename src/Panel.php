@@ -83,7 +83,7 @@ abstract class Panel
     /**
      * Render layout with header and footer.
      *
-     * @param array query
+     * @param array $query
      * @return string
      */
     final protected function renderLayout(array $query): string
