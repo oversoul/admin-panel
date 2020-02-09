@@ -11,7 +11,7 @@ class ConfigTest extends TestCase
     public function testCantCreateInstanceOfConfig()
     {
         $this->expectException(\Error::class);
-        new AdminConfig;
+        new AdminConfig();
     }
 
     public function testCanCustomizeViewsPath()

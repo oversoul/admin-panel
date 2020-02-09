@@ -3,7 +3,6 @@
 namespace Aecodes\Tests\Actions;
 
 use PHPUnit\Framework\TestCase; 
-use Aecodes\AdminPanel\AdminConfig;
 use Aecodes\AdminPanel\Actions\Link;
 use Aecodes\AdminPanel\Actions\Action;
 use Aecodes\AdminPanel\Actions\Button;
