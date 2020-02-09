@@ -2,10 +2,9 @@
 
 namespace Aecodes\AdminPanel;
 
+use Throwable;
 use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Layouts\View;
-use Error;
-use Exception;
 
 abstract class Panel
 {
@@ -31,6 +30,11 @@ abstract class Panel
      */
     public $description = '';
 
+    /**
+     * get top bar elements
+     *
+     * @return array
+     */
     public function bar(): array
     {
         return [];
@@ -54,14 +58,14 @@ abstract class Panel
      * Magic method to render the content
      *
      * @return string
-     * @throws Error|Exception
+     * @throws Throwable
      */
     public function __toString(): string
     {
         $query = $this->query();
         try {
             return $this->renderLayout($query);
-        } catch (Error | Exception $e) {
+        } catch (Throwable $e) {
             return View::renderError($e);
         }
     }

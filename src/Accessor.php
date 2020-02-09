@@ -5,10 +5,23 @@ namespace Aecodes\AdminPanel;
 use Countable;
 use ArrayAccess;
 
+/**
+ * Accessor
+ */
 class Accessor implements ArrayAccess, Countable {
-    
+	
+	/**
+	 * data array
+	 *
+	 * @var array
+	 */
     protected $data = [];
-    
+	
+	/**
+	 * Create new instance and set data if provided
+	 *
+	 * @param array $data
+	 */
     public function __construct(array $data = []) {
         $this->data = $data;
     }

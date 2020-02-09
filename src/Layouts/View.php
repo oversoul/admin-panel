@@ -2,7 +2,7 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Error;
+use Throwable;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Dashboard;
 
@@ -39,10 +39,10 @@ class View
     /**
      * Print out the error.
      *
-     * @param Error $e
+     * @param Throwable $e
      * @return string
      */
-    public static function renderError($e): string
+    public static function renderError(Throwable $e): string
     {
         $without = Dashboard::config()->withoutExceptionHandling();
 

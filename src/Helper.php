@@ -7,12 +7,25 @@ use ArrayAccess;
 class Helper
 {
 
+    /**
+     * Default views directory
+     *
+     * @return string
+     */
     public static function defaultViewsPath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
     }
 
-    public static function arr_get($array, $key, $default = null)
+    /**
+     * Get element from array by key or dotted key
+     *
+     * @param array $array
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function arr_get($array, string $key, $default = null)
     {
         if (is_null($key)) {
             return $array;
@@ -42,7 +55,13 @@ class Helper
         return $array;
     }
 
-    public static function parse_dot($name)
+    /**
+     * Turn dot into arrayble syntax
+     *
+     * @param string $name
+     * @return string
+     */
+    public static function parse_dot(string $name): string
     {
         $names = explode('.', $name);
         if (count($names) == 1) {
@@ -57,6 +76,12 @@ class Helper
         return $attrs;
     }
 
+    /**
+     * Render attributes from array to html notation
+     *
+     * @param array $attributes
+     * @return string
+     */
     public static function attributes(array $attributes = []): string
     {
         if (empty($attributes)) {

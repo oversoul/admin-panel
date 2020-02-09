@@ -58,7 +58,13 @@ class Table
         return $this;
     }
 
-    public function footer(array $elements)
+    /**
+     * Set table footer (pagination?)
+     *
+     * @param array $elements
+     * @return self
+     */
+    public function footer(array $elements): self
     {
         $this->footer = $elements;
         return $this;
@@ -76,6 +82,12 @@ class Table
         return new static($columns, $target);
     }
 
+    /**
+     * Render footer
+     *
+     * @param View $view
+     * @return string
+     */
     public function renderFooter(View $view): string
     {
 

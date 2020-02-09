@@ -314,6 +314,7 @@ return [
         'AlwaysReturnPlugin',
         'PregRegexCheckerPlugin',
         'UnreachableCodePlugin',
+        'HasPHPDocPlugin'
     ],
 
     // A list of directories that should be parsed for class and

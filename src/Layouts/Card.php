@@ -29,6 +29,11 @@ class Card
      */
     protected $content;
 
+    /**
+     * Card attributes
+     *
+     * @var array
+     */
     protected $attributes = [];
 
     /**

@@ -8,9 +8,33 @@ use Aecodes\AdminPanel\Layouts\View;
 class Select extends Field
 {
 
+    /**
+     * Options
+     *
+     * @var array
+     */
     protected $options = [];
+
+    /**
+     * Show when empty
+     *
+     * @var string
+     */
     protected $empty = null;
+    
+    /**
+     * Multiple choices
+     *
+     * @var boolean
+     */
     protected $multiple = false;
+
+    /**
+     * Default attributes
+     * autocomplete = off is set for firefox weird behavior
+     *
+     * @var array
+     */
     protected $attributes = [
         'autocomplete' => 'off',
     ];
@@ -27,13 +51,24 @@ class Select extends Field
         return $this;
     }
 
-    public function multiple()
+    /**
+     * Enable multiple choices
+     *
+     * @return self
+     */
+    public function multiple(): self
     {
         $this->multiple = true;
         return $this;
     }
 
-    public function empty(string $value)
+    /**
+     * Set empty option
+     *
+     * @param string $value
+     * @return self
+     */
+    public function empty(string $value): self
     {
         $this->empty = $value;
         return $this;

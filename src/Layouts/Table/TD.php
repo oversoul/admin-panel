@@ -22,7 +22,7 @@ class TD
     /**
      * Custom renderer
      *
-     * @var null|callback
+     * @var callback
      */
     protected $renderer = null;
 
