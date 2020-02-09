@@ -21,11 +21,11 @@ class Helper
      * Get element from array by key or dotted key
      *
      * @param array $array
-     * @param string $key
+     * @param string|null $key
      * @param mixed $default
      * @return mixed
      */
-    public static function arr_get($array, string $key, $default = null)
+    public static function arr_get($array, ?string $key, $default = null)
     {
         if (is_null($key)) {
             return $array;
