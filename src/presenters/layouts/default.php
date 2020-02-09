@@ -54,7 +54,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-lg-auto">
-                        <?= $view->partial('partials/menu') ?>
+                        <?= $view->include('partials/menu') ?>
                     </ul>
                 </div>
             </div>
@@ -68,7 +68,7 @@
             <input type="hidden" name="_method" value="DELETE">
         </form>
 
-        <?= $view->partial('partials/flash') ?>
+        <?php $view->include('partials/flash') ?>
 
         <div class="row">
             <?= $view->content ?>

@@ -12,12 +12,12 @@
                     <?php endif ?>
                 </div>
                 <div class="col text-right">
-                    <?= $view->partial('partials/top-bar') ?>
+                    <?= $view->include('partials/top-bar') ?>
                 </div>
             </div>
         </div>
 
-        <?= $view->partial('partials/form-errors') ?>
+        <?= $view->include('partials/form-errors') ?>
     
         <div class="card-body">
             <div class="<?= $form->class ?>">
@@ -25,7 +25,7 @@
                     <?= $view->globalFormFields ?>
                     <?php if($form->real_method): ?>
                     <input type="hidden" name="_method" value="<?= $form->real_method ?>">
-                    <?php endif; ?>
+                    <?php endif ?>
                     <?= $form->inputs ?>
                 </form>
             </div>

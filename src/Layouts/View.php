@@ -37,6 +37,27 @@ class View
     }
 
     /**
+     * Includes a view
+     *
+     * @param string $name
+     * @param array $data
+     * @return void
+     */
+    public function include(string $name, array $data = []): void
+    {
+        $view = $this;
+        $view_file_path = $this->getRenderableViewFile($name);
+
+        if (!\file_exists($view_file_path)) {
+            echo "View file not found: {$name}";
+            return;
+        }
+        
+        \extract($data);
+        require $view_file_path;
+    }
+
+    /**
      * Print out the error.
      *
      * @param Throwable $e
