@@ -92,11 +92,10 @@ abstract class Panel
         $config = Dashboard::config();
         
         $view->menu = $config->menu();
+        $view->topBar = $this->getBar();
         $view->errors = $config->errors();
         $view->flashMessage = $config->flash();
         $view->globalFormFields = implode("\n", $config->globalFormFields());
-
-        $view->topBar = $this->getBar();
 
         $view->page = new Accessor([
             'name' => $this->name,

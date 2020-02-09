@@ -10,42 +10,11 @@ class View
 {
 
     /**
-     * View path to render
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
      * Data to push to the view
      *
      * @var array
      */
     protected $data = [];
-
-    // /**
-    //  * Create a new view
-    //  *
-    //  * @param string $path
-    //  * @param array $data
-    //  */
-    // protected function __construct(string $path, array $data = [])
-    // {
-    //     $this->path = $path;
-    //     $this->data = $data;
-    // }
-
-    /**
-     * Create form instance statically
-     *
-     * @param string $path
-     * @param array $data
-     * @return self
-     */
-    public static function make(string $path, array $data = []): self
-    {
-        return new static($path, $data);
-    }
 
     /**
      * Renders a partial
@@ -90,7 +59,13 @@ class View
         );
     }
 
-    protected function getRenderableViewFile($view): string
+    /**
+     * Get full view path
+     *
+     * @param string $view
+     * @return string
+     */
+    protected function getRenderableViewFile(string $view): string
     {
         $view = "/{$view}.php";
         $template = Dashboard::config()->viewsPath();
@@ -121,6 +96,29 @@ class View
         ob_start();
         require $view_file_path;
         return ob_get_clean();
+    }
+
+    /**
+     * Set data
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function __set(string $key, $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
+    /**
+     * Get value from key
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function __get(string $key)
+    {
+        return $this->data[$key] ?? null;
     }
 
 }
