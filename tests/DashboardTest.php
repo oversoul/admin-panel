@@ -12,24 +12,30 @@ use Aecodes\AdminPanel\AdminConfig;
 class DashboardTest extends TestCase
 {
 
+    protected $config;
+    protected $dashboard;
+
+    public function setUp(): void
+    {
+        Dashboard::stop();
+        $this->config = new class extends AdminConfig {};
+        $this->dashboard  = Dashboard::make($this->config);
+    }
+
     public function testShouldBeCreatedFromMake()
     {
-        $config = new class extends AdminConfig {};
-
         $this->assertInstanceOf(
             Dashboard::class,
-            Dashboard::make($config),
+            $this->dashboard,
         );
 
-        $this->assertEquals(Dashboard::config(), $config);
+        $this->assertEquals($this->dashboard::config(), $this->config);
     }
 
     public function testShouldNotBeInstanciatedDirectly()
     {
         $config = new class extends AdminConfig {};
-
         $this->expectException(\Error::class);
-
         new Dashboard($config);
     }
 

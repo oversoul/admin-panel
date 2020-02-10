@@ -3,6 +3,7 @@
 namespace Aecodes\Tests\Fields;
 
 use PHPUnit\Framework\TestCase;
+use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\AdminConfig;
 use Aecodes\AdminPanel\Layouts\View;
@@ -20,7 +21,7 @@ class SelectTest extends TestCase
         Dashboard::make($config);
 
         $this->view = new View;
-        $this->view->page = new class {};
+        $this->view->page = new Accessor;
     }
 
     public function testSelectCanBeCreated()
@@ -43,6 +44,15 @@ class SelectTest extends TestCase
         $this->assertStringContainsString(2, $input);
         $this->assertStringContainsString(3, $input);
         $this->assertStringContainsString(4, $input);
+    }
+
+    public function testSelectCanHaveSelectedOption()
+    {
+        $input = Select::make('about')->title('About')->options([
+            1, 2, 3, 4
+        ])->build(['about' => 3], $this->view);
+
+        $this->assertStringContainsString('selected>4', $input);
     }
 
 }
