@@ -84,7 +84,19 @@ class TD
             return $row;
         }
 
-        return \call_user_func($this->renderer, $row);
+        $data = \call_user_func($this->renderer, $row);
+
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        $result = [];
+
+        foreach ($data as $element) {
+            $result[] = is_string($element) ? $element : $element->build();
+        }
+
+        return \implode("", $result);
     }
 
     /**
@@ -97,7 +109,7 @@ class TD
     {
         $data = $this->getRendererOutput($row);
 
-        if (\is_string($data)) {
+        if (\is_string($data) || \is_numeric($data)) {
             return $data;
         }
 
@@ -105,12 +117,7 @@ class TD
             return $data->{$this->name};
         }
 
-        $result = [];
-        foreach ($data as $element) {
-            $result[] = is_string($element) ? $element : $element->build();
-        }
-        
-        return \implode("", $result);
+        return $data[$this->name];
     }
 
     /**
