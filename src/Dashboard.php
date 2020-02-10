@@ -7,7 +7,7 @@ class Dashboard
     /**
      * config class instance
      *
-     * @var AdminConfig
+     * @var AdminConfig|null
      */
     protected static $config;
 
