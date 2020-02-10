@@ -25,7 +25,7 @@
                 <tbody>
                     <?php if ( count($table->rows) === 0 ): ?>
                     <tr class="text-center text-muted">
-                        <td colspan="<?= $columns->count() ?>">
+                        <td colspan="<?= count($table->columns) ?>">
                             No rows found
                         </td>
                     </tr>
