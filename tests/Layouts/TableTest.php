@@ -73,4 +73,28 @@ class TableTest extends TestCase {
         $this->assertStringContainsString('<td>Title 2</td>', $panel);
         $this->assertStringContainsString('<td>Title 3</td>', $panel);
     }
+
+    public function testTableCanHaveFooter()
+    {
+        $panel = (string) new class extends Panel {
+            function query(): array {
+                return [];
+            }
+
+            function render(): array {
+                return [
+                    Table::make([
+                        TD::make('id', '#'),
+                        TD::make('title', 'Title'),
+                    ])->footer([
+                        'Hello world 1',
+                        'Hello world 2',
+                    ])
+                ];
+            }
+        };
+
+        $this->assertStringContainsString('Hello world 1', $panel);
+        $this->assertStringContainsString('Hello world 2', $panel);
+    }
 }

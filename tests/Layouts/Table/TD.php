@@ -52,4 +52,21 @@ class TDTest extends TestCase
         $this->assertStringContainsString($td, '<td>custom-value</td>');
     }
 
+    public function testCustomRendererCanBeArray()
+    {
+        $td = (new TD('name', 'Title'))->render(function ($row) {
+            return [
+                'custom-value'
+            ];
+        });
+
+        $data = new class
+        {
+            public $name = 'AdminPanel';
+        };
+
+        $td = $td->renderValue($data);
+        $this->assertStringContainsString($td, '<td>custom-value</td>');
+    }
+
 }
