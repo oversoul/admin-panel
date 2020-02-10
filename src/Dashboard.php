@@ -26,6 +26,12 @@ class Dashboard
         self::$config = $config;
     }
 
+    public static function stop()
+    {
+        self::$config = null;
+        self::$instance = null;
+    }
+
     /**
      * Get instance from Config
      *

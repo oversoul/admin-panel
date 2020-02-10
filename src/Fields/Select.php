@@ -98,7 +98,7 @@ class Select extends Field
             $isSelected = \is_array($selected) ? in_array($key, $selected) : $key === $selected;
 
             $options[] = \sprintf(
-                '<option value="%s" %s>%s</option>',
+                '<option value="%s"%s>%s</option>',
                 $key,
                 ($isSelected) ? ' selected' : '',
                 $value,
