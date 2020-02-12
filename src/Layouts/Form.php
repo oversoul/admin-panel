@@ -2,10 +2,10 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Layouts\View;
 use Exception;
+use Aecodes\AdminPanel\View;
+use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Accessor;
 
 class Form
 {

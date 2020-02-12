@@ -1,6 +1,6 @@
 <?php
 
-namespace Aecodes\AdminPanel\Layouts;
+namespace Aecodes\AdminPanel;
 
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Helper;

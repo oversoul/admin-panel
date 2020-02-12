@@ -2,8 +2,8 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Layouts\View;
 
 class Card
 {

@@ -2,9 +2,9 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\Layouts\View;
 
 class Field
 {

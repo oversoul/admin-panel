@@ -2,8 +2,8 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Layouts\View;
 
 class Select extends Field
 {

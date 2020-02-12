@@ -2,11 +2,11 @@
 
 namespace Aecodes\Tests\Fields;
 
+use Aecodes\AdminPanel\View;
 use PHPUnit\Framework\TestCase;
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\AdminConfig;
 use Aecodes\AdminPanel\Fields\Input;
-use Aecodes\AdminPanel\Layouts\View;
 
 class InputTest extends TestCase
 {

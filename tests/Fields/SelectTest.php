@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Aecodes\AdminPanel\Accessor;
 use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\AdminConfig;
-use Aecodes\AdminPanel\Layouts\View;
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Fields\Select;
 
 class SelectTest extends TestCase

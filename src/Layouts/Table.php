@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Layouts;
 
 use Exception;
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Accessor;
 

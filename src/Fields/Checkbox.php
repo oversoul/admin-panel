@@ -2,7 +2,7 @@
 
 namespace Aecodes\AdminPanel\Fields;
 
-use Aecodes\AdminPanel\Layouts\View;
+use Aecodes\AdminPanel\View;
 
 class Checkbox extends Field
 {

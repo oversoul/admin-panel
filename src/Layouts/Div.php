@@ -2,8 +2,8 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
+use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Layouts\View;
 
 class Div
 {

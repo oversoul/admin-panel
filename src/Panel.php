@@ -4,7 +4,6 @@ namespace Aecodes\AdminPanel;
 
 use Throwable;
 use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Layouts\View;
 
 abstract class Panel
 {
