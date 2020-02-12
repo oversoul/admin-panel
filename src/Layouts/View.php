@@ -2,9 +2,9 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Throwable;
-use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Helper;
+use Throwable;
 
 class View
 {
@@ -29,7 +29,7 @@ class View
         $page = $this->page;
         $view_file_path = $this->getRenderableViewFile($name);
         // dd($view_file_path);
-        
+
         \extract($data);
         ob_start();
         require $view_file_path;
@@ -43,7 +43,7 @@ class View
      * @param array $data
      * @return void
      */
-    public function include(string $name, array $data = []): void
+    public function load(string $name, array $data = []): void
     {
         $view = $this;
         $view_file_path = $this->getRenderableViewFile($name);
@@ -52,7 +52,7 @@ class View
             echo "View file not found: {$name}";
             return;
         }
-        
+
         \extract($data);
         require $view_file_path;
     }
@@ -67,11 +67,11 @@ class View
     {
         $without = Dashboard::config()->withoutExceptionHandling();
 
-        if ( $without === true ) {
+        if ($without === true) {
             throw $e;
         }
 
-        ob_get_clean();
+        ob_clean();
         return \sprintf(
             "<h3>%s</h3>
             <pre>%s</pre>",
@@ -92,11 +92,11 @@ class View
         $template = Dashboard::config()->viewsPath();
 
         $view_file_path = $template . $view;
-        
+
         if (!file_exists($view_file_path)) {
             return Helper::defaultViewsPath() . $view;
         }
-        
+
         return $view_file_path;
     }
 
@@ -112,7 +112,7 @@ class View
         $view = $this;
         $data = array_merge($this->data, $data);
         $view_file_path = $this->getRenderableViewFile($path);
-        
+
         extract($data);
         ob_start();
         require $view_file_path;

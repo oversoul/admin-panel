@@ -12,12 +12,12 @@
                     <?php endif ?>
                 </div>
                 <div class="col text-right">
-                    <?= $view->include('partials/top-bar') ?>
+                    <?= $view->load('partials/top-bar') ?>
                 </div>
             </div>
         </div>
 
-        <?= $view->include('partials/form-errors') ?>
+        <?= $view->load('partials/form-errors') ?>
     
         <div class="card-body">
             <div class="<?= $form->class ?>">

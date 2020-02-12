@@ -10,7 +10,7 @@
                     <h3 class="mb-0"><?= $page->description ?></h3>
                 </div>
                 <div class="col text-right">
-                    <?= $view->include('partials/top-bar') ?>
+                    <?= $view->load('partials/top-bar') ?>
                 </div>
             </div>
         </div>
