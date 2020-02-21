@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="https://demos.creative-tim.com/argon-dashboard/assets/css/argon-dashboard.min.css?v=1.1.1">
+    <link rel="stylesheet" href="https://unpkg.com/@creative-tim-official/argon-dashboard-free@1.1.0/assets/css/argon-dashboard.css">
     <style>
         .btn:hover { transform: none; }
         .choices__inner, .choices__input { background-color: transparent; }
