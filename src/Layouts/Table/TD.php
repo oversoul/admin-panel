@@ -118,10 +118,10 @@ class TD
         }
 
         if (\is_object($data)) {
-            return $data->{$this->name};
+            return $data->{$this->name} ?? '';
         }
 
-        return $data[$this->name];
+        return $data[$this->name] ?? '';
     }
 
     /**
@@ -132,6 +132,6 @@ class TD
      */
     public function renderValue($row): string
     {
-        return $this->getValue($row) ?? '';
+        return $this->getValue($row);
     }
 }

@@ -78,8 +78,8 @@ class TableTest extends TestCase {
             function render(): array {
                 return [
                     Table::make([
-                        TD::make('id', '#'),
-                        TD::make('title', 'Title'),
+                        TD::make('#', 'id'),
+                        TD::make('Title', 'title'),
                     ])
                 ];
             }
