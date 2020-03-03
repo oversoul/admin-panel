@@ -45,7 +45,7 @@ class Select extends Field
      * @param array $options
      * @return self
      */
-    public function options(array $options = []): self
+    public function options($options = []): self
     {
         $this->options = $options;
         return $this;

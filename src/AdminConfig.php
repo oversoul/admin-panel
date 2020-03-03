@@ -95,7 +95,7 @@ abstract class AdminConfig
      *
      * @return boolean
      */
-    public function withoutExceptionHandling(): bool
+    public function handleExceptions(): bool
     {
         return false;
     }

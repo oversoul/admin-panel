@@ -65,7 +65,7 @@ class View
      */
     public static function renderError(Throwable $e): string
     {
-        $without = Dashboard::config()->withoutExceptionHandling();
+        $without = Dashboard::config()->handleExceptions();
 
         if ($without === true) {
             throw $e;

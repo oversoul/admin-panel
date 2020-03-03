@@ -144,5 +144,5 @@ public function menu(): array
 7. This is used to disable the admin panel internal exception handling
 
 ```php
-public function withoutExceptionHandling(): bool
+public function handleExceptions(): bool
 ```
