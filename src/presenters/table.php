@@ -1,48 +1,32 @@
-<div class="container">
-    <div class="pb-5">
-        <p class="display-3"><?= $page->name ?></p>
-    </div>
-
-    <div class="card shadow">
-        <div class="card-header border-0">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="mb-0"><?= $page->description ?></h3>
-                </div>
-                <div class="col text-right">
-                    <?= $view->load('partials/top-bar') ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-                <thead class="thead-light">
-                    <?php foreach ($table->columns as $column): ?>
-                        <?= $column->renderTitle() ?>
-                    <?php endforeach;?>
-                </thead>
-                <tbody>
-                    <?php if ( count($table->rows) === 0 ): ?>
-                    <tr class="text-center text-muted">
-                        <td colspan="<?= count($table->columns) ?>">
-                            No rows found
-                        </td>
-                    </tr>
-                    <?php else: ?>
-                        <?php foreach ($table->rows as $source): ?>
-                            <tr>
-                                <?php foreach ($table->columns as $column): ?>
-                                    <?= $column->renderValue($source) ?>
-                                <?php endforeach;?>
-                            </tr>
+<div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+    <table class="min-w-full">
+        <thead>
+            <?php foreach ($table->columns as $column): ?>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    <?= $column->renderTitle() ?>
+                </th>
+            <?php endforeach;?>
+        </thead>
+        <tbody class="bg-white">
+            <?php if ( count($table->rows) === 0 ): ?>
+                <tr class="text-center text-gray h-40">
+                    <td colspan="<?= count($table->columns) ?>">
+                        No rows found
+                    </td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($table->rows as $source): ?>
+                    <tr>
+                        <?php foreach ($table->columns as $column): ?>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"><?= $column->renderValue($source) ?></td>
                         <?php endforeach;?>
-                    <?php endif ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer py-4">
-            <?= $table->footer ?>
-        </div>
+                    </tr>
+                <?php endforeach;?>
+            <?php endif ?>
+        </tbody>
+    </table>
+
+    <div class="card-footer py-4">
+        <?= $table->footer ?>
     </div>
 </div>

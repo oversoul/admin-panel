@@ -1,7 +1,7 @@
 <?php if ($view->errors): ?>
-    <div class="alert-danger py-2 px-4">
-    <?php foreach ($view->errors as $error): ?>
-        <div class="py-2"><?= $error ?></div>
-    <?php endforeach ?>
+	<div class="rounded bg-red-500 text-white text-sm font-bold px-4 py-3 mb-4" role="alert">
+	    <?php foreach ($view->errors as $error): ?>
+	        <p class="my-2"><?= $error ?></p>
+	    <?php endforeach ?>
     </div>
 <?php endif ?>

@@ -1,7 +1,7 @@
-<div class="form-group" data-image x-data="{...fields.imageUpload, image: '<?= $value ?>' }">
-    <div x-show="image" class="image">
-        <img :src="image" class="img-thumbnail w-100" />
-        <button class="btn btn-danger btn-sm btn-close" @click.prevent="hideImage()">x</button>
+<div class="w-full mb-6" data-image x-data="{...fields.imageUpload, image: '<?= $value ?>' }">
+    <div x-show="image" class="relative">
+        <img :src="image" class="w-40 h-40 rounded" />
+        <button class="bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded absolute top-0" @click.prevent="hideImage()">x</button>
     </div>
 
     <div x-show="!image" class="drop-area" @click="$refs.file.click()" @dragover.prevent x-on:drop.prevent="setupImage(event.dataTransfer)">

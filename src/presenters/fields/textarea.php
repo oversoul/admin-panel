@@ -1,4 +1,10 @@
-<div class="form-group">
-  <label class="form-control-label" for="<?= $name ?>"><?= $title ?></label>
-  <textarea name="<?= $name ?>" class="form-control" <?= $attributes ?>><?= $value ?></textarea>
+<div class="w-full mb-6">
+  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="<?= $name ?>"><?= $title ?></label>
+
+  <textarea
+  	id="<?= $name ?>"
+  	name="<?= $name ?>"
+	class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+  	<?= $attributes ?>
+  ><?= $value ?></textarea>
 </div>
