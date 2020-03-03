@@ -65,13 +65,13 @@ class View
      */
     public static function renderError(Throwable $e): string
     {
+        ob_clean();
         $without = Dashboard::config()->withoutExceptionHandling();
 
         if ($without === true) {
             throw $e;
         }
 
-        ob_clean();
         return \sprintf(
             "<h3>%s</h3>
             <pre>%s</pre>",
@@ -110,6 +110,7 @@ class View
     public function render(string $path, array $data = []): string
     {
         $view = $this;
+        $config = Dashboard::config();
         $data = array_merge($this->data, $data);
         $view_file_path = $this->getRenderableViewFile($path);
 
