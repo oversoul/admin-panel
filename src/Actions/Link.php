@@ -60,7 +60,7 @@ class Link extends Action
             '<a href="%s" %s>%s</a>',
             $this->href,
             $attributes,
-            $this->value,
+            $this->value
         );
     }
 }

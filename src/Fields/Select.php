@@ -101,7 +101,7 @@ class Select extends Field
                 '<option value="%s"%s>%s</option>',
                 $key,
                 ($isSelected) ? ' selected' : '',
-                $value,
+                $value
             );
         }
 

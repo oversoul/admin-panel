@@ -55,7 +55,7 @@ class Button extends Action
             '<button type="%s" %s>%s</button>',
             $this->type,
             $attributes,
-            $this->value,
+            $this->value
         );
     }
 }
