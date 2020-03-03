@@ -2,10 +2,11 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Exception;
-use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Accessor;
+use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Layouts\Table\TD;
+use Aecodes\AdminPanel\View;
+use Exception;
 
 class Table
 {
@@ -45,6 +46,17 @@ class Table
 
         $this->target = $target;
         $this->columns = $columns;
+    }
+
+    /**
+     * Create new column
+     * @param  string $name
+     * @param  string $title
+     * @return TD
+     */
+    public static function column(string $name, string $title): TD
+    {
+        return new TD($name, $title);
     }
 
     /**
