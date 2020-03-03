@@ -52,10 +52,13 @@ function query(): array {
 function render(): array {
     return [
         Table::make([
-            // (field name, field label)
-            TD::make('id', '#'),
-            TD::make('title', 'Title'),
+            // (field label, field name) both are optional
+            TD::make('#', 'id'),
+            // it's also possible to use Table::column
+            Table::column('Title', 'title'),
         ])
+
+        // ...
     ];
 }
 ```
@@ -73,6 +76,8 @@ function render(): array {
         ])
         ->action('#')
         ->method('post'),
+
+        // ...
     ];
 }
 ```
@@ -146,3 +151,26 @@ public function menu(): array
 ```php
 public function handleExceptions(): bool
 ```
+
+8. Define classes will be applied to all buttons in the admin panel.
+
+```php
+public function buttonClass(): string
+```
+
+9. Define classes will be applied to all links in the admin panel.
+
+```php
+public function linkCss(): string
+```
+
+10. Define logout url (the method will be `DELETE`).
+
+```php
+public function logoutUrl(): string
+```
+
+
+## Links
+
+- This package uses [Tailwindcss](https://tailwindcss.com)
