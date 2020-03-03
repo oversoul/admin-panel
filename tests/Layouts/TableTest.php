@@ -65,13 +65,13 @@ class TableTest extends TestCase {
 
         $this->assertStringContainsString('#', $panel);
         $this->assertStringContainsString('title', $panel);
-        $this->assertStringContainsString('<td>1</td>', $panel);
-        $this->assertStringContainsString('<td>2</td>', $panel);
-        $this->assertStringContainsString('<td>3</td>', $panel);
+        $this->assertStringContainsString('>1</td>', $panel);
+        $this->assertStringContainsString('>2</td>', $panel);
+        $this->assertStringContainsString('>3</td>', $panel);
 
-        $this->assertStringContainsString('<td>Title 1</td>', $panel);
-        $this->assertStringContainsString('<td>Title 2</td>', $panel);
-        $this->assertStringContainsString('<td>Title 3</td>', $panel);
+        $this->assertStringContainsString('>Title 1</td>', $panel);
+        $this->assertStringContainsString('>Title 2</td>', $panel);
+        $this->assertStringContainsString('>Title 3</td>', $panel);
     }
 
     public function testTableCanHaveFooter()

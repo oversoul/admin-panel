@@ -2,13 +2,22 @@
 
 namespace Aecodes\Tests\Actions;
 
-use PHPUnit\Framework\TestCase; 
-use Aecodes\AdminPanel\Actions\Link;
 use Aecodes\AdminPanel\Actions\Action;
 use Aecodes\AdminPanel\Actions\Button;
+use Aecodes\AdminPanel\Actions\Link;
+use Aecodes\AdminPanel\AdminConfig;
+use Aecodes\AdminPanel\Dashboard;
+use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
 {
+
+    public function setUp(): void
+    {
+        $config = new class extends AdminConfig {};
+
+        Dashboard::make($config);
+    }
 
     public function testCanProvideButtonInstance()
     {

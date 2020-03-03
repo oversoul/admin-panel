@@ -100,14 +100,12 @@ class FormTest extends TestCase
     {
         $view = new View;
         $view->topBar = [];
-        $view->page = new Accessor(['name' => 'form title']);
 
         $form = Form::make([
             Input::make('email')->title('Email'),
         ])->build([], $view);
 
         $this->assertStringContainsString('Email', $form);
-        $this->assertStringContainsString('form title', $form);
         $this->assertStringContainsString('method="POST"', $form);
 
         $form = Form::make([
@@ -137,7 +135,6 @@ class FormTest extends TestCase
     {
         $view = new View;
         $view->topBar = [];
-        $view->page = new Accessor(['name' => 'form title']);
         
         $action = \random_bytes(20);
         
@@ -146,7 +143,6 @@ class FormTest extends TestCase
         ])->action($action)->build([], $view);
 
         $this->assertStringContainsString('Email', $form);
-        $this->assertStringContainsString('form title', $form);
         $this->assertStringContainsString('action="' . $action . '"', $form);
     }
 }
