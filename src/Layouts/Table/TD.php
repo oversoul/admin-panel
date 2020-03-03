@@ -69,7 +69,7 @@ class TD
      */
     public function renderTitle(): string
     {
-        return \sprintf('<th>%s</th>', $this->title);
+        return $this->title;
     }
 
     /**
@@ -128,7 +128,6 @@ class TD
      */
     public function renderValue($row): string
     {
-        $data = $this->getValue($row);
-        return \sprintf("<td>%s</td>", $data);
+        return $this->getValue($row);
     }
 }
