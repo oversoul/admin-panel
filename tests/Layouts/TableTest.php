@@ -42,6 +42,28 @@ class TableTest extends TestCase {
         $this->assertStringContainsString('No rows found', $panel);
     }
 
+    public function testCanRenderTableWithEmptyRowsUsingColumnInsteadOfTD()
+    {
+        $panel = (string) new class extends Panel {
+            function query(): array {
+                return [];
+            }
+
+            function render(): array {
+                return [
+                    Table::make([
+                        Table::column('id', '#'),
+                        Table::column('title', 'Title'),
+                    ])
+                ];
+            }
+        };
+
+        $this->assertStringContainsString('#', $panel);
+        $this->assertStringContainsString('title', $panel);
+        $this->assertStringContainsString('No rows found', $panel);
+    }
+
     public function testCanRenderTableData()
     {
         $panel = (string) new class extends Panel {
