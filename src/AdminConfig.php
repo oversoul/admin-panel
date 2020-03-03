@@ -99,4 +99,19 @@ abstract class AdminConfig
     {
         return false;
     }
+
+    public function linkClass(): string
+    {
+        return '';
+    }
+
+    public function buttonClass(): string
+    {
+        return '';
+    }
+
+    public function logoutUrl(): string
+    {
+        return '/auth/logout';
+    }
 }

@@ -61,6 +61,7 @@ abstract class Panel
      */
     public function __toString(): string
     {
+        ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
         $query = $this->query();
         try {
             return $this->renderLayout($query);
