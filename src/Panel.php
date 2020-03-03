@@ -72,14 +72,15 @@ abstract class Panel
 
     /**
      * Get Bar content.
-     *
+     * @param  mixed $query
+     * @param  View   $view
      * @return array
      */
-    final public function getBar(): array
+    final public function getBar($query, View $view): array
     {
         $widgets = [];
         foreach ($this->bar() as $widget) {
-            $widgets[] = (string) $widget;
+            $widgets[] = is_string($widget) ? $widget : $widget->build($query, $view);
         }
         return $widgets;
     }
@@ -92,17 +93,17 @@ abstract class Panel
      */
     final protected function renderLayout(array $query): string
     {
-        $view = new View;
+        $view   = new View;
         $config = Dashboard::config();
-        
-        $view->menu = $config->menu();
-        $view->topBar = $this->getBar();
-        $view->errors = $config->errors();
-        $view->flashMessage = $config->flash();
+
+        $view->menu             = $config->menu();
+        $view->errors           = $config->errors();
+        $view->flashMessage     = $config->flash();
+        $view->topBar           = $this->getBar($query, $view);
         $view->globalFormFields = implode("\n", $config->globalFormFields());
 
         $view->page = new Accessor([
-            'name' => $this->name,
+            'name'        => $this->name,
             'description' => $this->description,
         ]);
 

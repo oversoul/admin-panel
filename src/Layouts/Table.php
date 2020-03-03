@@ -2,11 +2,11 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Layouts\Table\TD;
-use Aecodes\AdminPanel\View;
 use Exception;
+use Aecodes\AdminPanel\View;
+use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Accessor;
+use Aecodes\AdminPanel\Layouts\Table\TD;
 
 class Table
 {
@@ -38,25 +38,25 @@ class Table
      * @param array $columns
      * @param string|null $target
      */
-    public function __construct(array $columns, ?string $target = null)
+    public function __construct(array $columns,  ? string $target = null)
     {
         if (empty($columns)) {
             throw new Exception("No columns defined for the table.");
         }
 
-        $this->target = $target;
+        $this->target  = $target;
         $this->columns = $columns;
     }
 
     /**
      * Create new column
-     * @param  string $name
      * @param  string $title
+     * @param  string $name
      * @return TD
      */
-    public static function column(string $name, string $title): TD
+    public static function column(string $title = '', string $name = '') : TD
     {
-        return new TD($name, $title);
+        return new TD($title, $name);
     }
 
     /**
@@ -90,7 +90,7 @@ class Table
      * @param string|null $target
      * @return self
      */
-    public static function make(array $columns, ?string $target = null): self
+    public static function make(array $columns,  ? string $target = null) : self
     {
         return new static($columns, $target);
     }
@@ -104,7 +104,7 @@ class Table
     public function renderFooter(View $view): string
     {
 
-        if ( count($this->footer) === 0 ) {
+        if (count($this->footer) === 0) {
             return '';
         }
 
@@ -125,11 +125,11 @@ class Table
     public function build(array $data, View $view): string
     {
         $columns = $this->columns;
-        $footer = $this->renderFooter($view);
-        $rows = Helper::arr_get($data, $this->target, []);
+        $footer  = $this->renderFooter($view);
+        $rows    = Helper::arr_get($data, $this->target, []);
 
         return $view->partial('table', [
-            'table' =>  new Accessor(compact('columns', 'rows', 'footer'))
+            'table' => new Accessor(compact('columns', 'rows', 'footer')),
         ]);
     }
 

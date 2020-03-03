@@ -31,8 +31,8 @@
     </script>
 </head>
 
-<body>
-    <nav class="bg-gray-700 ">
+<body class="text-gray-700">
+    <nav class="bg-gray-700">
         <div class="container max-w-7xl mx-auto">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
@@ -63,7 +63,7 @@
             <div class="max-w-7xl mx-auto py-6">
                 <div class="flex justify-between">
                     <div>
-                        <h2 class="text-3xl font-bold leading-tight text-gray-900">
+                        <h2 class="text-3xl font-bold leading-tight text-gray-700">
                             <?=$view->page->name;?>
                         </h2>
                         <h3 class="text-gray-600"><?=$view->page->description;?></h3>

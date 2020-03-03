@@ -29,13 +29,13 @@ class TD
     /**
      * Create a new TD
      *
-     * @param string $name
      * @param string $title
+     * @param string $name
      */
-    public function __construct(string $name, string $title)
+    public function __construct(string $title = '', string $name = '')
     {
-        $this->name = $name;
         $this->title = $title;
+        $this->name  = $name;
     }
 
     /**
@@ -45,9 +45,9 @@ class TD
      * @param string $title
      * @return self
      */
-    public static function make(string $name, string $title): self
+    public static function make(string $title = '', string $name = ''): self
     {
-        return new static($name, $title);
+        return new static($title, $name);
     }
 
     /**
@@ -113,6 +113,10 @@ class TD
             return $data;
         }
 
+        if ($this->name === '') {
+            return '';
+        }
+
         if (\is_object($data)) {
             return $data->{$this->name};
         }
@@ -128,6 +132,6 @@ class TD
      */
     public function renderValue($row): string
     {
-        return $this->getValue($row);
+        return $this->getValue($row) ?? '';
     }
 }
