@@ -26,7 +26,7 @@ class DashboardTest extends TestCase
     {
         $this->assertInstanceOf(
             Dashboard::class,
-            $this->dashboard,
+            $this->dashboard
         );
 
         $this->assertEquals($this->dashboard::config(), $this->config);
