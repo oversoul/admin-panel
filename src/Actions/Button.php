@@ -2,8 +2,9 @@
 
 namespace Aecodes\AdminPanel\Actions;
 
-use Exception;
+use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Helper;
+use Exception;
 
 class Button extends Action
 {
@@ -44,6 +45,10 @@ class Button extends Action
      */
     public function build(): string
     {
+        $defaultClass = Dashboard::config()->buttonClass();
+
+        $this->attributes['class'] = trim(implode(' ', [($this->attributes['class'] ?? ''), $defaultClass]));
+
         $attributes = Helper::attributes($this->attributes);
 
         return \sprintf(

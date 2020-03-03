@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Actions;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Dashboard;
 
 class Link extends Action
 {
@@ -44,10 +45,14 @@ class Link extends Action
      */
     public function build(): string
     {
-        if ( $this->delete === true ) {
+        if ($this->delete === true) {
             $this->attributes['onclick'] = 'triggerDestroyForm(event, \'' . $this->href . '\')';
-            $this->href = 'javascript:{}';
+            $this->href                  = 'javascript:{}';
         }
+
+        $defaultClass = Dashboard::config()->linkClass();
+
+        $this->attributes['class'] = trim(implode(' ', [$defaultClass, ($this->attributes['class'] ?? '')]));
 
         $attributes = Helper::attributes($this->attributes);
 
