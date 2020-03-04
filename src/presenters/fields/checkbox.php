@@ -1,8 +1,4 @@
-<div class="form-group container align-items-center d-flex p-0">
-  <label class="custom-toggle">
-    <input type="checkbox" id="<?= $name ?>" <?= $value ?> name="<?= $name ?>">
-    <span class="custom-toggle-slider rounded-circle"></span>
-  </label>
-
-  <label class="ml-2" for="<?= $name ?>"><?= $title ?></label>
+<div class="w-full mb-6 flex">
+	<input type="checkbox" id="<?= $name ?>" <?= $value ?> name="<?= $name ?>">
+	<label class="ml-3 mt-1" for="<?= $name ?>"><?= $title ?></label>
 </div>
