@@ -41,8 +41,8 @@ class TD
     /**
      * Create new TD statically
      *
-     * @param string $name
      * @param string $title
+     * @param string $name
      * @return self
      */
     public static function make(string $title = '', string $name = ''): self
