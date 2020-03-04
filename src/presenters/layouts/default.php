@@ -12,9 +12,6 @@
         .choices__inner, .choices__input { background-color: transparent; }
         .choices__input { margin-bottom: 0; }
         .choices__inner { min-height: 46px; }
-        .drop-area { display: flex; min-height: 160px; padding: 10px; position: relative; border-radius: 3px; text-align: center; align-items: center; justify-content: center; border: 2px dashed #ccc; }
-        .drop-area strong { display: block; font-weight: 500; font-size: 1.2rem; }
-        .drop-area input[type=file] { display: none; }
     </style>
     <script>
         function triggerDestroyForm(event, action) {
@@ -83,7 +80,7 @@
                     </form>
                     <div class="flex justify-center">
                         <div class="container">
-                            <?php $view->load('partials/flash');?>
+                            <?php $view->load('partials/flash') ?>
                             <?=$view->content;?>
                         </div>
                     </div>
@@ -93,7 +90,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.7/dist/alpine.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.0.2/dist/alpine.js" defer></script>
     <script>
     document.querySelectorAll('.single-select').forEach(el => {
         new Choices(el)
@@ -113,6 +110,24 @@
                 reader.onloadend = () => {
                     this.image = reader.result
                 }
+            }
+        },
+        imagesUpload: {
+            images: [],
+            hideImage(index) {
+                // remove here?
+                this.images.splice(index, 1)
+            },
+            setupImage(field) {
+                const files = Array.from(field.files)
+
+                files.map(file => {
+                    let reader = new FileReader()
+                    reader.readAsDataURL(file)
+                    reader.onloadend = () => {
+                        this.images.push(reader.result)
+                    }
+                })
             }
         },
     }

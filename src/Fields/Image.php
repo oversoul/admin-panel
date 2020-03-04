@@ -3,7 +3,6 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Helper;
 
 class Image extends Field
 {
@@ -27,7 +26,7 @@ class Image extends Field
      *
      * @var string
      */
-    protected $help = 'Upload files here and they won\'t be sent immediately';
+    protected $help = "Upload files here and they won't be sent immediately";
 
     /**
      * Enabling multiple files
@@ -61,15 +60,15 @@ class Image extends Field
      */
     public function build(array $data, View $view): string
     {
-        $attributes = Helper::attributes($this->attributes);
-        
+        $this->getValue($data);
+
         return $view->partial('fields/image', [
             'name'       => $this->name,
             'help'       => $this->help,
             'path'       => $this->path,
             'title'      => $this->title,
-            'attributes' => $attributes,
-            'value'      => $this->value($data),
+            'value'      => $this->value,
+            'attributes' => $this->getAttributes(),
             'multiple'   => ($this->multiple === true) ? 'multiple' : '',
         ]);
     }
