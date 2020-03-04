@@ -3,7 +3,6 @@
 namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Helper;
 
 class Select extends Field
 {
@@ -83,7 +82,7 @@ class Select extends Field
     protected function buildOptions($data): string
     {
         $options = [];
-        $selected = $this->value($data);
+        $this->getValue($data);
 
         // dd($selected);
 
@@ -95,7 +94,7 @@ class Select extends Field
         }
 
         foreach ($this->options as $key => $value) {
-            $isSelected = \is_array($selected) ? in_array($key, $selected) : $key === $selected;
+            $isSelected = \is_array($this->value) ? in_array($key, $this->value) : $key === $this->value;
 
             $options[] = \sprintf(
                 '<option value="%s"%s>%s</option>',
@@ -123,13 +122,11 @@ class Select extends Field
             $this->attributes['multiple'] = '';
         }
 
-        $attributes = Helper::attributes($this->attributes);
-
         return $view->partial('fields/select', [
             'name' => $this->name,
             'title' => $this->title,
             'options' => $options,
-            'attributes' => $attributes,
+            'attributes' => $this->getAttributes(),
         ]);
     }
 }

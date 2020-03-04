@@ -11,6 +11,7 @@ class Checkbox extends Field
      * Build input field
      *
      * @param array $data
+     * @param View $view
      * @return string
      */
     public function build(array $data, View $view): string
@@ -18,7 +19,7 @@ class Checkbox extends Field
         return $view->partial('fields/checkbox', [
             'name' => $this->name,
             'title' => $this->title,
-            'value' => $this->value($data) ? ' checked' : '',
+            'value' => $this->getValue($data) ? ' checked' : '',
         ]);
     }
 }

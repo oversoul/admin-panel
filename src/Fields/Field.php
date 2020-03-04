@@ -52,6 +52,11 @@ class Field
     protected $attributes = [];
 
     /**
+     * @var null|string
+     */
+    protected $value = null;
+
+    /**
      * Create new field
      *
      * @param string $target
@@ -74,18 +79,35 @@ class Field
     }
 
     /**
+     * Set value
+     *
+     * @param $value
+     * @return $this
+     */
+    public function value($value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    /**
      * Get value of field using data
      *
      * @param array $data
      * @return mixed
      */
-    protected function value(array $data = [])
+    protected function getValue(array $data = [])
     {
-        if ($this->noFill) {
-            return '';
+        if ($this->value) {
+            return;
         }
 
-        return Dashboard::config()->oldValue(
+        if ($this->noFill) {
+            $this->value = '';
+            return;
+        }
+
+        $this->value = Dashboard::config()->oldValue(
             $this->target,
             Helper::arr_get($data, $this->target, '')
         );
@@ -167,9 +189,20 @@ class Field
     }
 
     /**
+     * Stringify attributes.
+     *
+     * @return string
+     */
+    protected function getAttributes(): string
+    {
+        return Helper::attributes($this->attributes);
+    }
+
+    /**
      * Default build method
      *
      * @param array $data
+     * @param View $view
      * @return string
      */
     public function build(array $data, View $view): string
