@@ -1,6 +1,6 @@
 {
     "name": "aecodes/admin-panel",
-    "description": "A simplistic admin panel",
+    "description": "A simplistic framework agnostic admin panel",
     "type": "library",
     "authors": [
         {
