@@ -14,7 +14,7 @@ class Helper
      */
     public static function defaultViewsPath(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'presenters' . DIRECTORY_SEPARATOR;
     }
 
     /**
