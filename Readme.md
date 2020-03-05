@@ -36,7 +36,6 @@ ps: you still need to setup your routes, the authentification etc...
 1. create a class that extends the `Panel` class
 2. for convenience set the properties for both `$name` & `$description` of the panel (visible on the page)
 3. create a `query` method that returns the array of data.
-4. create a `render` method that returns an array.
 
 ```php
 function query(): array {
@@ -46,7 +45,9 @@ function query(): array {
 }
 ```
 
-5. to create a table
+4. create a `render` method that returns an array.
+
+- to create a table
 
 ```php
 function render(): array {
@@ -63,7 +64,7 @@ function render(): array {
 }
 ```
 
-6. to create a form
+- to create a form
 
 ```php
 function render(): array {
@@ -82,7 +83,7 @@ function render(): array {
 }
 ```
 
-7. to finish up, in the callback of your route, just return a new instance of the class you created. it must be returned as a `string`.
+5. to finish up, in the callback of your route, just return a new instance of the class you created. it must be returned as a `string`.
 
 ps: in many frameworks (laravel as an example), returning an instance from the callback calls the `__toString`. with that you will only need to return the new instance.
 
@@ -173,4 +174,7 @@ public function logoutUrl(): string
 
 ## Links
 
-- This package uses [Tailwindcss](https://tailwindcss.com)
+This package uses
+
+- [Tailwindcss](https://tailwindcss.com)
+- [AlpineJs](https://github.com/alpinejs/alpine)
