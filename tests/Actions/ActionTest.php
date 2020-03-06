@@ -55,4 +55,10 @@ class ActionTest extends TestCase
         $this->assertStringContainsString($url, $link);
         $this->assertStringContainsString('About', $link);
     }
+
+    public function testInvalidActionType()
+    {
+        $this->expectException(\Exception::class);
+        Action::something('About')->href($url)->build();
+    }
 }

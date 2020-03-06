@@ -1,13 +1,14 @@
 <?php
 
 namespace Aecodes\AdminPanel\Actions;
+use Exception;
 
 class Action
 {
 
     /**
      * Is action a delete?
-     * 
+     *
      * @var boolean
      */
     protected $delete = false;
@@ -23,8 +24,19 @@ class Action
      * Html attributes
      *
      * @var array
+     * FIXME: this redendant in both actions
      */
     protected $attributes = [];
+
+    /**
+     * Allowed actions.
+     * @var array
+     */
+    protected static $allowedActions = [
+        'button' => Button::class,
+        'delete' => Link::class,
+        'link'   => Link::class,
+    ];
 
     /**
      * Create new Action
@@ -97,23 +109,21 @@ class Action
      * @param string $method
      * @param array $params
      * @return Button|Link|void
+     * @throws Exception
      */
     public static function __callStatic(string $method, array $params = [])
     {
-        $isDelete = false;
-        if (\in_array($method, ['button', 'link', 'delete'])) {
-            if ( $method === 'delete' ) {
-                $isDelete = true;
-                $method = 'link';
-            }
-            $method = 'Aecodes\AdminPanel\Actions\\' . ucfirst($method);
-            $object = \call_user_func_array([$method, 'make'], $params);
+        if (isset(static::$allowedActions[$method])) {
+            $className = static::$allowedActions[$method];
+            $object    = call_user_func_array([$className, 'make'], $params);
 
-            if ( $isDelete === true ) {
+            if ($method === 'delete') {
                 return $object->setDelete();
             }
 
             return $object;
         }
+
+        throw new Exception("{$method} is an invalid action type.");
     }
 }
