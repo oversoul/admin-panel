@@ -94,7 +94,7 @@ class Field
      * Get value of field using data
      *
      * @param array $data
-     * @return mixed
+     * @return void
      */
     protected function getValue(array $data = [])
     {
