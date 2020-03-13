@@ -2,9 +2,6 @@
 
 namespace Aecodes\AdminPanel\Actions;
 
-use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Dashboard;
-
 class Link extends Action
 {
 
@@ -50,11 +47,7 @@ class Link extends Action
             $this->href                  = 'javascript:{}';
         }
 
-        $defaultClass = Dashboard::config()->linkClass();
-
-        $this->attributes['class'] = trim(implode(' ', [$defaultClass, ($this->attributes['class'] ?? '')]));
-
-        $attributes = Helper::attributes($this->attributes);
+        $attributes = $this->buildAttributes();
 
         return \sprintf(
             '<a href="%s" %s>%s</a>',

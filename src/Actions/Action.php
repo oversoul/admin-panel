@@ -1,7 +1,10 @@
 <?php
 
 namespace Aecodes\AdminPanel\Actions;
+
 use Exception;
+use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Dashboard;
 
 class Action
 {
@@ -14,6 +17,12 @@ class Action
     protected $delete = false;
 
     /**
+     * Class name
+     * @var string
+     */
+    protected $class = '';
+
+    /**
      * Action value
      *
      * @var string
@@ -24,7 +33,6 @@ class Action
      * Html attributes
      *
      * @var array
-     * FIXME: this redendant in both actions
      */
     protected $attributes = [];
 
@@ -79,6 +87,11 @@ class Action
      */
     final public function __call(string $key, array $params = []): self
     {
+        if ( $key === 'class' ) {
+            $this->class = $params[0];
+            return $this;
+        }
+
         $this->attributes[$key] = $params[0];
         return $this;
     }
@@ -101,6 +114,27 @@ class Action
     public function __toString(): string
     {
         return $this->build();
+    }
+
+    /**
+     * Build attributes for action
+     * 
+     * @return string
+     */
+    protected function buildAttributes(): string
+    {
+        $defaultClasses = '';
+        if ( $this instanceof Link ) {
+            $defaultClasses = Dashboard::config()->linkClass();
+        } else if ( $this instanceof Button ) {
+            $defaultClasses = Dashboard::config()->buttonClass();
+        }
+
+        $classes = trim(implode(' ', [$this->class, $defaultClasses]));
+        $attributes = $this->attributes;
+        $attributes['class'] = $classes;
+
+        return Helper::attributes($attributes);
     }
 
     /**
