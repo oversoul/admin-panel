@@ -20,7 +20,7 @@ class Select extends Field
      * @var string
      */
     protected $empty = null;
-    
+
     /**
      * Multiple choices
      *
@@ -67,7 +67,7 @@ class Select extends Field
      * @param string $value
      * @return self
      */
-    public function empty(string $value): self
+    function empty(string $value): self
     {
         $this->empty = $value;
         return $this;
@@ -82,11 +82,10 @@ class Select extends Field
     protected function buildOptions($data): string
     {
         $options = [];
-        $this->getValue($data);
 
         // dd($selected);
 
-        if ( $this->empty ) {
+        if ($this->empty) {
             $options[] = \sprintf(
                 '<option value="-1" hidden>%s</option>',
                 $this->empty
@@ -115,17 +114,16 @@ class Select extends Field
      */
     public function build(array $data, View $view): string
     {
-        $options = $this->buildOptions($data);
+        $this->getValue($data);
 
-        if ($this->multiple === true) {
-            $this->name .= '[]';
-            $this->attributes['multiple'] = '';
-        }
+        $options = ($this->multiple === true) ? $this->options : $this->buildOptions($data);
 
         return $view->partial('fields/select', [
-            'name' => $this->name,
-            'title' => $this->title,
-            'options' => $options,
+            'options'    => $options,
+            'name'       => $this->name,
+            'title'      => $this->title,
+            'value'      => $this->value,
+            'multiple'   => $this->multiple,
             'attributes' => $this->getAttributes(),
         ]);
     }

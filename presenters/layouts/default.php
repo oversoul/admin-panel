@@ -6,13 +6,8 @@
     <title>Admin Panel</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .choices__inner, .choices__input { background-color: transparent; }
-        .choices__input { margin-bottom: 0; }
-        .choices__inner { min-height: 46px; }
-    </style>
+
     <script>
         function triggerDestroyForm(event, action) {
             const answer = confirm("This action cannot be reversed. are you sure?");
@@ -92,9 +87,6 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.0.2/dist/alpine.js" defer></script>
     <script>
-    document.querySelectorAll('.single-select').forEach(el => {
-        new Choices(el)
-    })
 
     const fields = {
         imageUpload: {
@@ -129,6 +121,51 @@
                 })
             }
         },
+
+        multiSelect: {
+            tags: [],
+            choices: [],
+            availableTags: [],
+            showOptions: false,
+
+            init() {
+                this.filterTags()
+            },
+
+            filterTags() {
+                this.availableTags = []
+                this.choices.map(tag => ( ! this.tags.includes(tag) ) ? this.availableTags.push(tag) : null)
+                this.showOptions = false
+            },
+
+            displayOptions() {
+                if (this.availableTags.length !== 0 ) this.showOptions = true
+            },
+
+            addTag(event) {
+                let tag = ''
+                if (typeof(event) === "string") {
+                    tag = event
+                } else {
+                    tag = event.target.value.trim()
+                    event.target.value = ''
+                }
+
+                if (tag === '' || this.tags.includes(tag)) return
+                this.tags.push(tag)
+                this.filterTags()
+            },
+
+            popTag(event) {
+                if (event.target.value.trim() !== '') return
+                this.tags.pop()
+            },
+
+            removeTag(i) {
+                this.tags.splice(i, 1)
+                this.filterTags()
+            }
+        }
     }
     </script>
 </body>
