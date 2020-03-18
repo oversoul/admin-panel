@@ -4,7 +4,7 @@ namespace Aecodes\AdminPanel\Fields;
 
 use Aecodes\AdminPanel\View;
 
-class TextArea extends Field
+class Textarea extends Field
 {
 
     /**
