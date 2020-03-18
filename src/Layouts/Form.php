@@ -75,10 +75,15 @@ class Form
      * Set form method
      *
      * @param string $method
+     * @param string|null $url
      * @return self
      */
-    public function method(string $method): self
+    public function method(string $method, ?string $url): self
     {
+        if ($url) {
+            $this->action($url);
+        }
+
         $this->method = \strtoupper($method);
         return $this;
     }
@@ -163,7 +168,8 @@ class Form
     public function __call(string $method, array $params = []): self
     {
         if (\in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
-            return $this->method($method);
+            // calling array_shift on empty array returns null
+            return $this->method($method, array_shift($params));
         }
         return $this;
     }
