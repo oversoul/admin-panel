@@ -78,7 +78,7 @@ class Form
      * @param string|null $url
      * @return self
      */
-    public function method(string $method, ?string $url): self
+    public function method(string $method, ?string $url = null): self
     {
         if ($url) {
             $this->action($url);
