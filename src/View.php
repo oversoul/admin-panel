@@ -62,6 +62,7 @@ class View
      *
      * @param Throwable $e
      * @return string
+     * @throws Throwable
      */
     public static function renderError(Throwable $e): string
     {
