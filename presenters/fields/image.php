@@ -6,6 +6,7 @@
             <div x-show="image" class="relative">
                 <img :src="image" class="w-40 h-40 rounded" alt="<?= $value ?>"/>
                 <button
+                    type="button"
                     @click.prevent="hideImage()"
                     class="bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded absolute top-0"
                 >x</button>
@@ -29,6 +30,7 @@
                     <div class="relative m-2">
                         <img :src="image" class="object-cover w-40 h-40 rounded" :alt="image" />
                         <button
+                            type="button"
                             @click.prevent="hideImage(index)"
                             class="bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded absolute top-0"
                         >x</button>
