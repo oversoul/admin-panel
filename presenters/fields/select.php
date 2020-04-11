@@ -19,7 +19,7 @@
             <template x-for="(tag, i) in tags" :key="tag">
                 <span class="inline-flex items-center text-sm bg-blue-200 p-1 mr-2 rounded text-blue-900">
                     <span x-text="tag"></span>
-                    <button class="text-blue-500 leading-none text-lg ml-2" @click.prevent="removeTag(i)">&times;</button>
+                    <button type="button" class="text-blue-500 leading-none text-lg ml-2" @click.prevent="removeTag(i)">&times;</button>
                 </span>
             </template>
 
