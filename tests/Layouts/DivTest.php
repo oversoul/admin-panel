@@ -1,52 +1,38 @@
 <?php
-namespace Aecodes\Tests;
+namespace Aecodes\AdminPanel\Tests\Layouts;
 
-use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Panel;
 use PHPUnit\Framework\TestCase;
-use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\AdminConfig;
 use Aecodes\AdminPanel\Layouts\Div;
-use Aecodes\AdminPanel\Fields\Input;
-use Aecodes\AdminPanel\Layouts\Form;
 
 class DivTest extends TestCase
 {
 
-    protected $config;
-    protected $dashboard;
-
-    public function setUp(): void
+    /** @test */
+    public function canRenderEmptyDiv()
     {
-        Dashboard::stop();
-        $this->config = new class extends AdminConfig
-        {};
-        $this->dashboard = Dashboard::make($this->config);
+        $div = Div::make([])->build([]);
+        $this->assertArrayHasKey('type', $div);
+        $this->assertEquals('Div', $div['type']);
     }
 
-    public function testCanRenderEmptyDiv()
+    /** @test */
+    public function canRenderDivWithClass()
     {
-        $view = new View;
-        $div = Div::make([])->build([], $view);
-        $this->assertStringContainsString('<div ></div>', $div);
+        $div = Div::make([])->class('form-group')->build([]);
+        $this->assertEquals('form-group', $div['attributes']['class']);
     }
 
-    public function testCanRenderEmptyDivWithClass()
+    /** @test */
+    public function canRenderChainedDivsWithClass()
     {
-        $view = new View;
-        $div = Div::make([])->class('form-group')->build([], $view);
-        $this->assertStringContainsString('<div class="form-group"></div>', $div);
-    }
-
-    public function testCanRenderChainedDivsWithClass()
-    {
-        $view = new View;
         $div = Div::make([
             Div::make([])->class('sub-div'),
-        ])->class('form-group')->build([], $view);
-        $this->assertStringContainsString('<div class="form-group">', $div);
-        $this->assertStringContainsString('<div class="form-group"><div class="sub-div"', $div);
+        ])->class('form-group')->build([]);
+
+        $this->assertCount(1, $div['value']);
+        $this->assertEquals('form-group', $div['attributes']['class']);
+        $this->assertEquals('Div', $div['value'][0]['type']);
+        $this->assertEquals('sub-div', $div['value'][0]['attributes']['class']);
     }
 
 }

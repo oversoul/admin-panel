@@ -2,176 +2,196 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Exception;
-use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
-use Aecodes\AdminPanel\Accessor;
+use Aecodes\AdminPanel\Widgets\Widget;
+use Aecodes\AdminPanel\Widgets\Fields\Input;
 
-class Form
+class Form implements Widget
 {
-    /**
-     * Data target (key)
-     *
-     * @var string
-     */
-    protected $target;
+	/**
+	 * Data target (key)
+	 *
+	 * @var string
+	 */
+	protected $target;
 
-    /**
-     * Form Inputs
-     *
-     * @var array
-     */
-    protected $inputs = [];
+	/**
+	 * Form Inputs
+	 *
+	 * @var array
+	 */
+	protected $inputs = [];
 
-    /**
-     * Form Action
-     *
-     * @var string
-     */
-    protected $action = '';
+	/**
+	 * Form Action
+	 *
+	 * @var string
+	 */
+	protected $action = '';
 
-    /**
-     * Form method
-     *
-     * @var string
-     */
-    protected $method = 'POST';
+	/**
+	 * Form method
+	 *
+	 * @var string
+	 */
+	protected $method = 'POST';
 
-    /**
-     * Classes
-     *
-     * @var string
-     */
-    protected $class = '';
+	/**
+	 * Classes
+	 *
+	 * @var string
+	 */
+	protected $class = '';
 
-    /**
-     * Undocumented function
-     *
-     * @param array $inputs
-     * @throws Exception if no inputs provided
-     */
-    public function __construct(array $inputs = [])
-    {
-        if (empty($inputs)) {
-            throw new Exception("At least one form item needs to be defined.");
-        }
+	/**
+	 * Undocumented function
+	 *
+	 * @param array $inputs
+	 */
+	public function __construct(array $inputs = [])
+	{
+		$this->inputs = $inputs;
+	}
 
-        $this->inputs = $inputs;
-    }
+	/**
+	 * Set form action
+	 *
+	 * @param string $action
+	 * @return self
+	 */
+	public function action(string $action): self
+	{
+		$this->action = $action;
+		return $this;
+	}
 
-    /**
-     * Set form action
-     *
-     * @param string $action
-     * @return self
-     */
-    public function action(string $action): self
-    {
-        $this->action = $action;
-        return $this;
-    }
+	/**
+	 * Set form method
+	 *
+	 * @param string $method
+	 * @param string|null $url
+	 * @return self
+	 */
+	public function method(string $method, ?string $url = null): self
+	{
+		if ($url) {
+			$this->action($url);
+		}
 
-    /**
-     * Set form method
-     *
-     * @param string $method
-     * @param string|null $url
-     * @return self
-     */
-    public function method(string $method, ?string $url = null): self
-    {
-        if ($url) {
-            $this->action($url);
-        }
+		$this->method = strtoupper($method);
+		return $this;
+	}
 
-        $this->method = \strtoupper($method);
-        return $this;
-    }
+	/**
+	 * Create form instance statically
+	 *
+	 * @param array $inputs
+	 * @return self
+	 */
+	public static function make(array $inputs = []): self
+	{
+		return new static($inputs);
+	}
 
-    /**
-     * Create form instance statically
-     *
-     * @param array $inputs
-     * @return self
-     */
-    public static function make(array $inputs = []): self
-    {
-        return new static($inputs);
-    }
+	/**
+	 * Set form target - data key
+	 *
+	 * @param string $target
+	 * @return self
+	 */
+	public function target(string $target): self
+	{
+		$this->target = $target;
+		return $this;
+	}
 
-    /**
-     * Set form target - data key
-     *
-     * @param string $target
-     * @return self
-     */
-    public function target(string $target): self
-    {
-        $this->target = $target;
-        return $this;
-    }
+	/**
+	 * Set form size
+	 *
+	 * @param string $className
+	 * @return self
+	 */
+	function class(string $className): self
+	{
+		$this->class = $className;
+		return $this;
+	}
 
-    /**
-     * Set form size
-     *
-     * @param string $className
-     * @return self
-     */
-    function class (string $className): self
-    {
-        $this->class = $className;
-        return $this;
-    }
+	/**
+	 * @param string|null $method
+	 * @return array
+	 */
+	protected function globalFields(?string $method): array
+	{
+		if (!$method) return [];
 
-    /**
-     * Build form
-     *
-     * @param mixed $source
-     * @return string
-     */
-    public function build($source, View $view): string
-    {
-        $real_method = null;
-        $class = $this->class;
-        $inputs = $this->inputs;
-        $action = $this->action;
-        $method = $this->method;
+		// @todo: move this to config?
+		return [
+			Input::hidden('_method')->value($method)
+		];
+	}
 
-        if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
-            $real_method = $method;
-            $method = 'POST';
-        }
+	/**
+	 * Get fields.
+	 *
+	 * @param array $data
+	 * @param ?string $method
+	 * @return array
+	 */
+	protected function getFields(array $data, ?string $method): array
+	{
+		$inputs = array_merge($this->globalFields($method), $this->inputs);
 
-        $fields = [];
-        $data   = Helper::arr_get($source, $this->target, []);
+		$fields = [];
+		foreach ($inputs as $item) {
+			$fields[] = is_string($item) ? $item : $item->build($data);
+		}
 
-        foreach ($inputs as $item) {
-            $fields[] = is_string($item) ? $item : $item->build($data, $view);
-        }
+		return $fields;
+	}
 
-        $inputs = \implode("\n", $fields);
+	/**
+	 * Build form
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function build(array $data): array
+	{
+		$realMethod = null;
+		$method = $this->method;
 
-        $form = new Accessor(
-            compact('class', 'method', 'inputs', 'action', 'real_method')
-        );
+		if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+			$realMethod = $method;
+			$method = 'POST';
+		}
 
-        return $view->partial('form', compact('form'));
-    }
+		$data = Helper::arr_get($data, $this->target, []);
 
-    /**
-     * Magically set form method
-     *
-     * @param string $method
-     * @param array $params
-     * @return self
-     */
-    public function __call(string $method, array $params = []): self
-    {
-        if (\in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
-            // calling array_shift on empty array returns null
-            return $this->method($method, array_shift($params));
-        }
-        return $this;
-    }
+		return [
+			'type'       => 'Form',
+			'fields'     => $this->getFields($data, $realMethod),
+			'attributes' => [
+				'class'  => $this->class,
+				'action' => $this->action,
+				'method' => $method,
+			],
+		];
+	}
+
+	/**
+	 * Magically set form method
+	 *
+	 * @param string $method
+	 * @param array $params
+	 * @return self
+	 */
+	public function __call(string $method, array $params = []): self
+	{
+		if (in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
+			return $this->method($method, array_shift($params));
+		}
+		return $this;
+	}
 
 }

@@ -2,78 +2,77 @@
 
 namespace Aecodes\AdminPanel\Layouts;
 
-use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Widgets\Widget;
 
-class Div
+class Div implements Widget
 {
 
-    /**
-     * Children of div
-     *
-     * @var array
-     */
-    protected $items = [];
+	/**
+	 * Children of div
+	 *
+	 * @var array
+	 */
+	protected $items = [];
 
-    /**
-     * Div attributes
-     *
-     * @var array
-     */
-    protected $attributes = [];
+	/**
+	 * Div attributes
+	 *
+	 * @var array
+	 */
+	protected $attributes = [];
 
-    /**
-     * Create a new Div
-     *
-     * @param array $items
-     */
-    public function __construct(array $items)
-    {
-        $this->items = $items;
-    }
+	/**
+	 * Create a new Div
+	 *
+	 * @param array $items
+	 */
+	public function __construct(array $items)
+	{
+		$this->items = $items;
+	}
 
-    /**
-     * Create new Div statically
-     *
-     * @param array $items
-     * @return self
-     */
-    public static function make(array $items): self
-    {
-        return new static($items);
-    }
+	/**
+	 * Create new Div statically
+	 *
+	 * @param array $items
+	 * @return self
+	 */
+	public static function make(array $items): self
+	{
+		return new static($items);
+	}
 
-    /**
-     * Magic method to set attributes.
-     *
-     * @param string $key
-     * @param array $params
-     * @return self
-     */
-    final public function __call(string $key, array $params = []): self
-    {
-        $this->attributes[$key] = $params[0];
-        return $this;
-    }
+	/**
+	 * Magic method to set attributes.
+	 *
+	 * @param string $key
+	 * @param array $params
+	 * @return self
+	 */
+	final public function __call(string $key, array $params = []): self
+	{
+		$this->attributes[$key] = $params[0];
+		return $this;
+	}
 
-    /**
-     * Render TD
-     *
-     * @param mixed $source
-     * @param View $view
-     * @return string
-     */
-    public function build($source, View $view): string
-    {
-        $parts = [];
+	/**
+	 * Render div
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function build(array $data): array
+	{
+		$parts = [];
 
-        foreach ($this->items as $item) {
-            $parts[] = is_string($item) ? $item : $item->build($source, $view);
-        }
+		foreach ($this->items as $item) {
+			$parts[] = is_string($item) ? $item : $item->build($data);
+		}
 
-        $content = \implode("\n", $parts);
-        $attributes = Helper::attributes($this->attributes);
-
-        return \sprintf("<div %s>%s</div>", $attributes, $content);
-    }
+		return [
+			'type'       => 'Div',
+			'value'      => $parts,
+			'attributes' => $this->attributes,
+		];
+	}
 }

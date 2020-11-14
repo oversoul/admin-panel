@@ -1,122 +1,70 @@
 <?php
-namespace Aecodes\Tests;
+namespace Aecodes\AdminPanel\Tests\Layouts;
 
-use Aecodes\AdminPanel\Panel;
 use PHPUnit\Framework\TestCase;
-use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\AdminConfig;
 use Aecodes\AdminPanel\Layouts\Table;
 use Aecodes\AdminPanel\Layouts\Table\TD;
 
 class TableTest extends TestCase {
+
     
-    protected $config;
-    protected $dashboard;
-
-    public function setUp(): void
+    /** @test */
+    public function canRenderTableWithEmptyRows()
     {
-        Dashboard::stop();
-        $this->config = new class extends AdminConfig {};
-        $this->dashboard  = Dashboard::make($this->config);
+        $table = Table::make([
+            TD::make('#', 'id'),
+            TD::make('Title', 'title'),
+        ])->build([]);
+
+        $this->assertCount(0, $table['rows']);
+        $this->assertCount(2, $table['headers']);
     }
 
-    public function testCanRenderTableWithEmptyRows()
+    /** @test */
+    public function canRenderTableRowsUsingColumnInsteadOfTD()
     {
-        $panel = (string) new class extends Panel {
-            function query(): array {
-                return [];
-            }
+        $table = Table::make([
+            Table::column('id', '#'),
+            Table::column('title', 'Title'),
+        ])->build([]);
 
-            function render(): array {
-                return [
-                    Table::make([
-                        TD::make('id', '#'),
-                        TD::make('title', 'Title'),
-                    ])
-                ];
-            }
-        };
-
-        $this->assertStringContainsString('#', $panel);
-        $this->assertStringContainsString('title', $panel);
-        $this->assertStringContainsString('No rows found', $panel);
+        $this->assertCount(0, $table['rows']);
+        $this->assertCount(2, $table['headers']);
     }
 
-    public function testCanRenderTableWithEmptyRowsUsingColumnInsteadOfTD()
+    /** @test */
+    public function canRenderTableData()
     {
-        $panel = (string) new class extends Panel {
-            function query(): array {
-                return [];
-            }
+        $rows = [
+            ['id' => 1, 'title' => 'Title 1'],
+            ['id' => 2, 'title' => 'Title 2'],
+            ['id' => 3, 'title' => 'Title 3'],
+        ];
 
-            function render(): array {
-                return [
-                    Table::make([
-                        Table::column('id', '#'),
-                        Table::column('title', 'Title'),
-                    ])
-                ];
-            }
-        };
+        $table = Table::make([
+            TD::make('id', '#'),
+            TD::make('title', 'Title'),
+        ])->build($rows);
 
-        $this->assertStringContainsString('#', $panel);
-        $this->assertStringContainsString('title', $panel);
-        $this->assertStringContainsString('No rows found', $panel);
+        $this->assertCount(3, $table['rows']);
+        $this->assertCount(2, $table['headers']);
+
+        foreach ($rows as $index => $row) {
+            $this->assertEquals($row['title'], $table['rows'][$index]['title']);
+        }
     }
 
-    public function testCanRenderTableData()
+    /** @test */
+    public function tableCanHaveFooter()
     {
-        $panel = (string) new class extends Panel {
-            function query(): array {
-                return [
-                    ['id' => 1, 'title' => 'Title 1'],
-                    ['id' => 2, 'title' => 'Title 2'],
-                    ['id' => 3, 'title' => 'Title 3'],
-                ];
-            }
+        $table = Table::make([
+            TD::make('id', '#'),
+            TD::make('title', 'Title'),
+        ])->footer([ 'Hello world 1', 'Hello world 2' ])->build([]);
 
-            function render(): array {
-                return [
-                    Table::make([
-                        TD::make('#', 'id'),
-                        TD::make('Title', 'title'),
-                    ])
-                ];
-            }
-        };
-
-        $this->assertStringContainsString('#', $panel);
-        $this->assertStringContainsString('title', $panel);
-        $this->assertStringContainsString('>1</td>', $panel);
-        $this->assertStringContainsString('>2</td>', $panel);
-        $this->assertStringContainsString('>3</td>', $panel);
-
-        $this->assertStringContainsString('>Title 1</td>', $panel);
-        $this->assertStringContainsString('>Title 2</td>', $panel);
-        $this->assertStringContainsString('>Title 3</td>', $panel);
-    }
-
-    public function testTableCanHaveFooter()
-    {
-        $panel = (string) new class extends Panel {
-            function query(): array {
-                return [];
-            }
-
-            function render(): array {
-                return [
-                    Table::make([
-                        TD::make('id', '#'),
-                        TD::make('title', 'Title'),
-                    ])->footer([
-                        'Hello world 1',
-                        'Hello world 2',
-                    ])
-                ];
-            }
-        };
-
-        $this->assertStringContainsString('Hello world 1', $panel);
-        $this->assertStringContainsString('Hello world 2', $panel);
+        $this->assertCount(0, $table['rows']);
+        $this->assertCount(2, $table['headers']);
+        $this->assertCount(2, $table['footer']);
+        $this->assertEquals('Hello world 1', $table['footer'][0]);
     }
 }

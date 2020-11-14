@@ -2,7 +2,9 @@
 
 namespace Aecodes\AdminPanel\Layouts\Table;
 
-class TD
+use Aecodes\AdminPanel\Widgets\Widget;
+
+class TD implements Widget
 {
 
     /**
@@ -84,7 +86,7 @@ class TD
             return $row;
         }
 
-        $data = \call_user_func($this->renderer, $row);
+        $data = call_user_func($this->renderer, $row);
 
         if (!is_array($data)) {
             return $data;
@@ -96,7 +98,7 @@ class TD
             $result[] = is_string($element) ? $element : $element->build();
         }
 
-        return \implode("", $result);
+        return implode("", $result);
     }
 
     /**
@@ -109,7 +111,7 @@ class TD
     {
         $data = $this->getRendererOutput($row);
 
-        if (\is_string($data) || \is_numeric($data)) {
+        if (is_string($data) || is_numeric($data)) {
             return $data;
         }
 
@@ -117,7 +119,7 @@ class TD
             return '';
         }
 
-        if (\is_object($data)) {
+        if (is_object($data)) {
             return $data->{$this->name} ?? '';
         }
 
@@ -133,5 +135,17 @@ class TD
     public function renderValue($row): string
     {
         return $this->getValue($row);
+    }
+
+	/**
+	 * @param array $data
+	 * @return array
+	 */
+	public function build(array $data): array
+    {
+        return [
+            'type'  => 'Th',
+            'value' => $this->renderTitle()
+        ];
     }
 }

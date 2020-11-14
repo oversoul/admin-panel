@@ -1,148 +1,83 @@
 <?php
-namespace Aecodes\Tests;
+namespace Aecodes\AdminPanel\Tests\Layouts;
 
-use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Panel;
+use Exception;
 use PHPUnit\Framework\TestCase;
-use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\AdminConfig;
-use Aecodes\AdminPanel\Fields\Input;
+use Aecodes\AdminPanel\Widgets\Fields\Input;
 use Aecodes\AdminPanel\Layouts\Form;
 
 class FormTest extends TestCase
 {
 
-    protected $config;
-    protected $dashboard;
-
-    public function setUp(): void
+    /** @test */
+    public function canRenderFormInputs()
     {
-        Dashboard::stop();
-        $this->config = new class extends AdminConfig
-        {};
-        $this->dashboard = Dashboard::make($this->config);
+        $form = Form::make([
+            Input::make('email')->title('Email'),
+        ])->build([]);
+
+        $this->assertArrayHasKey('type', $form);
+        $this->assertCount(1, $form['fields']);
+        $this->assertEquals('Form', $form['type']);
+        $this->assertEquals('fields/input', $form['fields'][0]['type']);
     }
 
-    public function testCantRenderEmptyForm()
+    /** @test */
+    public function canRenderFormWithInputValues()
     {
-        $panel = (string) new class extends Panel
-        {
-            function query(): array
-            {
-                return [];
-            }
+        $email = 'john@example.com';
 
-            function render(): array
-            {
-                return [
-                    Form::make([
+        $form = form::make([
+            Input::make('email')->title('email')->value($email),
+        ])->build([]);
 
-                    ])
-                ];
-            }
-        };
+        $this->assertequals($form['fields'][0]['attributes']['value'], $email);
 
-        $this->assertStringContainsString('At least one form item needs to be defined', $panel);
+        $form = form::make([
+            Input::make('email')->title('email')
+        ])->build(compact('email'));
+
+        $this->assertequals($form['fields'][0]['attributes']['value'], $email);
     }
 
-    public function testCanRenderFormInputs()
+    /** @test */
+    public function formCanHaveDifferentMethods()
     {
-        $panel = (string) new class extends Panel
-        {
-            function query(): array
-            {
-                return [];
-            }
+        $form = Form::make([
+            Input::make('email')->title('Email'),
+        ])->build([]);
 
-            function render(): array
-            {
-                return [
-                    Form::make([
-                        Input::make('email')->title('Email'),
-                    ]),
-                ];
-            }
-        };
-
-        $this->assertStringContainsString('<form', $panel);
-        $this->assertStringContainsString('<input', $panel);
-        $this->assertStringContainsString('value=""', $panel);
-    }
-
-    public function testCanRenderFormWithInputValues()
-    {
-        $panel = (string) new class extends Panel
-        {
-            function query(): array
-            {
-                return [
-                    'email' =>  'john@example.com'
-                ];
-            }
-
-            function render(): array
-            {
-                return [
-                    Form::make([
-                        Input::make('email')->title('Email'),
-                    ]),
-                ];
-            }
-        };
-
-        $this->assertStringContainsString('<form', $panel);
-        $this->assertStringContainsString('<input', $panel);
-        $this->assertStringContainsString('value="john@example.com"', $panel);
-    }
-
-    public function testFormCanHaveDifferentMethods()
-    {
-        $view = new View;
-        $view->topBar = [];
+        $this->assertEquals('POST', $form['attributes']['method']);
 
         $form = Form::make([
             Input::make('email')->title('Email'),
-        ])->build([], $view);
+        ])->method('PUT')->build([]);
 
-        $this->assertStringContainsString('Email', $form);
-        $this->assertStringContainsString('method="POST"', $form);
-
-        $form = Form::make([
-            Input::make('email')->title('Email'),
-        ])->method('PUT')->build([], $view);
-
-        $this->assertStringContainsString('method="POST"', $form);
-        $this->assertStringContainsString('name="_method"', $form);
-        $this->assertStringContainsString('value="PUT"', $form);
+        $this->assertCount(2, $form['fields']);
+        $this->assertEquals('POST', $form['attributes']['method']);
+        $this->assertEquals('_method', $form['fields'][0]['attributes']['name']);
+        $this->assertEquals('PUT', $form['fields'][0]['attributes']['value']);
 
         $form = Form::make([
             Input::make('email')->title('Email'),
-        ])->method('DELETE')->build([], $view);
+        ])->method('DELETE')->build([]);
 
-        $this->assertStringContainsString('method="POST"', $form);
-        $this->assertStringContainsString('name="_method"', $form);
-        $this->assertStringContainsString('value="DELETE"', $form);
-
-        $form = Form::make([
-            Input::make('email')->title('Email'),
-        ])->method('GET')->build([], $view);
-
-        $this->assertStringContainsString('method="GET"', $form);
+        $this->assertEquals('POST', $form['attributes']['method']);
+        $this->assertEquals('_method', $form['fields'][0]['attributes']['name']);
+        $this->assertEquals('DELETE', $form['fields'][0]['attributes']['value']);
     }
 
-    public function testFormCanHaveAction()
+	/** @test
+	 * @throws Exception
+	 */
+    public function formCanHaveAction()
     {
-        $view = new View;
-        $view->topBar = [];
-        
-        $action = \random_bytes(20);
+        $action = random_bytes(20);
         
         $form = Form::make([
             Input::make('email')->title('Email'),
-        ])->action($action)->build([], $view);
+        ])->action($action)->build([]);
 
-        $this->assertStringContainsString('Email', $form);
-        $this->assertStringContainsString('action="' . $action . '"', $form);
+        $this->assertEquals($form['attributes']['action'], $action);
     }
 }
