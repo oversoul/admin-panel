@@ -4,17 +4,30 @@ framework agnostic admin panel.
 
 ## Goal
 
-trying to make it as minimal as possible. it allows you to create mutliple pages with different types (table, form, card).
-without intervening much with your base code. 
+trying to make it as minimal as possible. it allows you to create multiple pages with different types (table, form).
+without intervening much with your code base. 
 
-ps: you still need to setup your routes, the authentification etc...
+ps: you still need to setup your routes, the authentication etc...
+
+## Response
+
+We allow multiple type of responses, as a default we used php views, but we figured for laravel users as an example, would use `blade` instead, so one possible solution is to create a different `Renderer`.
+
+For now we have two default `Renderers`:
+
+- `DefaultRenderer` this just returns an array as output
+- `JsonRenderer` this returns json output
+
+To create a Renderer make it extends `Aecodes\AdminPanel\Responses\Renderer`. then add it to config.
 
 ### Currently supported Layouts
 
-- Card (dashboard card, title action link)
 - Table (Takes array of TD, every TD can be custom rendered)
 - Form (Takes array of Fields)
 - Div (the only use case is to have customized wrappers)
+- It's possible to create your own widgets.
+
+ps: widgets implements `Widget` interface.
 
 ### Currently supported Form fields
 
@@ -27,25 +40,28 @@ ps: you still need to setup your routes, the authentification etc...
 ### How to setup
 
 1. install with composer
-2. extends `AdminConfig` class, and override the configuration you want to change.
-3. create new (singleton) instance of `Dashboard` class, make sure to pass a new instance of your configuration class.
+2. create a config file using `config/panel.php` as a starting point.
+3. create (singleton) instance of `Dashboard` class, make sure to pass the config as an array.
 
+```php
+$config = require './config/panel.php';
+Aecodes\AdminPanel\Dashboard::setup($config);
+```
 
 ### How to create an admin page
 
-1. create a class that extends the `Panel` class
-2. for convenience set the properties for both `$name` & `$description` of the panel (visible on the page)
+1. create a new class extending the `Panel` class
+2. for convenience set the properties for both `$name` & `$description` of the panel (visible on the page).
 3. create a `query` method that returns the array of data.
 
 ```php
 function query(): array {
-    $pages = // get data from database.
-
-    return $pages;
+    // get data from database.
+    return Page::all()->toArray();
 }
 ```
 
-4. create a `render` method that returns an array.
+4. create a `render` method that returns an array of widgets.
 
 - to create a table
 
@@ -53,12 +69,11 @@ function query(): array {
 function render(): array {
     return [
         Table::make([
-            // (field label, field name) both are optional
+            // (label, name) both are optional
             TD::make('#', 'id'),
             // it's also possible to use Table::column
             Table::column('Title', 'title'),
         ])
-
         // ...
     ];
 }
@@ -77,104 +92,67 @@ function render(): array {
         ])
         ->action('#')
         ->method('post'),
-
         // ...
     ];
 }
 ```
 
-5. to finish up, in the callback of your route, just return a new instance of the class you created. it must be returned as a `string`.
+5. to finish up, in the callback of your route, just return a new instance of the class you created.
 
-ps: in many frameworks (laravel as an example), returning an instance from the callback calls the `__toString`. with that you will only need to return the new instance.
 
 ```php
 // callback for some route
 public function index() {
     // PagesTable extends Panel
-    return new PagesTable;
+    return new Response(new PagesTable);
 }
 ```
 
-### Extendablity
+### Extendability
 
 #### Layouts
 
-by default this has two layouts (auth, default), when extending the `Panel` class you can specify the `$layout` property.
+when extending the `Panel` class you can specify the `$layout` property.
 
 #### Views
 
-It's possible to change the look of your admin panel. by default the views exists in the `presenters` folder. if you choose, you can specify in the config. a different path, where you can add your custom view files. any not found files, will fallback to the default `presenter`. Allowing you to override just one layout file.
-
+this doesn't ship with a view layer. you can use the default (soon) views packages.  
 
 ### Config
 
-Extending the config class. allows you to customize globally the admin panel:
-
-1. Used as a fallback for getting inputs value after refreshing the page, In case of validation error etc...
+The default config is:
 
 ```php
-public function oldValue(string $name, $default)
+return [
+    // current renderer.
+	'renderer' => 'default',
+
+    // add new renderer here.
+	'renderers' => [
+		'json'    => Aecodes\AdminPanel\Responses\JsonRenderer::class,
+		'default' => Aecodes\AdminPanel\Responses\DefaultRenderer::class,
+	],
+
+    // default classes for button and a tag.
+	'classes' => [
+		'link'   => '',
+		'button' => '',
+	],
+
+    // global menus, can be and array or callback
+	'menu' => function () {
+		return [];
+	},
+
+    // input old value.
+	'old_value' => function ($name, $default) {
+		return $default;
+	},
+
+    // global errors (i.e: validation errors)
+	'errors' => function () {
+		return [];
+	}
+
+];
 ```
-
-2. Used for return Session flash messages (notification)
-
-```php
-public function flash(): array
-```
-
-3. Used for return validation errors.
-
-```php
-public function errors(): array
-```
-
-4. Specify the views (presenters) path. if the return is invalid, the system will fallback to default views.
-
-```php
-public function viewsPath(): string
-```  
-
-5. This is used for fields that exists in all forms, mostly: `csrf` token
-
-```php
-public function globalFormFields(): array
-```  
-
-6. the list of menu items for the admin panel, (array of arrays)
-
-```php
-// [[ 'name' => 'Dashboard', 'url' => '/' ]]
-public function menu(): array
-```
-
-7. This is used to disable the admin panel internal exception handling
-
-```php
-public function handleExceptions(): bool
-```
-
-8. Define classes will be applied to all buttons in the admin panel.
-
-```php
-public function buttonClass(): string
-```
-
-9. Define classes will be applied to all links in the admin panel.
-
-```php
-public function linkCss(): string
-```
-
-10. Define logout url (the method will be `DELETE`).
-
-```php
-public function logoutUrl(): string
-```
-
-
-## Links
-
-This package uses
-
-- [Tailwindcss](https://tailwindcss.com)
-- [AlpineJs](https://github.com/alpinejs/alpine)
