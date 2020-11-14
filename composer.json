@@ -1,24 +1,25 @@
 {
-    "name": "aecodes/admin-panel",
-    "description": "A simplistic framework agnostic admin panel",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Amine",
-            "email": "kurosoul.ae@gmail.com"
-        }
-    ],
-    "license": "MIT",
-    "require": {
-        "php": "^7.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Aecodes\\AdminPanel\\": "src/",
-            "Aecodes\\Tests\\": "tests/"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8"
+  "name": "aecodes/admin-panel",
+  "description": "A simplistic framework agnostic admin panel",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Amine",
+      "email": "kurosoul.ae@gmail.com"
     }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.2",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Aecodes\\AdminPanel\\": "src/",
+      "Aecodes\\AdminPanel\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8"
+  }
 }
