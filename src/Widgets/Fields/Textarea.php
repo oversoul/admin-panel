@@ -1,8 +1,6 @@
 <?php
 
-namespace Aecodes\AdminPanel\Fields;
-
-use Aecodes\AdminPanel\View;
+namespace Aecodes\AdminPanel\Widgets\Fields;
 
 class Textarea extends Field
 {
@@ -20,17 +18,21 @@ class Textarea extends Field
      * Build textarea
      *
      * @param array $data
-     * @return string
+     * @return array
      */
-    public function build(array $data, View $view): string
+    public function build(array $data): array
     {
         $this->getValue($data);
 
-        return $view->partial('fields/textarea', [
+        $attributes = array_merge($this->getAttributes(), [
             'name' => $this->name,
-            'title' => $this->title,
             'value' => $this->value,
-            'attributes' => $this->getAttributes(),
         ]);
+
+        return [
+            'type' => 'fields/textarea',
+            'title' => $this->title,
+            'attributes' => $attributes
+        ];
     }
 }

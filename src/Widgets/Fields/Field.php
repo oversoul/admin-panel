@@ -1,12 +1,12 @@
 <?php
 
-namespace Aecodes\AdminPanel\Fields;
+namespace Aecodes\AdminPanel\Widgets\Fields;
 
-use Aecodes\AdminPanel\View;
 use Aecodes\AdminPanel\Helper;
 use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Widgets\Widget;
 
-class Field
+abstract class Field implements Widget
 {
 
     /**
@@ -107,7 +107,7 @@ class Field
             return;
         }
 
-        $this->value = Dashboard::config()->oldValue(
+        $this->value = Dashboard::oldValue(
             $this->target,
             Helper::arr_get($data, $this->target, '')
         );
@@ -185,28 +185,24 @@ class Field
      */
     public function __call(string $key, array $params = []): self
     {
-        return $this->set($key, $params[0]);
+        return $this->set($key, array_shift($params));
     }
 
     /**
      * Stringify attributes.
      *
-     * @return string
+     * @return array
      */
-    protected function getAttributes(): string
+    protected function getAttributes(): array
     {
-        return Helper::attributes($this->attributes);
+        return $this->attributes;
     }
 
     /**
      * Default build method
      *
      * @param array $data
-     * @param View $view
-     * @return string
+     * @return array
      */
-    public function build(array $data, View $view): string
-    {
-        return '';
-    }
+    abstract public function build(array $data): array;
 }

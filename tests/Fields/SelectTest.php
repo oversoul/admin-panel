@@ -1,58 +1,52 @@
 <?php
 
-namespace Aecodes\Tests\Fields;
+namespace Aecodes\AdminPanel\Tests\Fields;
 
 use PHPUnit\Framework\TestCase;
-use Aecodes\AdminPanel\Accessor;
-use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\AdminConfig;
-use Aecodes\AdminPanel\View;
-use Aecodes\AdminPanel\Fields\Select;
+use Aecodes\AdminPanel\Widgets\Fields\Select;
 
 class SelectTest extends TestCase
 {
 
-    protected $view;
+	public function testSelectCanBeCreated()
+	{
+		$input = Select::make('about')->title('About')->build([]);
 
-    public function setUp(): void
-    {
-        $config = new class extends AdminConfig {};
+		$this->assertArrayHasKey('type', $input);
+		$this->assertEquals('About', $input['title']);
+		$this->assertEquals('fields/select', $input['type']);
+		$this->assertEquals('about', $input['attributes']['name']);
+	}
 
-        Dashboard::make($config);
+	public function testSelectCanHasOptions()
+	{
+		$input = Select::make('about')->title('About')->options([
+			1, 2, 3, 4
+		])->build([]);
 
-        $this->view = new View;
-        $this->view->page = new Accessor;
-    }
+		$this->assertEquals('About', $input['title']);
+		$this->assertEquals('about', $input['attributes']['name']);
 
-    public function testSelectCanBeCreated()
-    {
-        $input = Select::make('about')->title('About')->build([], $this->view);
+		$this->assertArrayHasKey('options', $input);
 
-        $this->assertStringContainsString('about', $input);
-        $this->assertStringContainsString('About', $input);
-    }
+		foreach ([1, 2, 3, 4] as $index => $item) {
+			$option = ['value' => $index, 'text' => $item, 'selected' => false];
+			$this->assertEquals($input['options'][$index], $option);
+		}
+	}
 
-    public function testSelectCanHasOptions()
-    {
-        $input = Select::make('about')->title('About')->options([
-            1, 2, 3, 4
-        ])->build([], $this->view);
+	public function testSelectCanHaveSelectedOption()
+	{
+		$input = Select::make('about')->title('About')->options([
+			1, 2, 3, 4
+		])->build(['about' => 3]);
 
-        $this->assertStringContainsString('about', $input);
-        $this->assertStringContainsString('About', $input);
-        $this->assertStringContainsString(1, $input);
-        $this->assertStringContainsString(2, $input);
-        $this->assertStringContainsString(3, $input);
-        $this->assertStringContainsString(4, $input);
-    }
+		$this->assertCount(4, $input['options']);
 
-    public function testSelectCanHaveSelectedOption()
-    {
-        $input = Select::make('about')->title('About')->options([
-            1, 2, 3, 4
-        ])->build(['about' => 3], $this->view);
-
-        $this->assertStringContainsString('selected>4', $input);
-    }
+		foreach ([1, 2, 3, 4] as $index => $item) {
+			$option = ['value' => $index, 'text' => $item, 'selected' => $item === 4];
+			$this->assertEquals($input['options'][$index], $option);
+		}
+	}
 
 }

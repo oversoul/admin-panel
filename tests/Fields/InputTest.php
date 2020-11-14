@@ -1,61 +1,40 @@
 <?php
 
-namespace Aecodes\Tests\Fields;
+namespace Aecodes\AdminPanel\Tests\Fields;
 
-use Aecodes\AdminPanel\View;
 use PHPUnit\Framework\TestCase;
-use Aecodes\AdminPanel\Dashboard;
-use Aecodes\AdminPanel\AdminConfig;
-use Aecodes\AdminPanel\Fields\Input;
+use Aecodes\AdminPanel\Widgets\Fields\Input;
 
 class InputTest extends TestCase
 {
 
-    protected $view;
-
-    public function setUp(): void
-    {
-        $config = new class extends AdminConfig {};
-
-        Dashboard::make($config);
-
-        $this->view = new View;
-        $this->view->page = new class {};
-    }
-
     public function testInputHasDefaultTextType()
     {
-        $input = Input::make('about')->build([], $this->view);
+        $input = Input::make('about')->title('About')->build([]);
 
-        $this->assertStringContainsString('type="text"', $input);
-        $this->assertStringContainsString('about', $input);
+        $this->assertArrayHasKey('type', $input);
+        $this->assertEquals('fields/input', $input['type']);
+        $this->assertEquals('About', $input['title']);
+        $this->assertEquals('text', $input['attributes']['type']);
     }
 
     public function testInputTypeCanBeCustomized()
     {
-        $input = Input::email('about')->build([], $this->view);
+        $input = Input::email('about')->build([]);
+        $this->assertEquals('email', $input['attributes']['type']);
 
-        $this->assertStringContainsString('type="email"', $input);
-        $this->assertStringContainsString('about', $input);
-    }
+        $input = Input::number('about')->build([]);
+        $this->assertEquals('number', $input['attributes']['type']);
 
-    public function testInputTypeCanBeNumber()
-    {
-        $input = Input::number('about')->build([], $this->view);
-
-        $this->assertStringContainsString('type="number"', $input);
-        $this->assertStringContainsString('about', $input);
+        $this->assertEquals('about', $input['attributes']['name']);
     }
 
     public function testInputCanHaveAttributes()
     {
-        $input = Input::text('about')
-            ->class('text-class')
-            ->build([], $this->view);
+        $input = Input::text('about')->class('text-class')->build([]);
 
-        $this->assertStringContainsString('type="text"', $input);
-        $this->assertStringContainsString('class="text-class"', $input);
-        $this->assertStringContainsString('about', $input);
+        $this->assertEquals('text', $input['attributes']['type']);
+        $this->assertEquals('text-class', $input['attributes']['class']);
     }
 
 }

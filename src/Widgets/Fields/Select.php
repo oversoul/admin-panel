@@ -1,8 +1,6 @@
 <?php
 
-namespace Aecodes\AdminPanel\Fields;
-
-use Aecodes\AdminPanel\View;
+namespace Aecodes\AdminPanel\Widgets\Fields;
 
 class Select extends Field
 {
@@ -76,55 +74,56 @@ class Select extends Field
     /**
      * Convert options array to html options.
      *
-     * @param mixed $data
-     * @return string
+     * @return array
      */
-    protected function buildOptions($data): string
+    protected function buildOptions(): array
     {
         $options = [];
 
-        // dd($selected);
-
         if ($this->empty) {
-            $options[] = \sprintf(
-                '<option value="-1" hidden>%s</option>',
-                $this->empty
-            );
+            $options[] = [
+                'value'  => -1,
+                'hidden' => true,
+                'text'   => $this->empty,
+            ];
         }
 
         foreach ($this->options as $key => $value) {
             $isSelected = \is_array($this->value) ? in_array($key, $this->value) : $key === $this->value;
 
-            $options[] = \sprintf(
-                '<option value="%s"%s>%s</option>',
-                $key,
-                ($isSelected) ? ' selected' : '',
-                $value
-            );
+            $options[] = [
+                'value'    => $key,
+                'text'     => $value,
+                'selected' => $isSelected,
+            ];
         }
 
-        return \implode("\n", $options);
+        return $options;
     }
 
     /**
      * Build input field
      *
      * @param array $data
-     * @return string
+     * @return array
      */
-    public function build(array $data, View $view): string
+    public function build(array $data): array
     {
         $this->getValue($data);
 
-        $options = ($this->multiple === true) ? $this->options : $this->buildOptions($data);
+        $options = ($this->multiple === true) ? $this->options : $this->buildOptions();
 
-        return $view->partial('fields/select', [
-            'options'    => $options,
-            'name'       => $this->name,
-            'title'      => $this->title,
-            'value'      => $this->value,
-            'multiple'   => $this->multiple,
-            'attributes' => $this->getAttributes(),
+        $attributes = array_merge($this->getAttributes(), [
+            'name'     => $this->name,
+            'multiple' => $this->multiple,
         ]);
+
+        return [
+            'type'       => 'fields/select', 
+            'title'      => $this->title,
+            'help'       => $this->help,
+            'attributes' => $attributes,
+            'options'    => $options,
+        ];
     }
 }
