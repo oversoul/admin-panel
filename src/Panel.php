@@ -2,119 +2,95 @@
 
 namespace Aecodes\AdminPanel;
 
-use Throwable;
-use Aecodes\AdminPanel\Accessor;
+use Aecodes\AdminPanel\Responses\Renderer;
 
 abstract class Panel
 {
 
-    /**
-     * name of the default layout
-     *
-     * @var string
-     */
-    public $layout = 'default';
+	/**
+	 * name of the default layout
+	 *
+	 * @var string
+	 */
+	public $layout = 'default';
 
-    /**
-     * Panel Name
-     *
-     * @var string
-     */
-    public $name = '';
+	/**
+	 * Panel Name
+	 *
+	 * @var string
+	 */
+	public $name = '';
 
-    /**
-     * Panel description
-     *
-     * @var string
-     */
-    public $description = '';
+	/**
+	 * Panel description
+	 *
+	 * @var string
+	 */
+	public $description = '';
 
-    /**
-     * get top bar elements
-     *
-     * @return array
-     */
-    public function bar(): array
-    {
-        return [];
-    }
+	/**
+	 * get top bar elements
+	 *
+	 * @return array
+	 */
+	public function bar(): array
+	{
+		return [];
+	}
 
-    /**
-     * Abstract method for getting the data query
-     *
-     * @return array
-     */
-    abstract public function query(): array;
+	/**
+	 * Abstract method for getting the data query
+	 *
+	 * @return array
+	 */
+	abstract public function query(): array;
 
-    /**
-     * Rendering method
-     *
-     * @return array
-     */
-    abstract public function render(): array;
+	/**
+	 * Rendering method
+	 *
+	 * @return array
+	 */
+	abstract public function render(): array;
 
-    /**
-     * Magic method to render the content
-     *
-     * @return string
-     * @throws Throwable
-     */
-    public function __toString(): string
-    {
-        $query = $this->query();
-        try {
-            return $this->renderLayout($query);
-        } catch (Throwable $e) {
-            ob_clean();
-            return View::renderError($e);
-        }
-    }
+	/**
+	 * render widgets content.
+	 * @param array $items
+	 * @param array $query
+	 * @return array
+	 */
+	final protected function renderWidgets(array $items, array $query): array
+	{
+		$widgets = [];
 
-    /**
-     * Get Bar content.
-     * @param  mixed $query
-     * @param  View   $view
-     * @return array
-     */
-    final public function getBar($query, View $view): array
-    {
-        $widgets = [];
-        foreach ($this->bar() as $widget) {
-            $widgets[] = is_string($widget) ? $widget : $widget->build($query, $view);
-        }
-        return $widgets;
-    }
+		foreach ($items as $item) {
+			$widgets[] = is_string($item) ? $item : $item->build($query);
+		}
 
-    /**
-     * Render layout with header and footer.
-     *
-     * @param array $query
-     * @return string
-     */
-    final protected function renderLayout(array $query): string
-    {
-        $view   = new View;
-        $config = Dashboard::config();
+		return $widgets;
+	}
 
-        $view->menu             = $config->menu();
-        $view->errors           = $config->errors();
-        $view->flashMessage     = $config->flash();
-        $view->topBar           = $this->getBar($query, $view);
-        $view->globalFormFields = implode("\n", $config->globalFormFields());
+	/**
+	 * Render layout with header and footer.
+	 *
+	 * @param Renderer $response
+	 * @return Renderer
+	 */
+	final public function renderLayout(Renderer $response): Renderer
+	{
+		$query = $this->query();
 
-        $view->page = new Accessor([
-            'name'        => $this->name,
-            'description' => $this->description,
-        ]);
+		$response->set('layout', $this->layout);
+		$response->set('menu', Dashboard::menu());
+		$response->set('errors', Dashboard::errors());
+		$response->set('header', $this->renderWidgets($this->bar(), $query));
 
-        $parts = [];
+		$response->set('page', [
+			'name'        => $this->name,
+			'description' => $this->description
+		]);
 
-        foreach ($this->render() as $part) {
-            $parts[] = is_string($part) ? $part : $part->build($query, $view);
-        }
+		$response->set('body', $this->renderWidgets($this->render(), $query));
 
-        $view->content = \implode("\n", $parts);
-
-        return $view->render("layouts/{$this->layout}");
-    }
+		return $response;
+	}
 }

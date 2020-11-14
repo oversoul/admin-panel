@@ -1,59 +1,121 @@
 <?php
+
 namespace Aecodes\AdminPanel;
 
 class Dashboard
 {
 
-    /**
-     * config class instance
-     *
-     * @var AdminConfig|null
-     */
-    protected static $config;
+	/**
+	 * config class instance
+	 *
+	 * @var array
+	 */
+	protected static $config = [];
 
-    /**
-     * Singleton of Config object
-     *
-     * @var self|null
-     */
-    protected static $instance = null;
+	/**
+	 * Singleton of Config object
+	 *
+	 * @var self|null
+	 */
+	protected static $instance = null;
 
-    /**
-     * Force calling instance
-     */
-    protected function __construct(AdminConfig $config)
-    {
-        self::$config = $config;
-    }
+	/**
+	 * Force calling instance
+	 * @param ?array $config
+	 */
+	protected function __construct(array $config = null)
+	{
+		if ($config) {
+			self::$config = $config;
+			return;
+		}
 
-    public static function stop()
-    {
-        self::$config = null;
-        self::$instance = null;
-    }
+		// load default config.
+		$configFile = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'panel.php';
+		self::$config = require($configFile);
+	}
 
-    /**
-     * Get instance from Config
-     *
-     * @return self
-     */
-    final public static function make(AdminConfig $config): self
-    {
-        if (!self::$instance) {
-            self::$instance = new self($config);
-        }
+	/**
+	 * Get instance from Config
+	 *
+	 * @param ?array $config
+	 * @return self
+	 */
+	final public static function setup(array $config = null): self
+	{
+		if (!self::$instance) {
+			self::$instance = new self($config);
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 
-    /**
-     * Config instance
-     *
-     * @return AdminConfig
-     */
-    public static function config(): AdminConfig
-    {
-        return self::$config;
-    }
+	/**
+	 * Config instance
+	 * @param  ?string $key
+	 * @param null $default
+	 * @return mixed
+	 */
+	public static function config(string $key = null, $default = null)
+	{
+		return Helper::arr_get(self::$config, $key, $default);
+	}
+
+	/**
+	 * get old value from config
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function oldValue(string $key, $default)
+	{
+		$callback = self::config('old_value');
+
+		if (!is_callable($callback)) {
+			return $default;
+		}
+
+		return $callback($key, $default);
+	}
+
+	/**
+	 * get errors.
+	 *
+	 * @return array
+	 */
+	public static function errors(): array
+	{
+		$callback = self::config('errors');
+
+		if ( is_array($callback) ) {
+			return $callback;
+		}
+
+		if (!is_callable($callback)) {
+			return [];
+		}
+
+		return $callback();
+	}
+
+	/**
+	 * get menu.
+	 *
+	 * @return array
+	 */
+	public static function menu(): array
+	{
+		$callback = self::config('menu', []);
+
+		if ( is_array($callback) ) {
+			return $callback;
+		}
+
+		if (!is_callable($callback)) {
+			return [];
+		}
+
+		return $callback();
+	}
 
 }
