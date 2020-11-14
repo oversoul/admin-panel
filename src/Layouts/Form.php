@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Layouts;
 
 use Aecodes\AdminPanel\Helper;
+use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Widgets\Widget;
 use Aecodes\AdminPanel\Widgets\Fields\Input;
 
@@ -123,12 +124,12 @@ class Form implements Widget
 	 */
 	protected function globalFields(?string $method): array
 	{
-		if (!$method) return [];
+		$inputs = Dashboard::config('global_fields', []);
 
-		// @todo: move this to config?
-		return [
-			Input::hidden('_method')->value($method)
-		];
+		if (!$method) return $inputs;
+
+		$inputs[] = Input::hidden('_method')->value($method);
+		return $inputs;
 	}
 
 	/**
@@ -180,18 +181,57 @@ class Form implements Widget
 	}
 
 	/**
-	 * Magically set form method
-	 *
-	 * @param string $method
-	 * @param array $params
-	 * @return self
+	 * Using get method
+	 * @param array $inputs
+	 * @return static
 	 */
-	public function __call(string $method, array $params = []): self
+	public static function get(array $inputs = []): self
 	{
-		if (in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
-			return $this->method($method, array_shift($params));
-		}
-		return $this;
+		return (new static($inputs))->method('get');
+	}
+
+	/**
+	 * Using post method.
+	 *
+	 * @param array $inputs
+	 * @return static
+	 */
+	public static function post(array $inputs = []): self
+	{
+		return (new static($inputs))->method('post');
+	}
+
+	/**
+	 * Using put method.
+	 *
+	 * @param array $inputs
+	 * @return static
+	 */
+	public static function put(array $inputs = []): self
+	{
+		return (new static($inputs))->method('put');
+	}
+
+	/**
+	 * Using patch
+	 *
+	 * @param array $inputs
+	 * @return static
+	 */
+	public static function patch(array $inputs = []): self
+	{
+		return (new static($inputs))->method('patch');
+	}
+
+	/**
+	 * Using delete method.
+	 *
+	 * @param array $inputs
+	 * @return static
+	 */
+	public static function delete(array $inputs = []): self
+	{
+		return (new static($inputs))->method('delete');
 	}
 
 }
