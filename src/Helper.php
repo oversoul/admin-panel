@@ -17,7 +17,7 @@ class Helper
 	 */
 	public static function arr_get(array $array, ?string $key, $default = null)
 	{
-		if (is_null($key)) {
+		if (!$key) {
 			return $array;
 		}
 
@@ -37,7 +37,7 @@ class Helper
 			$array = $array[$segment];
 		}
 
-		if (is_object($array)) {
+		if (is_object($array) && method_exists($array, 'toArray')) {
 			// force array usage.
 			$array = $array->toArray();
 		}
@@ -64,6 +64,16 @@ class Helper
 		}
 
 		return $attrs;
+	}
+
+	/**
+	 * @param array $data
+	 * @return bool
+	 */
+	public static function isAssoc(array $data): bool
+	{
+		if (array() === $data) return false;
+		return array_keys($data) !== range(0, count($data) - 1);
 	}
 
 }
