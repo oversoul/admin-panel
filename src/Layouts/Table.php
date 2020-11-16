@@ -79,10 +79,10 @@ class Table
 	/**
 	 * Set table footer (pagination?)
 	 *
-	 * @param array $elements
+	 * @param mixed $elements
 	 * @return self
 	 */
-	public function footer(array $elements): self
+	public function footer($elements): self
 	{
 		$this->footer = $elements;
 		return $this;
@@ -106,6 +106,15 @@ class Table
 	}
 
 	/**
+	 * @param $data
+	 * @return array
+	 */
+	public function getRows($data): array
+	{
+		return (Helper::isAssoc($data) && !$this->target) ? [] : Helper::arr_get($data, $this->target, []);
+	}
+
+	/**
 	 * Render table
 	 *
 	 * @param array $data
@@ -114,9 +123,9 @@ class Table
 	public function build(array $data): array
 	{
 		$type = 'Table';
+		$rows = $this->getRows($data);
 		$footer = $this->renderSection($this->footer, $data);
 		$headers = $this->renderSection($this->columns, $data);
-		$rows = Helper::arr_get($data, $this->target, []);
 
 		return compact('type', 'headers', 'rows', 'footer');
 	}

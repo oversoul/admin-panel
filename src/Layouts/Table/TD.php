@@ -7,145 +7,144 @@ use Aecodes\AdminPanel\Widgets\Widget;
 class TD implements Widget
 {
 
-    /**
-     * Source field key
-     *
-     * @var string
-     */
-    protected $name;
+	/**
+	 * Source field key
+	 *
+	 * @var string
+	 */
+	protected $name;
 
-    /**
-     * Column title
-     *
-     * @var string
-     */
-    protected $title;
+	/**
+	 * Column title
+	 *
+	 * @var string
+	 */
+	protected $title;
 
-    /**
-     * Custom renderer
-     *
-     * @var callback
-     */
-    protected $renderer = null;
+	/**
+	 * Custom renderer
+	 *
+	 * @var callback
+	 */
+	protected $renderer = null;
 
-    /**
-     * Create a new TD
-     *
-     * @param string $title
-     * @param string $name
-     */
-    public function __construct(string $title = '', string $name = '')
-    {
-        $this->title = $title;
-        $this->name  = $name;
-    }
+	/**
+	 * Create a new TD
+	 *
+	 * @param string $title
+	 * @param string $name
+	 */
+	public function __construct(string $title = '', string $name = '')
+	{
+		$this->title = $title;
+		$this->name = $name;
+	}
 
-    /**
-     * Create new TD statically
-     *
-     * @param string $title
-     * @param string $name
-     * @return self
-     */
-    public static function make(string $title = '', string $name = ''): self
-    {
-        return new static($title, $name);
-    }
+	/**
+	 * Create new TD statically
+	 *
+	 * @param string $title
+	 * @param string $name
+	 * @return self
+	 */
+	public static function make(string $title = '', string $name = ''): self
+	{
+		return new static($title, $name);
+	}
 
-    /**
-     * Set custom renderer.
-     *
-     * @param callable $callback
-     * @return self
-     */
-    public function render(callable $callback): self
-    {
-        $this->renderer = $callback;
-        return $this;
-    }
+	/**
+	 * Set custom renderer.
+	 *
+	 * @param callable $callback
+	 * @return self
+	 */
+	public function render(callable $callback): self
+	{
+		$this->renderer = $callback;
+		return $this;
+	}
 
-    /**
-     * Render th
-     *
-     * @return string
-     */
-    public function renderTitle(): string
-    {
-        return $this->title;
-    }
+	/**
+	 * Render th
+	 *
+	 * @return string
+	 */
+	public function renderTitle(): string
+	{
+		return $this->title;
+	}
 
-    /**
-     * If Renderer is defined use it.
-     *
-     * @param mixed $row
-     * @return mixed
-     */
-    protected function getRendererOutput($row)
-    {
-        if ($this->renderer == null) {
-            return $row;
-        }
+	/**
+	 * If Renderer is defined use it.
+	 *
+	 * @param mixed $row
+	 * @return mixed
+	 */
+	protected function getRendererOutput($row)
+	{
+		$data = call_user_func($this->renderer, $row);
 
-        $data = call_user_func($this->renderer, $row);
+		if (!is_array($data)) {
+			return $data;
+		}
 
-        if (!is_array($data)) {
-            return $data;
-        }
+		$result = [];
 
-        $result = [];
+		foreach ($data as $element) {
+			$result[] = is_string($element) ? $element : $element->build($row);
+		}
 
-        foreach ($data as $element) {
-            $result[] = is_string($element) ? $element : $element->build();
-        }
+		return $result;
+	}
 
-        return implode("", $result);
-    }
+	/**
+	 * Get value
+	 *
+	 * @param $row
+	 * @return mixed
+	 */
+	protected function getValue($row)
+	{
+		if (is_string($row) || is_numeric($row)) {
+			return $row;
+		}
 
-    /**
-     * Get value
-     *
-     * @param $row
-     * @return mixed
-     */
-    protected function getValue($row)
-    {
-        $data = $this->getRendererOutput($row);
+		if ($this->name === '') {
+			return '';
+		}
 
-        if (is_string($data) || is_numeric($data)) {
-            return $data;
-        }
+		if (is_object($row)) {
+			return $row->{$this->name} ?? '';
+		}
 
-        if ($this->name === '') {
-            return '';
-        }
+		return $row[$this->name] ?? '';
+	}
 
-        if (is_object($data)) {
-            return $data->{$this->name} ?? '';
-        }
+	/**
+	 * Render TD
+	 *
+	 * @param mixed $row
+	 * @return mixed
+	 */
+	public function renderValue($row)
+	{
+		if ($this->renderer) {
+			return $this->getRendererOutput($row);
+		}
 
-        return $data[$this->name] ?? '';
-    }
-
-    /**
-     * Render TD
-     *
-     * @param mixed $row
-     * @return string
-     */
-    public function renderValue($row): string
-    {
-        return $this->getValue($row);
-    }
+		return $this->getValue($row);
+	}
 
 	/**
 	 * @param array $data
 	 * @return array
 	 */
 	public function build(array $data): array
-    {
-        return [
-            'type'  => 'Th',
-            'value' => $this->renderTitle()
-        ];
-    }
+	{
+		return [
+			'type'  => 'Th',
+			'title' => $this->renderTitle(),
+			'value' => $this->renderValue($data)
+		];
+	}
 }
