@@ -8,17 +8,19 @@ use Aecodes\AdminPanel\Widgets\Fields\Input;
 class InputTest extends TestCase
 {
 
-    public function testInputHasDefaultTextType()
+	/** @test */
+    public function inputHasDefaultTextType()
     {
         $input = Input::make('about')->title('About')->build([]);
 
         $this->assertArrayHasKey('type', $input);
-        $this->assertEquals('fields/input', $input['type']);
+        $this->assertEquals('Input', $input['type']);
         $this->assertEquals('About', $input['title']);
         $this->assertEquals('text', $input['attributes']['type']);
     }
 
-    public function testInputTypeCanBeCustomized()
+    /** @test */
+    public function inputTypeCanBeCustomized()
     {
         $input = Input::email('about')->build([]);
         $this->assertEquals('email', $input['attributes']['type']);
@@ -29,7 +31,8 @@ class InputTest extends TestCase
         $this->assertEquals('about', $input['attributes']['name']);
     }
 
-    public function testInputCanHaveAttributes()
+	/** @test */
+	public function inputCanHaveAttributes()
     {
         $input = Input::text('about')->class('text-class')->build([]);
 
@@ -37,4 +40,22 @@ class InputTest extends TestCase
         $this->assertEquals('text-class', $input['attributes']['class']);
     }
 
+	/** @test */
+	public function inputCanTakeValue()
+	{
+		$about = 'testing str';
+		$input = Input::text('about')->build(compact('about'));
+
+		$this->assertEquals('text', $input['attributes']['type']);
+		$this->assertEquals($about, $input['attributes']['value']);
+	}
+
+	/** @test */
+	public function inputCanForceNoFill()
+	{
+		$input = Input::text('about')->noFill()->build(['about' => 'hello']);
+
+		$this->assertEquals('text', $input['attributes']['type']);
+		$this->assertEquals('', $input['attributes']['value']);
+	}
 }

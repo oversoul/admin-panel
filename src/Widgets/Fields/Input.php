@@ -122,7 +122,7 @@ class Input extends Field
 		]);
 
 		return [
-			'type'       => 'fields/input',
+			'type'       => 'Input',
 			'title'      => $this->title,
 			'help'       => $this->help,
 			'attributes' => $attributes,
