@@ -7,8 +7,10 @@ use ReflectionProperty;
 use Aecodes\AdminPanel\Panel;
 use PHPUnit\Framework\TestCase;
 use Aecodes\AdminPanel\Dashboard;
+use Aecodes\AdminPanel\Layouts\Table;
 use Aecodes\AdminPanel\Responses\Response;
 use Aecodes\AdminPanel\Responses\JsonRenderer;
+use Aecodes\AdminPanel\Responses\DefaultRenderer;
 
 class PanelTest extends TestCase
 {
@@ -68,5 +70,35 @@ class PanelTest extends TestCase
 		$response = (new Response($panel))->render();
 		$this->assertIsArray($response);
 		$this->assertEquals('admin', $response['layout']);
+	}
+
+	/** @test */
+	public function canRenderValuesOfTable()
+	{
+		Dashboard::setup(['renderer' => 'default', 'renderers' => ['json' => DefaultRenderer::class]]);
+		$panel = new class extends Panel {
+
+			public function render(): array
+			{
+				return [
+					Table::make([
+						Table::column('title', 'title'),
+					]),
+				];
+			}
+
+			public function query(): array
+			{
+				return [
+					['title' => 'first'],
+					['title' => 'second'],
+				];
+			}
+		};
+
+		$response = (new Response($panel))->render();
+		$this->assertIsArray($response);
+		$this->assertCount(2, $response['body'][0]['rows']);
+		$this->assertEquals('first', $response['body'][0]['rows'][0]['title']);
 	}
 }
