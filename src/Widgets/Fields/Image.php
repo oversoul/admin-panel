@@ -60,17 +60,17 @@ class Image extends Field
 		$this->getValue($data);
 
 		$attributes = array_merge($this->getAttributes(), [
-			'name'     => $this->name,
-			'value'    => $this->value,
-			'multiple' => $this->multiple,
+			'name'  => $this->name,
+			'value' => $this->value,
 		]);
 
 		return [
-			'type'       => 'fields/image',
+			'type'       => 'Image',
 			'help'       => $this->help,
 			'title'      => $this->title,
 			'path'       => $this->path,
 			'attributes' => $attributes,
+			'multiple'   => $this->multiple,
 		];
 	}
 }

@@ -13,7 +13,7 @@ class ImageTest extends TestCase
 	{
 		$input = Image::make('image')->title('Avatar')->build([]);
 		$this->assertArrayHasKey('type', $input);
-		$this->assertEquals('fields/image', $input['type']);
+		$this->assertEquals('Image', $input['type']);
 		$this->assertEquals('Avatar', $input['title']);
 	}
 
@@ -21,6 +21,6 @@ class ImageTest extends TestCase
 	public function canHaveItAcceptMultipleImages()
 	{
 		$input = (new Image('image'))->title('Image')->multiple()->build([]);
-		$this->assertTrue($input['attributes']['multiple']);
+		$this->assertTrue($input['multiple']);
 	}
 }
