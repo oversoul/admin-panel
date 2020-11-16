@@ -78,16 +78,11 @@ class Dashboard
 		return $callback($key, $default);
 	}
 
-	/**
-	 * get errors.
-	 *
-	 * @return array
-	 */
-	public static function errors(): array
+	public static function loadCallback(string $key): array
 	{
-		$callback = self::config('errors');
+		$callback = self::config($key, []);
 
-		if ( is_array($callback) ) {
+		if (is_array($callback)) {
 			return $callback;
 		}
 
@@ -99,23 +94,33 @@ class Dashboard
 	}
 
 	/**
+	 * get errors.
+	 *
+	 * @return array
+	 */
+	public static function errors(): array
+	{
+		return static::loadCallback('errors');
+	}
+
+	/**
+	 * get menu.
+	 *
+	 * @return array
+	 */
+	public static function globalFields(): array
+	{
+		return static::loadCallback('global_fields');
+	}
+
+	/**
 	 * get menu.
 	 *
 	 * @return array
 	 */
 	public static function menu(): array
 	{
-		$callback = self::config('menu', []);
-
-		if ( is_array($callback) ) {
-			return $callback;
-		}
-
-		if (!is_callable($callback)) {
-			return [];
-		}
-
-		return $callback();
+		return static::loadCallback('menu');
 	}
 
 }
