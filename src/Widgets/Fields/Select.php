@@ -20,11 +20,22 @@ class Select extends Field
     protected $empty = null;
 
     /**
+     * @var mixed
+     */
+    protected $emptyValue = -1;
+
+    /**
      * Multiple choices
      *
      * @var boolean
      */
     protected $multiple = false;
+
+    /**
+     * Allows to use options for both key and val
+     * @var bool
+     */
+    protected $useValues = false;
 
     /**
      * Default attributes
@@ -35,6 +46,26 @@ class Select extends Field
     protected $attributes = [
         'autocomplete' => 'off',
     ];
+
+    /**
+     * Create new instance and set useValues.
+     *
+     * @param string $target
+     * @return self
+     */
+    public static function values(string $target): self
+    {
+        return (new Select($target))->useValues();
+    }
+
+    /**
+     * @return $this
+     */
+    public function useValues(): self
+    {
+        $this->useValues = true;
+        return $this;
+    }
 
     /**
      * Set options
@@ -62,12 +93,14 @@ class Select extends Field
     /**
      * Set empty option
      *
-     * @param string $value
+     * @param string $label
+     * @param mixed $value
      * @return self
      */
-    function empty(string $value): self
+    function empty(string $label, $value = -1): self
     {
-        $this->empty = $value;
+        $this->empty = $label;
+        $this->emptyValue = $value;
         return $this;
     }
 
@@ -82,20 +115,17 @@ class Select extends Field
 
         if ($this->empty) {
             $options[] = [
-                'value'  => -1,
                 'hidden' => true,
                 'text'   => $this->empty,
+                'value'  => $this->emptyValue,
             ];
         }
 
         foreach ($this->options as $key => $value) {
-            $isSelected = \is_array($this->value) ? in_array($key, $this->value) : $key === $this->value;
+            $key = $this->useValues ? $value : $key;
+            $isSelected = is_array($this->value) ? in_array($key, $this->value) : $key === $this->value;
 
-            $options[] = [
-                'value'    => $key,
-                'text'     => $value,
-                'selected' => $isSelected,
-            ];
+            $options[] = ['value' => $key, 'text' => $value, 'selected' => $isSelected];
         }
 
         return $options;
@@ -114,16 +144,16 @@ class Select extends Field
         $options = ($this->multiple === true) ? $this->options : $this->buildOptions();
 
         $attributes = array_merge($this->getAttributes(), [
-            'name'     => $this->name,
-            'multiple' => $this->multiple,
+            'name' => $this->name,
         ]);
 
         return [
-            'type'       => 'fields/select', 
+            'type'       => 'Select',
             'title'      => $this->title,
             'help'       => $this->help,
             'attributes' => $attributes,
             'options'    => $options,
+            'multiple'   => $this->multiple,
         ];
     }
 }
