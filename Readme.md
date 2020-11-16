@@ -32,6 +32,7 @@ ps: widgets implements `Widget` interface.
 ### Currently supported Form fields
 
 - Input (text, password, email, number, ...)
+- Radio
 - Select
 - Textarea
 - Checkbox
@@ -104,7 +105,7 @@ function render(): array {
 // callback for some route
 public function index() {
     // PagesTable extends Panel
-    return new Response(new PagesTable);
+    return (new Response(new PagesTable))->render();
 }
 ```
 
