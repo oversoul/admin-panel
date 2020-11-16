@@ -3,6 +3,7 @@
 namespace Aecodes\AdminPanel\Widgets\Actions;
 
 use Exception;
+use Aecodes\AdminPanel\Dashboard;
 use Aecodes\AdminPanel\Widgets\Widget;
 
 class Action implements Widget
@@ -34,16 +35,6 @@ class Action implements Widget
 	 * @var array
 	 */
 	protected $attributes = [];
-
-	/**
-	 * Allowed actions.
-	 * @var array
-	 */
-	protected static $allowedActions = [
-		'button' => Button::class,
-		'delete' => Link::class,
-		'link'   => Link::class,
-	];
 
 	/**
 	 * Create new Action
@@ -119,42 +110,43 @@ class Action implements Widget
 	protected function buildAttributes(): array
 	{
 		$defaultClasses = [];
-
-		// if ( $this instanceof Link ) {
-		//     $defaultClasses = Dashboard::config()->linkClass();
-		// } else if ( $this instanceof Button ) {
-		//     $defaultClasses = Dashboard::config()->buttonClass();
-		// }
+		if ($this instanceof Link) {
+			$defaultClasses = Dashboard::config('classes.link', []);
+		} else if ($this instanceof Button) {
+			$defaultClasses = Dashboard::config('classes.button', []);
+		}
 
 		$attributes = $this->attributes;
-
-		$classes = array_merge($this->classes, $defaultClasses);
+		$classes = array_merge($this->classes, (array) $defaultClasses);
 		$attributes['class'] = implode(' ', $classes);
 
 		return $attributes;
 	}
 
 	/**
-	 * Magic method to call button and link on Action
-	 *
-	 * @param string $method
-	 * @param array $params
-	 * @return Button|Link
-	 * @throws Exception
+	 * @param string $value
+	 * @return Link
 	 */
-	public static function __callStatic(string $method, array $params = [])
+	public static function link(string $value): Link
 	{
-		if (isset(static::$allowedActions[$method])) {
-			$className = static::$allowedActions[$method];
-			$object = call_user_func_array([$className, 'make'], $params);
+		return new Link($value);
+	}
 
-			if ($method === 'delete') {
-				return $object->setDelete();
-			}
+	/**
+	 * @param string $value
+	 * @return Button
+	 */
+	public static function button(string $value): Button
+	{
+		return new Button($value);
+	}
 
-			return $object;
-		}
-
-		throw new Exception("{$method} is an invalid action type.");
+	/**
+	 * @param string $value
+	 * @return Link
+	 */
+	public static function delete(string $value): Link
+	{
+		return (new Link($value))->setDelete();
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Aecodes\AdminPanel\Tests\Actions;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Aecodes\AdminPanel\Widgets\Actions\Link;
 use Aecodes\AdminPanel\Widgets\Actions\Action;
@@ -23,7 +24,8 @@ class ActionTest extends TestCase
         $this->assertEquals('submit', $button['attributes']['type']);
     }
 
-    public function testCanProvideLinkInstance()
+	/** @test */
+    public function canProvideLinkInstance()
     {
         $link = Action::link('About');
         $this->assertInstanceOf(Link::class, $link);
@@ -35,19 +37,24 @@ class ActionTest extends TestCase
         $this->assertEquals('', $link['attributes']['href']);
     }
 
-    public function testActionInvalidButtonType()
+	/** @test */
+    public function actionInvalidButtonType()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         Action::button('About')->type('non-valid-type')->build([]);
     }
 
-    public function testActionValidButtonType()
+	/** @test
+	 * @throws Exception
+	 */
+    public function actionValidButtonType()
     {
         $button = Action::button('About')->type('reset')->build([]);
         $this->assertEquals('reset', $button['attributes']['type']);
     }
 
-    public function testValidLinkUrl()
+	/** @test */
+    public function validLinkUrl()
     {
         $url  = 'https://google.com';
         $link = Action::link('About')->href($url)->build([]);
@@ -56,9 +63,4 @@ class ActionTest extends TestCase
         $this->assertEquals($link['attributes']['href'], $url);
     }
 
-    public function testInvalidActionType()
-    {
-        $this->expectException(\Exception::class);
-        Action::something('About')->href($url)->build([]);
-    }
 }
