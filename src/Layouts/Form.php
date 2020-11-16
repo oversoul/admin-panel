@@ -124,7 +124,7 @@ class Form implements Widget
 	 */
 	protected function globalFields(?string $method): array
 	{
-		$inputs = Dashboard::config('global_fields', []);
+		$inputs = Dashboard::globalFields();
 
 		if (!$method) return $inputs;
 

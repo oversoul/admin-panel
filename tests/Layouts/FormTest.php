@@ -19,7 +19,7 @@ class FormTest extends TestCase
         $this->assertArrayHasKey('type', $form);
         $this->assertCount(1, $form['fields']);
         $this->assertEquals('Form', $form['type']);
-        $this->assertEquals('fields/input', $form['fields'][0]['type']);
+        $this->assertEquals('Input', $form['fields'][0]['type']);
     }
 
     /** @test */
