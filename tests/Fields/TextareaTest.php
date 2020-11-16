@@ -15,7 +15,7 @@ class TextareaTest extends TestCase
 
         $this->assertArrayHasKey('type', $textarea);
         $this->assertEquals('About', $textarea['title']);
-        $this->assertEquals('fields/textarea', $textarea['type']);
+        $this->assertEquals('Textarea', $textarea['type']);
         $this->assertArrayNotHasKey('type', $textarea['attributes']);
     }
 

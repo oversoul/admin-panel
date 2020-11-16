@@ -26,12 +26,12 @@ class Textarea extends Field
 
         $attributes = array_merge($this->getAttributes(), [
             'name' => $this->name,
-            'value' => $this->value,
         ]);
 
         return [
-            'type' => 'fields/textarea',
-            'title' => $this->title,
+            'type'       => 'Textarea',
+            'title'      => $this->title,
+            'value'      => $this->value,
             'attributes' => $attributes
         ];
     }
