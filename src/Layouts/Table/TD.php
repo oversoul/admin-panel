@@ -105,7 +105,7 @@ class TD implements Widget
 	 */
 	protected function getValue($row)
 	{
-		if (is_string($row) || is_numeric($row)) {
+		if (is_scalar($row)) {
 			return $row;
 		}
 

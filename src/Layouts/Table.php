@@ -79,31 +79,45 @@ class Table
 	/**
 	 * Set table footer (pagination?)
 	 *
-	 * @param mixed $elements
+	 * @param array $elements
 	 * @return self
 	 */
-	public function footer($elements): self
+	public function footer(array $elements): self
 	{
 		$this->footer = $elements;
 		return $this;
 	}
 
 	/**
-	 * Render section
+	 * Render header section
 	 *
-	 * @param array $elements
-	 * @param array $data
 	 * @return array
 	 */
-	public function renderSection(array $elements, array $data): array
+	public function renderHeader(): array
 	{
-		$items = [];
-		foreach ($elements as $element) {
-			$items[] = is_string($element) ? $element : $element->build($data);
+		$columns = [];
+		foreach ($this->columns as $column) {
+			$columns[] = $column->renderTitle();
 		}
 
-		return $items;
+		return $columns;
 	}
+
+    /**
+     * Render section
+     *
+     * @param array $data
+     * @return array
+     */
+    public function renderFooter(array $data): array
+    {
+        $items = [];
+        foreach ($this->footer as $element) {
+            $items[] = is_scalar($element) ? $element : $element->build($data);
+        }
+
+        return $items;
+    }
 
 	/**
 	 * @param $data
@@ -111,7 +125,24 @@ class Table
 	 */
 	public function getRows($data): array
 	{
-		return (Helper::isAssoc($data) && !$this->target) ? [] : Helper::arr_get($data, $this->target, []);
+		$trs = [];
+		foreach ($data as $row) {
+		    $tds = [];
+		    foreach ($this->columns as $column) {
+		        $tds[] = $column->build($row);
+            }
+		    $trs[] = $tds;
+        }
+		return $trs;
+	}
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function getDataRows(array $data): array
+    {
+        return (Helper::isAssoc($data) && !$this->target) ? [] : Helper::arr_get($data, $this->target, []);
 	}
 
 	/**
@@ -122,10 +153,12 @@ class Table
 	 */
 	public function build(array $data): array
 	{
+        $data = $this->getDataRows($data);
+
 		$type = 'Table';
 		$rows = $this->getRows($data);
-		$footer = $this->renderSection($this->footer, $data);
-		$headers = $this->renderSection($this->columns, $data);
+        $headers = $this->renderHeader();
+        $footer = $this->renderFooter($data);
 
 		return compact('type', 'headers', 'rows', 'footer');
 	}

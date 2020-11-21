@@ -5,8 +5,9 @@ namespace Aecodes\AdminPanel\Responses;
 
 use Aecodes\AdminPanel\Panel;
 use Aecodes\AdminPanel\Dashboard;
+use Illuminate\Contracts\Support\Renderable;
 
-class Response
+class Response implements Renderable
 {
 
 	/** @var string */
@@ -51,12 +52,4 @@ class Response
 		return $renderer->render();
 	}
 
-	/**
-	 *
-	 * @return mixed
-	 */
-	public function toResponse()
-	{
-		return $this->render();
-	}
 }

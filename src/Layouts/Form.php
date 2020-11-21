@@ -9,229 +9,248 @@ use Aecodes\AdminPanel\Widgets\Fields\Input;
 
 class Form implements Widget
 {
-	/**
-	 * Data target (key)
-	 *
-	 * @var string
-	 */
-	protected $target;
+    /**
+     * Data target (key)
+     *
+     * @var string
+     */
+    protected $target;
 
-	/**
-	 * Form Inputs
-	 *
-	 * @var array
-	 */
-	protected $inputs = [];
+    /**
+     * Form Inputs
+     *
+     * @var array
+     */
+    protected $inputs = [];
 
-	/**
-	 * Form Action
-	 *
-	 * @var string
-	 */
-	protected $action = '';
+    /**
+     * Form Action
+     *
+     * @var string
+     */
+    protected $action = '';
 
-	/**
-	 * Form method
-	 *
-	 * @var string
-	 */
-	protected $method = 'POST';
+    /**
+     * Form method
+     *
+     * @var string
+     */
+    protected $method = 'POST';
 
-	/**
-	 * Classes
-	 *
-	 * @var string
-	 */
-	protected $class = '';
+    /**
+     * Classes
+     *
+     * @var string
+     */
+    protected $class = '';
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param array $inputs
-	 */
-	public function __construct(array $inputs = [])
-	{
-		$this->inputs = $inputs;
-	}
+    /**
+     * @var bool
+     */
+    protected $withGlobalFields = true;
 
-	/**
-	 * Set form action
-	 *
-	 * @param string $action
-	 * @return self
-	 */
-	public function action(string $action): self
-	{
-		$this->action = $action;
-		return $this;
-	}
+    /**
+     * Undocumented function
+     *
+     * @param array $inputs
+     */
+    public function __construct(array $inputs = [])
+    {
+        $this->inputs = $inputs;
+    }
 
-	/**
-	 * Set form method
-	 *
-	 * @param string $method
-	 * @param string|null $url
-	 * @return self
-	 */
-	public function method(string $method, ?string $url = null): self
-	{
-		if ($url) {
-			$this->action($url);
-		}
+    /**
+     * Set form action
+     *
+     * @param string $action
+     * @return self
+     */
+    public function action(string $action): self
+    {
+        $this->action = $action;
+        return $this;
+    }
 
-		$this->method = strtoupper($method);
-		return $this;
-	}
+    /**
+     * Set form method
+     *
+     * @param string $method
+     * @param string|null $url
+     * @return self
+     */
+    public function method(string $method, ?string $url = null): self
+    {
+        if ($url) {
+            $this->action($url);
+        }
 
-	/**
-	 * Create form instance statically
-	 *
-	 * @param array $inputs
-	 * @return self
-	 */
-	public static function make(array $inputs = []): self
-	{
-		return new static($inputs);
-	}
+        $this->method = strtoupper($method);
+        return $this;
+    }
 
-	/**
-	 * Set form target - data key
-	 *
-	 * @param string $target
-	 * @return self
-	 */
-	public function target(string $target): self
-	{
-		$this->target = $target;
-		return $this;
-	}
+    /**
+     * Create form instance statically
+     *
+     * @param array $inputs
+     * @return self
+     */
+    public static function make(array $inputs = []): self
+    {
+        return new static($inputs);
+    }
 
-	/**
-	 * Set form size
-	 *
-	 * @param string $className
-	 * @return self
-	 */
-	function class(string $className): self
-	{
-		$this->class = $className;
-		return $this;
-	}
+    /**
+     * Set form target - data key
+     *
+     * @param string $target
+     * @return self
+     */
+    public function target(string $target): self
+    {
+        $this->target = $target;
+        return $this;
+    }
 
-	/**
-	 * @param string|null $method
-	 * @return array
-	 */
-	protected function globalFields(?string $method): array
-	{
-		$inputs = Dashboard::globalFields();
+    /**
+     * Set form size
+     *
+     * @param string $className
+     * @return self
+     */
+    function class(string $className): self
+    {
+        $this->class = $className;
+        return $this;
+    }
 
-		if (!$method) return $inputs;
+    /**
+     * @param string|null $method
+     * @return array
+     */
+    protected function getGlobalFields(?string $method): array
+    {
+        if (!$this->withGlobalFields) {
+            return [];
+        }
 
-		$inputs[] = Input::hidden('_method')->value($method);
-		return $inputs;
-	}
+        $inputs = Dashboard::globalFields();
 
-	/**
-	 * Get fields.
-	 *
-	 * @param array $data
-	 * @param ?string $method
-	 * @return array
-	 */
-	protected function getFields(array $data, ?string $method): array
-	{
-		$inputs = array_merge($this->globalFields($method), $this->inputs);
+        if (!$method) return $inputs;
 
-		$fields = [];
-		foreach ($inputs as $item) {
-			$fields[] = is_string($item) ? $item : $item->build($data);
-		}
+        $inputs[] = Input::hidden('_method')->value($method);
+        return $inputs;
+    }
 
-		return $fields;
-	}
+    /**
+     * Get fields.
+     *
+     * @param array $data
+     * @param ?string $method
+     * @return array
+     */
+    protected function getFields(array $data, ?string $method): array
+    {
+        $inputs = array_merge($this->getGlobalFields($method), $this->inputs);
 
-	/**
-	 * Build form
-	 *
-	 * @param array $data
-	 * @return array
-	 */
-	public function build(array $data): array
-	{
-		$realMethod = null;
-		$method = $this->method;
+        $fields = [];
+        foreach ($inputs as $item) {
+            $fields[] = is_string($item) ? $item : $item->build($data);
+        }
 
-		if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
-			$realMethod = $method;
-			$method = 'POST';
-		}
+        return $fields;
+    }
 
-		$data = Helper::arr_get($data, $this->target, []);
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function globalFields(bool $value): self
+    {
+        $this->withGlobalFields = $value;
+        return $this;
+    }
 
-		return [
-			'type'       => 'Form',
-			'fields'     => $this->getFields($data, $realMethod),
-			'attributes' => [
-				'class'  => $this->class,
-				'action' => $this->action,
-				'method' => $method,
-			],
-		];
-	}
+    /**
+     * Build form
+     *
+     * @param array $data
+     * @return array
+     */
+    public function build(array $data): array
+    {
+        $realMethod = null;
+        $method = $this->method;
 
-	/**
-	 * Using get method
-	 * @param array $inputs
-	 * @return static
-	 */
-	public static function get(array $inputs = []): self
-	{
-		return (new static($inputs))->method('get');
-	}
+        if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+            $realMethod = $method;
+            $method = 'POST';
+        }
 
-	/**
-	 * Using post method.
-	 *
-	 * @param array $inputs
-	 * @return static
-	 */
-	public static function post(array $inputs = []): self
-	{
-		return (new static($inputs))->method('post');
-	}
+        $data = Helper::arr_get($data, $this->target, []);
 
-	/**
-	 * Using put method.
-	 *
-	 * @param array $inputs
-	 * @return static
-	 */
-	public static function put(array $inputs = []): self
-	{
-		return (new static($inputs))->method('put');
-	}
+        return [
+            'type'       => 'Form',
+            'fields'     => $this->getFields($data, $realMethod),
+            'attributes' => [
+                'class'  => $this->class,
+                'action' => $this->action,
+                'method' => $method,
+            ],
+        ];
+    }
 
-	/**
-	 * Using patch
-	 *
-	 * @param array $inputs
-	 * @return static
-	 */
-	public static function patch(array $inputs = []): self
-	{
-		return (new static($inputs))->method('patch');
-	}
+    /**
+     * Using get method
+     * @param array $inputs
+     * @return static
+     */
+    public static function get(array $inputs = []): self
+    {
+        return (new static($inputs))->method('get');
+    }
 
-	/**
-	 * Using delete method.
-	 *
-	 * @param array $inputs
-	 * @return static
-	 */
-	public static function delete(array $inputs = []): self
-	{
-		return (new static($inputs))->method('delete');
-	}
+    /**
+     * Using post method.
+     *
+     * @param array $inputs
+     * @return static
+     */
+    public static function post(array $inputs = []): self
+    {
+        return (new static($inputs))->method('post');
+    }
+
+    /**
+     * Using put method.
+     *
+     * @param array $inputs
+     * @return static
+     */
+    public static function put(array $inputs = []): self
+    {
+        return (new static($inputs))->method('put');
+    }
+
+    /**
+     * Using patch
+     *
+     * @param array $inputs
+     * @return static
+     */
+    public static function patch(array $inputs = []): self
+    {
+        return (new static($inputs))->method('patch');
+    }
+
+    /**
+     * Using delete method.
+     *
+     * @param array $inputs
+     * @return static
+     */
+    public static function delete(array $inputs = []): self
+    {
+        return (new static($inputs))->method('delete');
+    }
 
 }
